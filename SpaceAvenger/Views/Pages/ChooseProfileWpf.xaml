@@ -1,0 +1,46 @@
+﻿<Page x:Class="SpaceAvenger.Views.Pages.ChooseProfileWpf"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SpaceAvenger.Views.Pages"
+      xmlns:vm="clr-namespace:SpaceAvenger.ViewModels.PagesVM"
+      mc:Ignorable="d"       
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ChooseProfileWpf">
+    <Page.DataContext>
+        <vm:ChooseProfileViewModel/>
+    </Page.DataContext>
+    <Page.Background>
+        <ImageBrush ImageSource="pack://siteoforigin:,,,/Images/Backgrounds/ChooseProfilePage/SAChooseProfile.jpg"/>
+    </Page.Background>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <TextBlock Margin="10,0,0,0" Text="Choose profile Or Create a new one:" Style="{StaticResource textBlockHeaders}"/>
+        <ListView Grid.Row="1"
+            Background="{StaticResource LVBack}"
+                  Margin="10"/>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="35"/>
+                <ColumnDefinition Width="140"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1"
+                    Content="Add" Foreground="White"
+                    Style="{StaticResource Button}"
+                    FontSize="16"
+                    Command="{Binding OnAddNewProfileButtonPressed}"/>
+            <Button Grid.Column="3" Style="{StaticResource Button}"
+                    FontSize="16" Foreground="White"
+                    Content="Remove"/>
+        </Grid>
+    </Grid>
+</Page>

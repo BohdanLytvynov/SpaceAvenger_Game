@@ -1,0 +1,196 @@
+﻿<Application x:Class="SpaceAvenger.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:SpaceAvenger"
+             xmlns:UserM="clr-namespace:Models.ViewModels.User;assembly=Models"
+             StartupUri="Views/MainWindow/MainWindow.xaml">
+    <Application.Resources>
+
+        <LinearGradientBrush x:Key="LVBack" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#4D0B1D4D" Offset="1"/>
+            <GradientStop Color="#3636BEFF" Offset="0"/>
+        </LinearGradientBrush>
+
+        <!--#region Colors-->
+
+        <Color x:Key="But1ColorInit">#4D0B1D4D
+        </Color>
+
+        <Color x:Key="But2ColorInit">#3636BEFF
+        </Color>
+
+        <Color x:Key="brdButColor1">#FF0D0C37
+        </Color>
+
+        <Color x:Key="brdButColor2">#FF16BDBD
+        </Color>
+
+        <Color x:Key="But1ColorPress">#FF0B1D4D
+        </Color>
+
+        <Color x:Key="But2ColorPress">#FF36BEFF
+        </Color>
+
+        <Color x:Key="But1ColorDis">#C0331010
+        </Color>
+
+        <Color x:Key="But2ColorDis">#7BEE2A2A
+        </Color>
+
+        <Duration x:Key="ButAnimDuration">0:0:0:0.02
+        </Duration>
+
+        <!--#endregion-->
+
+        <!--#region Styles-->
+
+        <Style x:Key="textBlockHeaders" TargetType="TextBlock">
+            <Style.Setters>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style.Setters>
+        </Style>
+
+        <!--#endregion-->
+
+            <!--#region Buttons-->
+
+        <Style x:Key="Button" TargetType="{x:Type Button}">
+            <Style.Setters>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border CornerRadius="10" x:Name="brd" BorderThickness="2">
+                                
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush>
+                                        <LinearGradientBrush.RelativeTransform>
+                                            <RotateTransform x:Name="rtr" Angle="0"/>
+                                        </LinearGradientBrush.RelativeTransform>
+
+                                        <GradientStop x:Name="brd1gs" Color="{StaticResource brdButColor1}" Offset="1"/>
+                                        <GradientStop x:Name="brd2gs" Color="{StaticResource brdButColor2}" Offset="0"/>
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                                <Border.Background>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop x:Name="gs1" Color="{StaticResource But1ColorInit}" Offset="1"/>
+                                        <GradientStop x:Name="gs2" Color="{StaticResource But2ColorInit}" Offset="0"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Label Content="{TemplateBinding Content}" HorizontalContentAlignment="Center" 
+                                       VerticalContentAlignment="Center" Foreground="{TemplateBinding Foreground}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       FontFamily="{TemplateBinding FontFamily}"/>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal">
+                                            <Storyboard>
+                                                <ThicknessAnimation
+                                                    Storyboard.TargetName="brd"
+                                                    Storyboard.TargetProperty="BorderThickness"
+                                                    To="2"
+                                                    Duration="{StaticResource ButAnimDuration}"/>
+
+                                                <ColorAnimation
+                                                    Storyboard.TargetName="gs1"
+                                                    Storyboard.TargetProperty="(Color)"
+                                                    To="{StaticResource But1ColorInit}"
+                                                    Duration="{StaticResource ButAnimDuration}"/>
+
+                                                <ColorAnimation
+                                                    Storyboard.TargetName="gs2"
+                                                    Storyboard.TargetProperty="(Color)"
+                                                    To="{StaticResource But2ColorInit}"
+                                                    Duration="{StaticResource ButAnimDuration}"/>
+                                            </Storyboard>
+                                        </VisualState>
+
+                                        <VisualState x:Name="MouseOver">
+                                            <Storyboard>
+                                                <ThicknessAnimation
+                                                    Storyboard.TargetName="brd"
+                                                    Storyboard.TargetProperty="BorderThickness"
+                                                    To="3"
+                                                    Duration="{StaticResource ButAnimDuration}"/>
+                                                <DoubleAnimationUsingKeyFrames
+                                                    Storyboard.TargetName="rtr"
+                                                    Storyboard.TargetProperty="(Angle)"                                                     
+                                                    AutoReverse="True"
+                                                    RepeatBehavior="Forever"
+                                                    DecelerationRatio="1"
+                                                    Duration="0:0:3">
+                                                    <LinearDoubleKeyFrame KeyTime="0%" Value="0"/>
+                                                    <LinearDoubleKeyFrame KeyTime="50%" Value="90"/>
+                                                    <LinearDoubleKeyFrame KeyTime="100%" Value="180"/>
+                                                </DoubleAnimationUsingKeyFrames>
+
+                                            </Storyboard>
+                                        </VisualState>
+
+                                        <VisualState x:Name="Pressed">
+                                            <Storyboard>
+                                                <ThicknessAnimation
+                                                    Storyboard.TargetName="brd"
+                                                    Storyboard.TargetProperty="BorderThickness"
+                                                    To="2"
+                                                    Duration="{StaticResource ButAnimDuration}"/>
+                                                <ColorAnimation
+                                                    Storyboard.TargetName="gs1"
+                                                    Storyboard.TargetProperty="(Color)"
+                                                    To="{StaticResource But1ColorPress}"
+                                                    Duration="{StaticResource ButAnimDuration}"/>
+
+                                                <ColorAnimation
+                                                    Storyboard.TargetName="gs2"
+                                                    Storyboard.TargetProperty="(Color)"
+                                                    To="{StaticResource But2ColorPress}"
+                                                    Duration="{StaticResource ButAnimDuration}"/>
+                                            </Storyboard>
+                                        </VisualState>
+
+                                        <VisualState x:Name="Disabled">
+                                            <Storyboard>
+                                                <ThicknessAnimation
+                                                    Storyboard.TargetName="brd"
+                                                    Storyboard.TargetProperty="BorderThickness"
+                                                    To="2"
+                                                    Duration="{StaticResource ButAnimDuration}"/>
+                                                <ColorAnimation
+                                                    Storyboard.TargetName="gs1"
+                                                    Storyboard.TargetProperty="(Color)"
+                                                    To="{StaticResource But1ColorDis}"
+                                                    Duration="{StaticResource ButAnimDuration}"/>
+
+                                                <ColorAnimation
+                                                    Storyboard.TargetName="gs2"
+                                                    Storyboard.TargetProperty="(Color)"
+                                                    To="{StaticResource But2ColorDis}"
+                                                    Duration="{StaticResource ButAnimDuration}"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style.Setters>
+        </Style>
+
+        <!--#endregion-->
+
+        <!--#endregion-->
+
+        <!--#region UserProfileDataTemplate-->
+
+        <DataTemplate DataType="{x:Type UserM:UserProfile}">
+            <Border>
+            </Border>
+        </DataTemplate>
+
+        <!--#endregion-->
+
+    </Application.Resources>
+</Application>
