@@ -21,7 +21,7 @@ namespace Models.DAL.Entities.User
 
         public string UserName { get; set; }
 
-        public DateTime Created { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         #endregion
 
@@ -39,7 +39,7 @@ namespace Models.DAL.Entities.User
             MaleFemale = maleFemale;
             MissionsCount = missionsCount;
             Rank = rank;
-            Created = created;
+            CreatedDate = created;
         }
 
         #endregion
@@ -48,7 +48,7 @@ namespace Models.DAL.Entities.User
 
         public override string ToString()
         {
-            return $"{Id} {UserName} {MaleFemale} {MissionsCount} {Rank} {Created.ToShortDateString()}";
+            return $"{Id} {UserName} {MaleFemale} {MissionsCount} {Rank} {CreatedDate.ToShortDateString()}";
         }
 
         #endregion

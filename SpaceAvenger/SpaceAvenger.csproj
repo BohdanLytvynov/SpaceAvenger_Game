@@ -75,6 +75,7 @@
 
   <ItemGroup>
     <Folder Include="DataBase\" />
+    <Folder Include="Views\Windows\" />
   </ItemGroup>
 
 </Project>
