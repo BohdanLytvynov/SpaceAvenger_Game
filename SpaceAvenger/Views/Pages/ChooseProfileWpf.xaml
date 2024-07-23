@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SpaceAvenger.Views.Pages"
       xmlns:vm="clr-namespace:SpaceAvenger.ViewModels.PagesVM"
+      xmlns:exit="clr-namespace:SpaceAvenger.CommonCommands"
       mc:Ignorable="d"       
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ChooseProfileWpf">
@@ -21,26 +22,68 @@
             <RowDefinition/>
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
-        <TextBlock Margin="10,0,0,0" Text="Choose profile Or Create a new one:" Style="{StaticResource textBlockHeaders}"/>
-        <ListView Grid.Row="1"
-            Background="{StaticResource LVBack}"
-                  Margin="10"/>
+        <TextBlock Margin="10,0,0,0" Text="Choose profile Or Create a new one:"
+                   Style="{StaticResource textBlockHeaders}"/>
+        <Grid x:Name="ListViewGrid" 
+              Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="180"/>
+            </Grid.ColumnDefinitions>
+            <ListView Grid.Column="0"
+    Background="{StaticResource LVBack}"
+          Margin="10"/>
+            <Grid x:Name="Buttons" 
+                  Grid.Column="2"
+                  Margin="10"
+                  >
+                <Grid.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#CC080924" Offset="0.506"/>
+                        <GradientStop Color="#334A578A" Offset="1"/>
+                    </LinearGradientBrush>
+                </Grid.Background>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="31*"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="150*"/>
+                </Grid.RowDefinitions>
+                <Button Grid.Row="1"
+                Content="Add" Foreground="White"
+                Style="{StaticResource Button}"
+                FontSize="16"
+                Command="{Binding OnAddNewProfileButtonPressed}"/>
+
+                <Button Grid.Row="3" Style="{DynamicResource Button}"
+                        Content="Edit" FontSize="16"
+                        Foreground="White"/>
+
+                <Button Grid.Row="5" Style="{StaticResource Button}"
+                FontSize="16" Foreground="White"
+                Content="Remove"/>
+            </Grid>
+        </Grid>
+
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="45"/>
                 <ColumnDefinition Width="140"/>
-                <ColumnDefinition Width="35"/>
-                <ColumnDefinition Width="140"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="615"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1"
-                    Content="Add" Foreground="White"
-                    Style="{StaticResource Button}"
-                    FontSize="16"
-                    Command="{Binding OnAddNewProfileButtonPressed}"/>
-            <Button Grid.Column="3" Style="{StaticResource Button}"
-                    FontSize="16" Foreground="White"
-                    Content="Remove"/>
+
+            <Button Grid.Column="1" Content="Exit"
+                    Style="{DynamicResource Button}"
+                    FontSize="16" Foreground="White">
+                <Button.Command>
+                    <exit:ExitCommand/>
+                </Button.Command>
+            </Button>
+
         </Grid>
     </Grid>
 </Page>

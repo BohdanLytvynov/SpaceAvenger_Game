@@ -1,4 +1,4 @@
-﻿namespace Models.ViewModels;
+﻿namespace SpaceAvenger.ViewModels.GameLevel;
 public class GameLevel
 {
     #region Fields

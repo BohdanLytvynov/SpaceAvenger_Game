@@ -1,12 +1,13 @@
-﻿using JsonDataProvider;
-using Models.ViewModels.User;
+﻿using Data.DataBase;
+using Data.Repositories.Realizations.UserRep;
+using JsonDataProvider;
+using LiteDB;
+using Models.DAL.Entities.User;
+using SpaceAvenger.ViewModels.UserProfile;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Input;
 using ViewModelBaseLibDotNetCore.Commands;
 using ViewModelBaseLibDotNetCore.VM;
@@ -17,7 +18,9 @@ namespace SpaceAvenger.ViewModels.PagesVM
     {
         #region Fields
 
-        ObservableCollection<UserProfile> m_profileList;
+        UserRepository m_userRepository;
+
+        ObservableCollection<UserProfileVM> m_profileList;
 
         JDataProvider m_jdataProvider;
 
@@ -29,7 +32,7 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
         #region Properties
 
-        public ObservableCollection<UserProfile> ProfileList { get=> m_profileList; set=> m_profileList = value; }
+        public ObservableCollection<UserProfileVM> ProfileList { get=> m_profileList; set=> m_profileList = value; }
 
         #endregion
 
@@ -42,13 +45,18 @@ namespace SpaceAvenger.ViewModels.PagesVM
         #region Ctor
         public ChooseProfileViewModel()
         {
-            m_jdataProvider = new JDataProvider();
+            m_userRepository = new UserRepository(
+                new SpaceAvengerDbContext(Environment.CurrentDirectory + 
+                Path.DirectorySeparatorChar + 
+                "DataBase" + Path.DirectorySeparatorChar + "Local.db"));
+
+            //m_jdataProvider = new JDataProvider();
 
             m_pathToProfiles = JDataProvider.pathToEnv + @"\DataBase\UserProfiles.json";
 
-            m_profileList = new ObservableCollection<UserProfile>();
+            m_profileList = new ObservableCollection<UserProfileVM>();
 
-            m_profileList = m_jdataProvider.DeserializeObject<ObservableCollection<UserProfile>>(m_pathToProfiles);
+            // m_profileList = m_userRepository.GetAllAsync().Result;
 
             ProfileList.CollectionChanged += ProfileList_CollectionChanged;
 
@@ -74,7 +82,14 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
         private void OnAddNewProfileButtonPressedExecute(object p)
         {
-            ProfileList.Add(new UserProfile(ProfileList.Count+1, "Enter your name Commander", true, StarFleetRanks.Cadet4thGrade, 0));
+            //ProfileList.Add(
+            //    new UserProfileVM(
+            //        ProfileList.Count+1, 
+            //        Guid.Empty, 
+            //        "Enter your name Commander",
+            //        true, 
+            //        StarFleetRanks.Cadet4thGrade, 
+            //        0, DateTime.UtcNow));
         }
         #endregion
 
