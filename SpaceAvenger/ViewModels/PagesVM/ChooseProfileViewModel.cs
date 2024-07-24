@@ -20,15 +20,21 @@ namespace SpaceAvenger.ViewModels.PagesVM
     {
         #region Fields
 
-        UserRepository m_userRepository;
+        private UserRepository m_userRepository;
 
-        ObservableCollection<UserProfileVM> m_profileList;
+        private ObservableCollection<UserProfileVM> m_profileList;
+
+        private int m_SelectedUserIndex;
                         
         #endregion
 
         #region Properties
 
-        public ObservableCollection<UserProfileVM> ProfileList { get=> m_profileList; set=> m_profileList = value; }
+        public ObservableCollection<UserProfileVM> ProfileList 
+        { get=> m_profileList; set=> m_profileList = value; }
+
+        public int SelectedUserIndex 
+        { get=> m_SelectedUserIndex; set => Set(ref m_SelectedUserIndex, value); }
 
         #endregion
 
@@ -36,11 +42,15 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
         public ICommand OnAddNewProfileButtonPressed { get; }
 
+        public ICommand OnEditUserProfileButtonPressed { get; }
+
         #endregion
 
         #region Ctor
         public ChooseProfileViewModel()
         {
+            m_SelectedUserIndex = -1;
+
             m_userRepository = new UserRepository(
                 new SpaceAvengerDbContext(Environment.CurrentDirectory + 
                 Path.DirectorySeparatorChar + 
@@ -58,6 +68,11 @@ namespace SpaceAvenger.ViewModels.PagesVM
             OnAddNewProfileButtonPressed = new Command(
                 OnAddNewProfileButtonPressedExecute,
                 CanOnAddNewProfileButtonPressedExecute
+                );
+
+            OnEditUserProfileButtonPressed = new Command(
+                OnEditUserProfileButtonpressedExecute,
+                CanOnEditUserProfileButtonpressedExecute
                 );
         }
 
@@ -88,10 +103,31 @@ namespace SpaceAvenger.ViewModels.PagesVM
         }
 
         private async Task Up_OnUserProfileConfirmedEvent(User obj)
-        {            
-            var r = await m_userRepository.AddAsync(obj);            
+        {
+            if (obj.Id.Equals(Guid.Empty))
+            {
+                var r = await m_userRepository.AddAsync(obj);
+            }
+            else
+            {
+                var r = await m_userRepository.UpdateAsync(obj);
+            }
+            
         }
 
+        #endregion
+
+        #region On Edit User Profile Button Pressed
+
+        private bool CanOnEditUserProfileButtonpressedExecute(object p)
+        {
+            return m_SelectedUserIndex >= 0;
+        }
+
+        private void OnEditUserProfileButtonpressedExecute(object p)
+        {
+            ProfileList[m_SelectedUserIndex]!.Confirmed = false;                         
+        }
 
         #endregion
 

@@ -36,6 +36,8 @@
                       ItemsSource="{Binding ProfileList, 
                 UpdateSourceTrigger=PropertyChanged, 
                 Mode=TwoWay}"
+                      SelectedIndex="{Binding SelectedUserIndex,
+                UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
           Margin="10"/>
             <Grid x:Name="Buttons" 
                   Grid.Column="2"
@@ -64,7 +66,8 @@
 
                 <Button Grid.Row="3" Style="{DynamicResource Button}"
                         Content="Edit" FontSize="16"
-                        Foreground="White"/>
+                        Foreground="White"
+                        Command="{Binding OnEditUserProfileButtonPressed}"/>
 
                 <Button Grid.Row="5" Style="{StaticResource Button}"
                 FontSize="16" Foreground="White"

@@ -8,7 +8,7 @@ using ViewModelBaseLibDotNetCore.VM;
 
 namespace SpaceAvenger.ViewModels.UserProfile
 {
-    public class UserProfileVM : ViewModelBase
+    public class UserProfileVM : ViewModelBase, IEquatable<UserProfileVM>
     {
         #region Events
         public event Func<User, Task>? OnUserProfileConfirmedEvent;
@@ -32,7 +32,17 @@ namespace SpaceAvenger.ViewModels.UserProfile
         
         public int Number { get => m_Number; set => Set(ref m_Number, value); }
 
-        public bool Confirmed { get=> m_Confirmed; set=> Set(ref m_Confirmed, value); }
+        public bool Confirmed 
+        { 
+            get=> m_Confirmed;
+            set
+            {
+                Set(ref m_Confirmed, value);
+                
+                if(value != m_user.Confirmed)
+                    m_user.Confirmed = value;
+            } 
+        }
 
         public DateTime EnlistedDate { get=> m_enlistedDate; set => Set(ref m_enlistedDate, value); }
 
@@ -43,7 +53,7 @@ namespace SpaceAvenger.ViewModels.UserProfile
         #endregion
 
         #region
-
+        
         public UserProfileVM(int number, User user)
         {            
             m_user = user;
@@ -100,10 +110,15 @@ namespace SpaceAvenger.ViewModels.UserProfile
             EnlistedDate = DateTime.UtcNow;
 
             m_user.CreatedDate = EnlistedDate;
-
-            m_user.Confirmed = Confirmed;
-
+            
             OnUserProfileConfirmed(m_user);
+        }
+
+        public bool Equals(UserProfileVM? other)
+        {
+            if(other == null) return false;
+
+            return other.User.Id.Equals(this.User.Id);
         }
         #endregion
     }

@@ -8,7 +8,7 @@ var db = new LiteDatabase("D:\\C# Projects\\SpaceAvenger\\SpaceAvenger\\bin\\Deb
 
 var col = db.GetCollection<User>().FindAll();
 
-db.GetCollection<User>().DeleteAll();
+//db.GetCollection<User>().DeleteAll();
 
 foreach (var user in col)
 { 
