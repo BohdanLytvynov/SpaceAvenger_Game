@@ -36,7 +36,7 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
         public object MainFrame 
         {
             get=>m_mainframe;
-            set=> Set<object>(ref m_mainframe, value);
+            set=> Set(ref m_mainframe, value);
         }
 
         public string Tittle 
