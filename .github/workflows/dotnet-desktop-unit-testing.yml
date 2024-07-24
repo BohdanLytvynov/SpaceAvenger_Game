@@ -65,6 +65,7 @@ jobs:
       Wap_Project_Directory: SpaceAvenger    # Replace with the Wap project directory relative to the solution, i.e. MyWpfApp.Package.
       Wap_Project_Path: SpaceAvenger.csproj                   # Replace with the path to your Wap project, i.e. MyWpf.App.Package\MyWpfApp.Package.wapproj.
 
+
     steps:
     - name: Checkout
       uses: actions/checkout@v4
