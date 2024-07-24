@@ -33,6 +33,9 @@
             </Grid.ColumnDefinitions>
             <ListView Grid.Column="0"
     Background="{StaticResource LVBack}"
+                      ItemsSource="{Binding ProfileList, 
+                UpdateSourceTrigger=PropertyChanged, 
+                Mode=TwoWay}"
           Margin="10"/>
             <Grid x:Name="Buttons" 
                   Grid.Column="2"

@@ -8,10 +8,10 @@ namespace Models.DAL.Entities.User
 {
     public enum StarFleetRanks
     {
-        Cadet4thGrade = 1,
-        Cadet3thGrade,
-        Cadet2thGrade,
-        Cadet1thGrade,
+        Cadet_4th_Grade = 1,
+        Cadet_3th_Grade,
+        Cadet_2th_Grade,
+        Cadet_1th_Grade,
         Lieutenant
     }
 }
