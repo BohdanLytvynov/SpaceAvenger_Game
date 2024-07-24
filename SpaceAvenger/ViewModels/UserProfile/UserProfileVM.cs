@@ -12,7 +12,9 @@ namespace SpaceAvenger.ViewModels.UserProfile
 
         private User m_user;
         
-        int m_Number;      
+        private int m_Number;
+
+        private bool m_Confirmed;
         
         #endregion
 
@@ -22,10 +24,12 @@ namespace SpaceAvenger.ViewModels.UserProfile
         
         public int Number { get => m_Number; set => Set(ref m_Number, value); }
 
+        public bool Confirmed { get=> m_Confirmed; set=> Set(ref m_Confirmed, value); }
+
         #endregion
 
         #region Commands
-       
+        public ICommand OnConfirmButtonPressed { get; }
         #endregion
 
         #region Ctor
@@ -36,14 +40,19 @@ namespace SpaceAvenger.ViewModels.UserProfile
             bool MaleFemale, 
             StarFleetRanks rank, 
             int MissionsCount,
-            DateTime created)
+            DateTime created,
+            bool confirmed = false)
         {
             m_user = new User(id, Name, MaleFemale, MissionsCount, rank, created);
 
             m_Number = number;
 
+            m_Confirmed = confirmed;
+
             #region Init Commands
-            
+            OnConfirmButtonPressed = new Command(
+                canExecute: CanOnConfirmedButtonPressedExecute,
+                execute: OnConfirmButtonPressedExecute);
             #endregion
         }
        
@@ -68,7 +77,13 @@ namespace SpaceAvenger.ViewModels.UserProfile
 
             return user.User.Id.Equals(this.User.Id);
         }
-        
+
+        public bool CanOnConfirmedButtonPressedExecute(object p) => true;
+
+        public void OnConfirmButtonPressedExecute(object p)
+        { 
+            Confirmed = true;
+        }
         #endregion
     }
 }

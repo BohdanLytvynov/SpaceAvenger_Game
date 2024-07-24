@@ -40,9 +40,16 @@
         <Color x:Key="But2ColorDis">#7BEE2A2A
         </Color>
 
+        <!--#region Durations -->
+
         <Duration x:Key="ButAnimDuration">0:0:0:0.02
         </Duration>
 
+        <Duration x:Key="TextBoxAnimDuration">0:0:0:0.02
+        </Duration>
+
+        <!--#endregion-->
+        
         <!--#endregion-->
 
         <!--#region Styles-->
@@ -82,10 +89,13 @@
                                         <GradientStop x:Name="gs2" Color="{StaticResource But2ColorInit}" Offset="0"/>
                                     </LinearGradientBrush>
                                 </Border.Background>
-                                <Label Content="{TemplateBinding Content}" HorizontalContentAlignment="Center" 
-                               VerticalContentAlignment="Center" Foreground="{TemplateBinding Foreground}"
-                               FontSize="{TemplateBinding FontSize}"
-                               FontFamily="{TemplateBinding FontFamily}"/>
+                                <Label Content="{TemplateBinding Content}" 
+                                       HorizontalContentAlignment="Center" 
+                                       VerticalContentAlignment="Center" 
+                                       Foreground="{TemplateBinding Foreground}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       FontFamily="{TemplateBinding FontFamily}"
+                                       FontWeight="{TemplateBinding FontWeight}"/>
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup x:Name="CommonStates">
                                         <VisualState x:Name="Normal">
@@ -207,10 +217,13 @@
                                         <GradientStop x:Name="gs2" Color="{StaticResource But2ColorInit}" Offset="0"/>
                                     </LinearGradientBrush>
                                 </Border.Background>
-                                <Label Content="{TemplateBinding Content}" HorizontalContentAlignment="Center" 
-                       VerticalContentAlignment="Center" Foreground="{TemplateBinding Foreground}"
-                       FontSize="{TemplateBinding FontSize}"
-                       FontFamily="{TemplateBinding FontFamily}"/>
+                                <Label Content="{TemplateBinding Content}" 
+                                       HorizontalContentAlignment="Center" 
+                                       VerticalContentAlignment="Center" 
+                                       Foreground="{TemplateBinding Foreground}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       FontFamily="{TemplateBinding FontFamily}"
+                                       FontWeight="{TemplateBinding FontWeight}"/>
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup x:Name="CommonStates">
                                         <VisualState x:Name="Normal">
@@ -339,14 +352,21 @@
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup x:Name="CommonStates">
                                         <VisualState x:Name="Normal">
-                                        </VisualState>
-                                        <VisualState x:Name="Focused">
                                             <Storyboard>
-                                                <ColorAnimation
+                                                <ThicknessAnimation
                                                     Storyboard.TargetName="brd"
-                                                    Storyboard.TargetProperty="BorderBrush">
-                                                    
-                                                </ColorAnimation>
+                                                    Storyboard.TargetProperty="BorderThickness"
+                                                    To="1"
+                                                    Duration="{DynamicResource TextBoxAnimDuration}"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="MouseOver">
+                                            <Storyboard>
+                                                <ThicknessAnimation
+                                                    Storyboard.TargetName="brd"
+                                                    Storyboard.TargetProperty="BorderThickness"
+                                                    To="2"
+                                                    Duration="{DynamicResource TextBoxAnimDuration}"/>
                                             </Storyboard>
                                         </VisualState>
                                     </VisualStateGroup>
@@ -389,7 +409,7 @@
                                Margin="10, 40, 0,0" FontSize="30"/>
                     <StackPanel Orientation="Vertical" Margin="0,0,0,10">
                         <Image x:Name="userVm_Image" Width="150" Height="150" Margin="40,0"/>
-                        <ToggleButton Style="{DynamicResource ToggleButton}"
+                        <ToggleButton x:Name="chooseSex-btn" Style="{DynamicResource ToggleButton}"
                                       Content="{Binding User.MaleFemale, UpdateSourceTrigger=PropertyChanged
                             ,Converter={StaticResource BoolToFemaleInvertConverter}
                             }" IsChecked="{Binding User.MaleFemale, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
@@ -401,9 +421,31 @@
                         <TextBlock Text="{Binding User.Rank, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat= Rank: {0}}" Margin="0,0,0,10"/>
                         <TextBlock Text="{Binding User.MissionsCount, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=Missions_Completed: {0}}"/>
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal"
+                                x:Name="confirm-block">
+                        <TextBlock Text="Check your personal info Sir. And if all is correct, press Confirm Profile button bellow. "
+                                   TextWrapping="WrapWithOverflow" Width="300"
+                                   FontSize="20" Foreground="White"/>
+                        <Button Content="Confirm Profile" Style="{DynamicResource Button}"
+                                Command="{Binding Confirmed}"
+                                />
+
+                    </StackPanel>
+                    <Label Content="Profile Confirmed." x:Name="profile-confirmed" Foreground="Green"/>
+
                 </StackPanel>
             </Border>
             <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Confirmed, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Value="True">
+                    <DataTrigger.Setters>
+                        <Setter Property="Visibility" TargetName="">
+                    </DataTrigger.Setters>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Confirmed, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Value="False">
+                    <DataTrigger.Setters>
+                        
+                    </DataTrigger.Setters>
+                </DataTrigger>
                 <!--Show male-->
                 <DataTrigger Binding="{Binding User.MaleFemale, 
                     UpdateSourceTrigger=PropertyChanged}" Value="True">
@@ -420,6 +462,11 @@
                                 Value="pack://siteoforigin:,,,/Images/Chars/Commanders/CommandersF.png"/>
                     </DataTrigger.Setters>
                 </DataTrigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.Setters>
+                        <Setter TargetName="brd" Property="ItemsControl.BorderBrush" Value="Orange"/>
+                    </Trigger.Setters>
+                </Trigger>
             </DataTemplate.Triggers>
         </DataTemplate>
 
