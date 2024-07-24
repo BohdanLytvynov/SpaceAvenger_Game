@@ -12,12 +12,12 @@ namespace SpaceAvanger_xUnit_Tests.Models.ViewModels.UserProfileTests
             UserProfileVM p1 = new UserProfileVM(1, 
                 Guid.NewGuid(), 
                 "Test",
-                true, StarFleetRanks.Cadet4thGrade, 0, DateTime.Now);
+                true, StarFleetRanks.Cadet_4th_Grade, 0, DateTime.Now);
 
             UserProfileVM p2 = new UserProfileVM(2, 
                 p1.User.Id, 
                 "Test", 
-                true, StarFleetRanks.Cadet4thGrade, 0, DateTime.Now);
+                true, StarFleetRanks.Cadet_4th_Grade, 0, DateTime.Now);
 
             // Act
             var r = p1.Equals(p2);
@@ -33,12 +33,12 @@ namespace SpaceAvanger_xUnit_Tests.Models.ViewModels.UserProfileTests
             UserProfileVM p1 = new UserProfileVM(1,
                 Guid.NewGuid(), 
                 "Test", 
-                true, StarFleetRanks.Cadet4thGrade, 0, DateTime.Now);
+                true, StarFleetRanks.Cadet_4th_Grade, 0, DateTime.Now);
 
             UserProfileVM p2 = new UserProfileVM(2, 
                 Guid.NewGuid(), 
                 "Test", 
-                true, StarFleetRanks.Cadet4thGrade, 0, DateTime.Now);
+                true, StarFleetRanks.Cadet_4th_Grade, 0, DateTime.Now);
 
             // Act
             var r = p1.Equals(p2);

@@ -78,9 +78,9 @@ namespace SpaceAvenger.ViewModels.UserProfile
             return user.User.Id.Equals(this.User.Id);
         }
 
-        public bool CanOnConfirmedButtonPressedExecute(object p) => true;
+        private bool CanOnConfirmedButtonPressedExecute(object p) => true;
 
-        public void OnConfirmButtonPressedExecute(object p)
+        private void OnConfirmButtonPressedExecute(object p)
         { 
             Confirmed = true;
         }

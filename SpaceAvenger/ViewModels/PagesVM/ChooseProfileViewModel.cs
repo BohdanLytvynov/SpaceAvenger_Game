@@ -73,8 +73,8 @@ namespace SpaceAvenger.ViewModels.PagesVM
                     Guid.Empty,
                     "Enter your name Commander",
                     true,
-                    StarFleetRanks.Cadet4thGrade,
-                    0, DateTime.UtcNow));
+                    StarFleetRanks.Cadet_4th_Grade,
+                    0, default));
         }
         #endregion
 

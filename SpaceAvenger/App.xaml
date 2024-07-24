@@ -8,6 +8,8 @@
     <Application.Resources>
 
         <converters:BoolToMaleFemaleInvertedConverter x:Key="BoolToFemaleInvertConverter"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter"/>
 
         <LinearGradientBrush x:Key="LVBack" EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#4D0B1D4D" Offset="1"/>
@@ -409,41 +411,64 @@
                                Margin="10, 40, 0,0" FontSize="30"/>
                     <StackPanel Orientation="Vertical" Margin="0,0,0,10">
                         <Image x:Name="userVm_Image" Width="150" Height="150" Margin="40,0"/>
-                        <ToggleButton x:Name="chooseSex-btn" Style="{DynamicResource ToggleButton}"
+                        <ToggleButton Style="{DynamicResource ToggleButton}"
                                       Content="{Binding User.MaleFemale, UpdateSourceTrigger=PropertyChanged
                             ,Converter={StaticResource BoolToFemaleInvertConverter}
-                            }" IsChecked="{Binding User.MaleFemale, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                            }" IsChecked="{Binding User.MaleFemale, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                            x:Name="chooseSex_btn"         
+                                      />
                     </StackPanel>
                     <StackPanel Orientation="Vertical" Margin="30,0,0,0">
                         <TextBlock Text="Commander Info:" FontSize="22" Margin="0,0,0,10"/>
-                        <TextBlock Text="{Binding User.CreatedDate, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=Enlisted: {0:yyyy.MM.dd HH:MM}}" Margin="0,0,0,10"/>
-                        <TextBox Style="{DynamicResource TextBox}" Text="{Binding User.UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,0,0,10"/>
+                        <TextBlock 
+                            Text="{Binding User.CreatedDate, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=Enlisted: {0:yyyy.MM.dd HH:MM}, Converter={StaticResource DateTimeToStringConverter}, ConverterParameter='Not yet'}" 
+                            Margin="0,0,0,10"/>
+                        <TextBox Style="{DynamicResource TextBox}" 
+                                 Text="{Binding User.UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                 Margin="0,0,0,10" 
+                                 IsReadOnly="{Binding Confirmed, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                 />
                         <TextBlock Text="{Binding User.Rank, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat= Rank: {0}}" Margin="0,0,0,10"/>
                         <TextBlock Text="{Binding User.MissionsCount, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=Missions_Completed: {0}}"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal"
-                                x:Name="confirm-block">
+                    <StackPanel Orientation="Vertical"
+                                x:Name="confirm_block" Margin="40,10,20,0">
                         <TextBlock Text="Check your personal info Sir. And if all is correct, press Confirm Profile button bellow. "
                                    TextWrapping="WrapWithOverflow" Width="300"
-                                   FontSize="20" Foreground="White"/>
+                                   FontSize="20" Foreground="White" Margin="10"/>
                         <Button Content="Confirm Profile" Style="{DynamicResource Button}"
-                                Command="{Binding Confirmed}"
+                                Command="{Binding OnConfirmButtonPressed}"
                                 />
 
                     </StackPanel>
-                    <Label Content="Profile Confirmed." x:Name="profile-confirmed" Foreground="Green"/>
+                    <Label Content="Profile Confirmed." 
+                           x:Name="profile_confirmed_block" 
+                           Foreground="LightGreen"
+                           FontSize="25"
+                           Margin="{Binding ElementName=confirm_block, Path=Margin, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
 
                 </StackPanel>
             </Border>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding Confirmed, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Value="True">
                     <DataTrigger.Setters>
-                        <Setter Property="Visibility" TargetName="">
+                        <Setter Property="Visibility" TargetName="chooseSex_btn"
+                                Value="Collapsed"/>
+                        <Setter Property="Visibility" TargetName="confirm_block"
+                                Value="Collapsed"/>
+                        <Setter Property="Visibility" TargetName="profile_confirmed_block"
+                                Value="Visible"/>
                     </DataTrigger.Setters>
                 </DataTrigger>
+
                 <DataTrigger Binding="{Binding Confirmed, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Value="False">
                     <DataTrigger.Setters>
-                        
+                        <Setter Property="Visibility" TargetName="profile_confirmed_block"
+                                Value="Collapsed"/>
+                        <Setter Property="Visibility" TargetName="chooseSex_btn"
+                                Value="Visible"/>
+                        <Setter Property="Visibility" TargetName="confirm_block"
+                                Value="Visible"/>
                     </DataTrigger.Setters>
                 </DataTrigger>
                 <!--Show male-->
@@ -462,11 +487,6 @@
                                 Value="pack://siteoforigin:,,,/Images/Chars/Commanders/CommandersF.png"/>
                     </DataTrigger.Setters>
                 </DataTrigger>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Trigger.Setters>
-                        <Setter TargetName="brd" Property="ItemsControl.BorderBrush" Value="Orange"/>
-                    </Trigger.Setters>
-                </Trigger>
             </DataTemplate.Triggers>
         </DataTemplate>
 
