@@ -23,16 +23,25 @@ namespace Models.DAL.Entities.User
 
         public DateTime CreatedDate { get; set; }
 
+        public bool Confirmed { get; set; }
+
         #endregion
 
         #region Ctor
 
         public User()
         {
-            UserName = string.Empty;
+            
         }
 
-        public User(Guid id, string userName, bool maleFemale, int missionsCount, StarFleetRanks rank, DateTime created)
+        public User(
+            Guid id, 
+            string userName, 
+            bool maleFemale, 
+            int missionsCount, 
+            StarFleetRanks rank, 
+            DateTime created, 
+            bool Confirmed = false)
         {
             Id = id;
             UserName = userName;
@@ -40,6 +49,7 @@ namespace Models.DAL.Entities.User
             MissionsCount = missionsCount;
             Rank = rank;
             CreatedDate = created;
+            this.Confirmed = Confirmed;
         }
 
         #endregion
@@ -48,7 +58,7 @@ namespace Models.DAL.Entities.User
 
         public override string ToString()
         {
-            return $"{Id} {UserName} {MaleFemale} {MissionsCount} {Rank} {CreatedDate.ToShortDateString()}";
+            return $"{Id} {UserName} M/F: {MaleFemale} Missions: {MissionsCount} Rank: {Rank} Enlisted: {CreatedDate.ToShortDateString()} Conf: {Confirmed}";
         }
 
         #endregion

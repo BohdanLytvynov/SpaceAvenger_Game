@@ -33,7 +33,9 @@ namespace Data.Repositories.Realizations.Base
                     throw new NullReferenceException("Fail to find the Collection!");
                 }
 
-                bsonValue = col.Insert(entity);
+                if(col.FindOne(x => x.Id.Equals(entity.Id)) is null)
+                    bsonValue = col.Insert(entity);
+
             });
             return bsonValue;
         }

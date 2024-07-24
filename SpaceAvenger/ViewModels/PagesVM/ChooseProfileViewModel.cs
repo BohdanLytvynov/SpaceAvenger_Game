@@ -8,6 +8,8 @@ using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using ViewModelBaseLibDotNetCore.Commands;
 using ViewModelBaseLibDotNetCore.VM;
@@ -46,7 +48,12 @@ namespace SpaceAvenger.ViewModels.PagesVM
                         
             m_profileList = new ObservableCollection<UserProfileVM>();
 
-            // m_profileList = m_userRepository.GetAllAsync().Result;
+            var users = m_userRepository.GetAllAsync().Result;
+
+            foreach (var user in users)
+            {
+                m_profileList.Add(new UserProfileVM(m_profileList.Count + 1, user));
+            }
             
             OnAddNewProfileButtonPressed = new Command(
                 OnAddNewProfileButtonPressedExecute,
@@ -67,15 +74,25 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
         private void OnAddNewProfileButtonPressedExecute(object p)
         {
-            ProfileList.Add(
-                new UserProfileVM(
+            var up = new UserProfileVM(
                     ProfileList.Count + 1,
-                    Guid.Empty,
+                    new User(Guid.Empty,
                     "Enter your name Commander",
-                    true,
+                    true, 0,
                     StarFleetRanks.Cadet_4th_Grade,
-                    0, default));
+                    default));
+
+            up.OnUserProfileConfirmedEvent += Up_OnUserProfileConfirmedEvent; 
+
+            ProfileList.Add(up);
         }
+
+        private async Task Up_OnUserProfileConfirmedEvent(User obj)
+        {            
+            var r = await m_userRepository.AddAsync(obj);            
+        }
+
+
         #endregion
 
         #endregion

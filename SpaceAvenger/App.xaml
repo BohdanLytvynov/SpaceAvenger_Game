@@ -421,12 +421,12 @@
                     <StackPanel Orientation="Vertical" Margin="30,0,0,0">
                         <TextBlock Text="Commander Info:" FontSize="22" Margin="0,0,0,10"/>
                         <TextBlock 
-                            Text="{Binding User.CreatedDate, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=Enlisted: {0:yyyy.MM.dd HH:MM}, Converter={StaticResource DateTimeToStringConverter}, ConverterParameter='Not yet'}" 
+                            Text="{Binding EnlistedDate, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=Enlisted: {0:yyyy.MM.dd HH:MM}, Converter={StaticResource DateTimeToStringConverter}, ConverterParameter='Not yet'}" 
                             Margin="0,0,0,10"/>
                         <TextBox Style="{DynamicResource TextBox}" 
                                  Text="{Binding User.UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                                  Margin="0,0,0,10" 
-                                 IsReadOnly="{Binding Confirmed, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                 IsReadOnly="{Binding Confirmed, UpdateSourceTrigger=PropertyChanged}"
                                  />
                         <TextBlock Text="{Binding User.Rank, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat= Rank: {0}}" Margin="0,0,0,10"/>
                         <TextBlock Text="{Binding User.MissionsCount, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=Missions_Completed: {0}}"/>
@@ -450,7 +450,7 @@
                 </StackPanel>
             </Border>
             <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding Confirmed, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Value="True">
+                <DataTrigger Binding="{Binding Confirmed, UpdateSourceTrigger=PropertyChanged}" Value="True">
                     <DataTrigger.Setters>
                         <Setter Property="Visibility" TargetName="chooseSex_btn"
                                 Value="Collapsed"/>
@@ -461,7 +461,7 @@
                     </DataTrigger.Setters>
                 </DataTrigger>
 
-                <DataTrigger Binding="{Binding Confirmed, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Value="False">
+                <DataTrigger Binding="{Binding Confirmed, UpdateSourceTrigger=PropertyChanged}" Value="False">
                     <DataTrigger.Setters>
                         <Setter Property="Visibility" TargetName="profile_confirmed_block"
                                 Value="Collapsed"/>
