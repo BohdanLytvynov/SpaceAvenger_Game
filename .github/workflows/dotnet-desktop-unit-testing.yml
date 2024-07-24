@@ -84,7 +84,7 @@ jobs:
 
     # Execute all unit tests in the solution
     - name: Execute unit tests
-      run: dotnet test --no-build --verbosity normal --logger "trx;LogFileName=test-res.trx" || true
+      run: dotnet test --verbosity normal --logger "trx;LogFileName=test-res.trx" || true
 
     - name: Test Results
       uses: phoenix-actions/test-reporting@v8      
