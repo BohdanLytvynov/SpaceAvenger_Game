@@ -85,17 +85,7 @@ jobs:
     # Execute all unit tests in the solution
     - name: Execute unit tests
       run: dotnet test --verbosity normal --logger "trx;LogFileName=test-res.trx" || true
-
-    - name: Test Results
-      uses: phoenix-actions/test-reporting@v8      
-      if: success() || failure()
-      id: test-report
-      with:
-        name: Test-Results
-        reporter: dotnet-trx
-        path: "**/test-res.trx"        
-        fail-on-error: true
-
+      
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
       run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
@@ -128,4 +118,15 @@ jobs:
       with:
         name: MSIX Package
         path: ${{ env.Wap_Project_Directory }}\AppPackages
+        
+    # Present Unit Test Execution Results
+    - name: Present Test Results
+      uses: phoenix-actions/test-reporting@v8      
+      if: success() || failure()
+      id: test-report
+      with:
+        name: Test-Results
+        reporter: dotnet-trx
+        path: "**/test-res.trx"        
+        fail-on-error: true
 
