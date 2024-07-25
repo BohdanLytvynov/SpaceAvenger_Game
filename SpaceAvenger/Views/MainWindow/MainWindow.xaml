@@ -24,7 +24,10 @@
             <GridSplitter Grid.Row="1" 
                           Style="{StaticResource grid_splitter_style_hor}"/>
             <Frame Grid.Row="0"
-                   NavigationUIVisibility="Hidden"/>
+                   NavigationUIVisibility="Hidden"
+                   Content="{Binding InfoFrame,
+                UpdateSourceTrigger=PropertyChanged,
+                Mode=OneWay}"/>
         </Grid>
         <Frame Content="{Binding MainFrame, 
     UpdateSourceTrigger=PropertyChanged,

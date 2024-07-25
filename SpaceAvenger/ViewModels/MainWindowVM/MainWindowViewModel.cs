@@ -20,6 +20,8 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
 
         object m_mainframe;
 
+        private object m_infoFrame;
+
         string m_title;
 
         private Guid m_userId;
@@ -35,6 +37,9 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
             get=>m_mainframe;
             set=> Set(ref m_mainframe, value);
         }
+
+        public object InfoFrame 
+        { get=> m_infoFrame; set=>Set(ref m_infoFrame, value); }
 
         public string Tittle 
         {
@@ -63,7 +68,7 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
 
             m_mainframe = PageManager.GetPage("ChooseProfilePage")!;
 
-           //m_mainframe = PageManager.GetPage("UserProfileInfoPage")!;
+            m_infoFrame = PageManager.GetPage("UserProfileInfoPage")!;
         }
 
         private void PageManager_OnSwitchScreenMethodInvoked(Page obj)
