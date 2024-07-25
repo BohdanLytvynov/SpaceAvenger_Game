@@ -9,6 +9,25 @@
       Title="UserProfileInfoPage">
 
     <Grid>
-        
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#E5244074" Offset="0"/>
+                <GradientStop Color="#CC000205" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <TextBlock FontSize="30" 
+                    Text="Commander Profile Info:" 
+                    Margin="20,0,20,0"
+                   Style="{StaticResource textBlockHeaders}"/>
+        <Grid Grid.Row="1" x:Name="Info">
+            <DockPanel>
+                <Image/>
+            </DockPanel>
+        </Grid>
     </Grid>
 </Page>

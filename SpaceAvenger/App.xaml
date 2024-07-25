@@ -5,7 +5,7 @@
              xmlns:userVM="clr-namespace:SpaceAvenger.ViewModels.UserProfile"
              xmlns:converters="clr-namespace:SpaceAvenger.Converters"
              xmlns:glob_commands="clr-namespace:SpaceAvenger.CommonCommands"
-             xmlns:font_awesome="http://schemas.fontawesome.com/icons/"
+             xmlns:font_awesome="http://schemas.fontawesome.com/icons/" xmlns:system="http://schemas.microsoft.com/winfx/2009/xaml"
              StartupUri="Views/MainWindow/MainWindow.xaml">
     <Application.Resources>
        
@@ -61,6 +61,33 @@
 
         <!--#region Brashes -->
         <SolidColorBrush x:Key="btn_back_brush" Color="{StaticResource btn_back}"/>
+
+        <LinearGradientBrush x:Key="linear_grad_brush_border_button">
+            <LinearGradientBrush.RelativeTransform>
+                <RotateTransform Angle="0"/>
+            </LinearGradientBrush.RelativeTransform>
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Color="{StaticResource brdButColor1}" Offset="1"/>
+                <GradientStop Color="{StaticResource brdButColor2}" Offset="0"/>
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="linear_grad_brush_back_button" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop x:Name="gs1" Color="{StaticResource But1ColorInit}" Offset="1"/>
+            <GradientStop x:Name="gs2" Color="{StaticResource But2ColorInit}" Offset="0"/>
+        </LinearGradientBrush>
+
+
+        <!--#endregion-->
+
+        <!--#region Animations -->
+
+        <DoubleKeyFrameCollection x:Key="button_grad_rotate_keyframes">
+            <LinearDoubleKeyFrame KeyTime="0%" Value="0"/>
+            <LinearDoubleKeyFrame KeyTime="50%" Value="90"/>
+            <LinearDoubleKeyFrame KeyTime="100%" Value="180"/>
+        </DoubleKeyFrameCollection>
+
         <!--#endregion-->
 
         <!--#region Durations -->
@@ -92,24 +119,9 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Button}">
-                            <Border CornerRadius="10" x:Name="brd" BorderThickness="2">
-
-                                <Border.BorderBrush>
-                                    <LinearGradientBrush>
-                                        <LinearGradientBrush.RelativeTransform>
-                                            <RotateTransform x:Name="rtr" Angle="0"/>
-                                        </LinearGradientBrush.RelativeTransform>
-
-                                        <GradientStop x:Name="brd1gs" Color="{StaticResource brdButColor1}" Offset="1"/>
-                                        <GradientStop x:Name="brd2gs" Color="{StaticResource brdButColor2}" Offset="0"/>
-                                    </LinearGradientBrush>
-                                </Border.BorderBrush>
-                                <Border.Background>
-                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                        <GradientStop x:Name="gs1" Color="{StaticResource But1ColorInit}" Offset="1"/>
-                                        <GradientStop x:Name="gs2" Color="{StaticResource But2ColorInit}" Offset="0"/>
-                                    </LinearGradientBrush>
-                                </Border.Background>
+                            <Border CornerRadius="10" x:Name="brd" BorderThickness="2"
+                                    BorderBrush="{StaticResource linear_grad_brush_border_button}"
+                                    Background="{StaticResource linear_grad_brush_back_button }">
                                 <Label Content="{TemplateBinding Content}" 
                                        HorizontalContentAlignment="Center" 
                                        VerticalContentAlignment="Center" 
@@ -128,14 +140,14 @@
                                             Duration="{StaticResource ButAnimDuration}"/>
 
                                                 <ColorAnimation
-                                            Storyboard.TargetName="gs1"
-                                            Storyboard.TargetProperty="(Color)"
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="(Border.Background).GradientStops[0].Color"
                                             To="{StaticResource But1ColorInit}"
                                             Duration="{StaticResource ButAnimDuration}"/>
 
                                                 <ColorAnimation
-                                            Storyboard.TargetName="gs2"
-                                            Storyboard.TargetProperty="(Color)"
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="(Border.Background).GradientStops[1].Color"
                                             To="{StaticResource But2ColorInit}"
                                             Duration="{StaticResource ButAnimDuration}"/>
                                             </Storyboard>
@@ -149,17 +161,13 @@
                                             To="3"
                                             Duration="{StaticResource ButAnimDuration}"/>
                                                 <DoubleAnimationUsingKeyFrames
-                                            Storyboard.TargetName="rtr"
-                                            Storyboard.TargetProperty="(Angle)"                                                     
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="(Border.BorderBrush).(Brush.RelativeTransform).(RotateTransform.Angle)"                                                     
                                             AutoReverse="True"
                                             RepeatBehavior="Forever"
                                             DecelerationRatio="1"
-                                            Duration="0:0:3">
-                                                    <LinearDoubleKeyFrame KeyTime="0%" Value="0"/>
-                                                    <LinearDoubleKeyFrame KeyTime="50%" Value="90"/>
-                                                    <LinearDoubleKeyFrame KeyTime="100%" Value="180"/>
-                                                </DoubleAnimationUsingKeyFrames>
-
+                                            Duration="0:0:3" KeyFrames="{StaticResource button_grad_rotate_keyframes}"
+                                                    />
                                             </Storyboard>
                                         </VisualState>
 
@@ -171,14 +179,14 @@
                                             To="2"
                                             Duration="{StaticResource ButAnimDuration}"/>
                                                 <ColorAnimation
-                                            Storyboard.TargetName="gs1"
-                                            Storyboard.TargetProperty="(Color)"
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="(Border.Background).GradientStops[0].Color"
                                             To="{StaticResource But1ColorPress}"
                                             Duration="{StaticResource ButAnimDuration}"/>
 
                                                 <ColorAnimation
-                                            Storyboard.TargetName="gs2"
-                                            Storyboard.TargetProperty="(Color)"
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="(Border.Background).GradientStops[1].Color"
                                             To="{StaticResource But2ColorPress}"
                                             Duration="{StaticResource ButAnimDuration}"/>
                                             </Storyboard>
@@ -192,14 +200,14 @@
                                             To="2"
                                             Duration="{StaticResource ButAnimDuration}"/>
                                                 <ColorAnimation
-                                            Storyboard.TargetName="gs1"
-                                            Storyboard.TargetProperty="(Color)"
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="(Border.Background).GradientStops[0].Color"
                                             To="{StaticResource But1ColorDis}"
                                             Duration="{StaticResource ButAnimDuration}"/>
 
                                                 <ColorAnimation
-                                            Storyboard.TargetName="gs2"
-                                            Storyboard.TargetProperty="(Color)"
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="(Border.Background).GradientStops[1].Color"
                                             To="{StaticResource But2ColorDis}"
                                             Duration="{StaticResource ButAnimDuration}"/>
                                             </Storyboard>
@@ -220,24 +228,10 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type ToggleButton}">
-                            <Border CornerRadius="10" x:Name="brd" BorderThickness="2">
-
-                                <Border.BorderBrush>
-                                    <LinearGradientBrush>
-                                        <LinearGradientBrush.RelativeTransform>
-                                            <RotateTransform x:Name="rtr" Angle="0"/>
-                                        </LinearGradientBrush.RelativeTransform>
-
-                                        <GradientStop x:Name="brd1gs" Color="{StaticResource brdButColor1}" Offset="1"/>
-                                        <GradientStop x:Name="brd2gs" Color="{StaticResource brdButColor2}" Offset="0"/>
-                                    </LinearGradientBrush>
-                                </Border.BorderBrush>
-                                <Border.Background>
-                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                        <GradientStop x:Name="gs1" Color="{StaticResource But1ColorInit}" Offset="1"/>
-                                        <GradientStop x:Name="gs2" Color="{StaticResource But2ColorInit}" Offset="0"/>
-                                    </LinearGradientBrush>
-                                </Border.Background>
+                            <Border CornerRadius="10" x:Name="brd" BorderThickness="2"
+                                    BorderBrush="{StaticResource linear_grad_brush_border_button}"
+                                    Background="{StaticResource linear_grad_brush_back_button}">
+                                
                                 <Label Content="{TemplateBinding Content}" 
                                        HorizontalContentAlignment="Center" 
                                        VerticalContentAlignment="Center" 
@@ -256,14 +250,14 @@
                                     Duration="{StaticResource ButAnimDuration}"/>
 
                                                 <ColorAnimation
-                                    Storyboard.TargetName="gs1"
-                                    Storyboard.TargetProperty="(Color)"
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="(Border.Background).GradientStops[0].Color"
                                     To="{StaticResource But1ColorInit}"
                                     Duration="{StaticResource ButAnimDuration}"/>
 
                                                 <ColorAnimation
-                                    Storyboard.TargetName="gs2"
-                                    Storyboard.TargetProperty="(Color)"
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="(Border.Background).GradientStops[1].Color"
                                     To="{StaticResource But2ColorInit}"
                                     Duration="{StaticResource ButAnimDuration}"/>
                                             </Storyboard>
@@ -277,17 +271,14 @@
                                     To="3"
                                     Duration="{StaticResource ButAnimDuration}"/>
                                                 <DoubleAnimationUsingKeyFrames
-                                    Storyboard.TargetName="rtr"
-                                    Storyboard.TargetProperty="(Angle)"                                                     
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="(Border.BorderBrush).(Brush.RelativeTransform).(RotateTransform.Angle)"                                                     
                                     AutoReverse="True"
                                     RepeatBehavior="Forever"
                                     DecelerationRatio="1"
-                                    Duration="0:0:3">
-                                                    <LinearDoubleKeyFrame KeyTime="0%" Value="0"/>
-                                                    <LinearDoubleKeyFrame KeyTime="50%" Value="90"/>
-                                                    <LinearDoubleKeyFrame KeyTime="100%" Value="180"/>
-                                                </DoubleAnimationUsingKeyFrames>
-
+                                    Duration="0:0:3"
+                                    KeyFrames="{StaticResource button_grad_rotate_keyframes}"
+                                                    />
                                             </Storyboard>
                                         </VisualState>
 
@@ -299,14 +290,14 @@
                                     To="2"
                                     Duration="{StaticResource ButAnimDuration}"/>
                                                 <ColorAnimation
-                                    Storyboard.TargetName="gs1"
-                                    Storyboard.TargetProperty="(Color)"
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="(Border.Background).GradientStops[0].Color"
                                     To="{StaticResource But1ColorPress}"
                                     Duration="{StaticResource ButAnimDuration}"/>
 
                                                 <ColorAnimation
-                                    Storyboard.TargetName="gs2"
-                                    Storyboard.TargetProperty="(Color)"
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="(Border.Background).GradientStops[1].Color"
                                     To="{StaticResource But2ColorPress}"
                                     Duration="{StaticResource ButAnimDuration}"/>
                                             </Storyboard>
@@ -320,14 +311,14 @@
                                     To="2"
                                     Duration="{StaticResource ButAnimDuration}"/>
                                                 <ColorAnimation
-                                    Storyboard.TargetName="gs1"
-                                    Storyboard.TargetProperty="(Color)"
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="(Border.BorderBrush).GradientStops[0].Color"
                                     To="{StaticResource But1ColorDis}"
                                     Duration="{StaticResource ButAnimDuration}"/>
 
                                                 <ColorAnimation
-                                    Storyboard.TargetName="gs2"
-                                    Storyboard.TargetProperty="(Color)"
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="(Border.BorderBrush).GradientStops[1].Color"
                                     To="{StaticResource But2ColorDis}"
                                     Duration="{StaticResource ButAnimDuration}"/>
                                             </Storyboard>
