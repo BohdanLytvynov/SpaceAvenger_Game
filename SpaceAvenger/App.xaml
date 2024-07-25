@@ -4,13 +4,25 @@
              xmlns:local="clr-namespace:SpaceAvenger"
              xmlns:userVM="clr-namespace:SpaceAvenger.ViewModels.UserProfile"
              xmlns:converters="clr-namespace:SpaceAvenger.Converters"
+             xmlns:glob_commands="clr-namespace:SpaceAvenger.CommonCommands"
+             xmlns:font_awesome="http://schemas.fontawesome.com/icons/"
              StartupUri="Views/MainWindow/MainWindow.xaml">
     <Application.Resources>
+       
+        <!--#region Global Commands -->
+
+        <glob_commands:ExitCommand x:Key="ExitCommand"/>
+
+        <!--#endregion-->
+
+        <!--#region Converters -->
 
         <converters:BoolToMaleFemaleInvertedConverter x:Key="BoolToFemaleInvertConverter"/>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter"/>
 
+        <!--#endregion-->
+        
         <LinearGradientBrush x:Key="LVBack" EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#4D0B1D4D" Offset="1"/>
             <GradientStop Color="#3636BEFF" Offset="0"/>

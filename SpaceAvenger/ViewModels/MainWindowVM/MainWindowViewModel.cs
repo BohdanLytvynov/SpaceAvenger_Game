@@ -8,6 +8,7 @@ using ViewModelBaseLibDotNetCore.Commands;
 using SpaceAvenger.Views.Pages;
 using System.Windows.Input;
 using System.Windows.Controls;
+using SpaceAvenger.Managers.PageManager;
 
 namespace SpaceAvenger.ViewModels.MainWindowVM
 {

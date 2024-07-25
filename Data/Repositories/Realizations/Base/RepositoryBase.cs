@@ -17,7 +17,7 @@ namespace Data.Repositories.Realizations.Base
 
         public RepositoryBase(IDatabase<LiteDatabase> db)
         {
-            m_db = db;
+            m_db = db;            
         }
 
         public async Task<BsonValue?> AddAsync(TEntity entity)
@@ -55,9 +55,18 @@ namespace Data.Repositories.Realizations.Base
             return await Task.FromResult(m_db.Db.GetCollection<TEntity>().FindById(id));
         }
 
+        public bool Remove(TEntity entity)
+        {
+            var col = m_db.Db.GetCollection<TEntity>();
+            if (col is not null && col.FindById(entity.Id) is not null)
+                return col.Delete(entity.Id);
+            
+            return false;
+        }
+
         public async Task<bool> RemoveAsync(TEntity entity)
         {
-            return await Task.FromResult(m_db.Db.GetCollection<TEntity>().Delete(entity.Id));            
+            return await Task.FromResult(Remove(entity));            
         }
 
         public async Task<bool> UpdateAsync(TEntity entity)

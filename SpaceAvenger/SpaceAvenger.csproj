@@ -75,7 +75,10 @@
 
   <ItemGroup>
     <Folder Include="DataBase\" />
-    <Folder Include="Views\Windows\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FontAwesome5" Version="2.1.11" />
   </ItemGroup>
 
 </Project>

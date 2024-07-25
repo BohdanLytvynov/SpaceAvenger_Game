@@ -44,6 +44,8 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
         public ICommand OnEditUserProfileButtonPressed { get; }
 
+        public ICommand OnDeleteUserProfileButtonPressed { get; }
+
         #endregion
 
         #region Ctor
@@ -73,6 +75,11 @@ namespace SpaceAvenger.ViewModels.PagesVM
             OnEditUserProfileButtonPressed = new Command(
                 OnEditUserProfileButtonpressedExecute,
                 CanOnEditUserProfileButtonpressedExecute
+                );
+
+            OnDeleteUserProfileButtonPressed = new Command(
+                OnDeleteUserProfileButtonPressedExecute,
+                CanOnDeleteUserProfileButtonPressedExxecute
                 );
         }
 
@@ -111,8 +118,7 @@ namespace SpaceAvenger.ViewModels.PagesVM
             else
             {
                 var r = await m_userRepository.UpdateAsync(obj);
-            }
-            
+            }            
         }
 
         #endregion
@@ -129,6 +135,21 @@ namespace SpaceAvenger.ViewModels.PagesVM
             ProfileList[m_SelectedUserIndex]!.Confirmed = false;                         
         }
 
+        #endregion
+
+        #region On Delete User Profile Button Presssed
+        private bool CanOnDeleteUserProfileButtonPressedExxecute(object p)
+        {
+            return m_SelectedUserIndex >= 0;
+        }
+
+        private void OnDeleteUserProfileButtonPressedExecute(object p)
+        {
+            var r = m_userRepository.Remove(ProfileList[SelectedUserIndex].User);
+
+            if(r)
+                ProfileList.RemoveAt(SelectedUserIndex);
+        }
         #endregion
 
         #endregion
