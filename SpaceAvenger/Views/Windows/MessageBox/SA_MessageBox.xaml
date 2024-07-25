@@ -5,8 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SpaceAvenger.Views.Windows.MessageBox"
         mc:Ignorable="d"
-        xmlns:font_awesome="http://schemas.fontawesome.com/icons/"
-        mc:Ignorable="d"
+        xmlns:font_awesome="http://schemas.fontawesome.com/icons/"        
         Height="200" Width="600"
         WindowStyle="None">
     <Grid>

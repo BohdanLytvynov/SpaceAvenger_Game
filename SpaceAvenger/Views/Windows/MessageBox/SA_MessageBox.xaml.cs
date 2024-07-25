@@ -22,7 +22,7 @@ namespace SpaceAvenger.Views.Windows.MessageBox
     {
         public SA_MessageBox()
         {
-            InitializeComponent();
-        }
+            InitializeComponent();            
+        }                
     }
 }
