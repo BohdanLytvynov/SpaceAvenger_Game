@@ -13,9 +13,24 @@
     <Window.DataContext>
         <mainVm:MainWindowViewModel/>
     </Window.DataContext>
-    <Frame Content="{Binding MainFrame, 
-        UpdateSourceTrigger=PropertyChanged,
-        Mode=OneWay}" NavigationUIVisibility="Hidden">
 
-    </Frame>
+    <Grid>
+        <Grid x:Name="UserInfoGrid" Panel.ZIndex="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="17*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="69*"/>
+            </Grid.RowDefinitions>
+            <GridSplitter Grid.Row="1" 
+                          Style="{StaticResource grid_splitter_style_hor}"/>
+            <Frame Grid.Row="0"
+                   NavigationUIVisibility="Hidden"/>
+        </Grid>
+        <Frame Content="{Binding MainFrame, 
+    UpdateSourceTrigger=PropertyChanged,
+    Mode=OneWay}" 
+       NavigationUIVisibility="Hidden"
+               Panel.ZIndex="0"/>
+    </Grid>
+
 </Window>

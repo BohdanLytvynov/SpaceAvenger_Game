@@ -39,5 +39,20 @@ namespace SpaceAvenger.Managers.CommunicationManager
 
             return entity;
         }
+
+        public static void AddOrEdit(string key, TEntity entity)
+        {
+            if (m_storage.ContainsKey(key))
+                m_storage[key] = entity;
+            else
+                Add(key, entity);
+        }
+
+        public static void Edit(string key, TEntity entity)
+        {
+            if (m_storage.ContainsKey(key))
+                m_storage[key] = entity;
+        }
+
     }
 }

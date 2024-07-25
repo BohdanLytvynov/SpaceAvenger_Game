@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SpaceAvenger.Views.Windows.MessageBox"
-        mc:Ignorable="d"
-        xmlns:font_awesome="http://schemas.fontawesome.com/icons/"        
+        xmlns:font_awesome="http://schemas.fontawesome.com/icons/" xmlns:system="http://schemas.microsoft.com/winfx/2009/xaml"
+        mc:Ignorable="d"              
         Height="200" Width="600"
         WindowStyle="None">
     <Grid>
@@ -33,7 +33,7 @@
                />
         </Grid>
 
-        <Grid Grid.Row="1" x:Name="ButtonsGrid" Background="{StaticResource btn_back}">
+        <Grid Grid.Row="1" x:Name="ButtonsGrid" Background="{StaticResource btn_back_brush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="7*"/>
                 <ColumnDefinition Width="70"/>
@@ -42,22 +42,12 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Button Grid.Column="1" Style="{DynamicResource Button}"
-            Margin="0,5">
-                <Button.Content>
-                    <font_awesome:ImageAwesome 
-                Stretch="Uniform" 
-                Icon="Regular_CheckCircle" Foreground="DarkBlue"/>
-                </Button.Content>
-            </Button>
+            Margin="0,5" Content="{StaticResource window_ok_icon}"/>
+
+
             <Button Grid.Column="3" Style="{DynamicResource Button}"
-            Margin="0,5">
-                <Button.Content>
-                    <font_awesome:ImageAwesome
-                Stretch="Uniform"
-                Icon="Regular_WindowClose"
-                Foreground="DarkRed"/>
-                </Button.Content>
-            </Button>
+            Margin="0,5" Content="{StaticResource window_close_icon}"/>
+
         </Grid>
     </Grid>
 </Window>

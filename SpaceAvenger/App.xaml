@@ -5,10 +5,23 @@
              xmlns:userVM="clr-namespace:SpaceAvenger.ViewModels.UserProfile"
              xmlns:converters="clr-namespace:SpaceAvenger.Converters"
              xmlns:glob_commands="clr-namespace:SpaceAvenger.CommonCommands"
-             xmlns:font_awesome="http://schemas.fontawesome.com/icons/" xmlns:system="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:font_awesome="http://schemas.fontawesome.com/icons/" 
+             xmlns:system="http://schemas.microsoft.com/winfx/2009/xaml"
              StartupUri="Views/MainWindow/MainWindow.xaml">
     <Application.Resources>
-       
+
+        <!--#region Font Awesome -->
+        <font_awesome:ImageAwesome x:Key="window_close_icon"
+            Stretch="Uniform"
+            Icon="Regular_WindowClose"
+            Foreground="DarkRed"/>
+
+        <font_awesome:ImageAwesome x:Key="window_ok_icon"
+            Stretch="Uniform" 
+            Icon="Regular_CheckCircle" 
+            Foreground="DarkBlue"/>
+        <!--#endregion-->
+
         <!--#region Global Commands -->
 
         <glob_commands:ExitCommand x:Key="ExitCommand"/>
@@ -101,6 +114,26 @@
         <!--#endregion-->
 
         <!--#region Styles-->
+
+        <!--#region Grid Splitter Style -->
+
+        <Style x:Key="grid_splitter_style_hor" TargetType="{x:Type GridSplitter}">
+            <Style.Setters>
+                <Setter Property="Background" Value="Orange"/>
+                <Setter Property="Height" Value="10"/>
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="VerticalAlignment" Value="Stretch"/>
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.Setters>
+                        <Setter Property="Background" Value="DarkGreen"/>
+                    </Trigger.Setters>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--#endregion-->
 
         <Style x:Key="textBlockHeaders" TargetType="TextBlock">
             <Style.Setters>

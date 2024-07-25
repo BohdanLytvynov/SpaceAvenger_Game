@@ -25,6 +25,8 @@ namespace Models.DAL.Entities.User
 
         public bool Confirmed { get; set; }
 
+        public float Points { get; set; }
+
         #endregion
 
         #region Ctor
@@ -41,7 +43,8 @@ namespace Models.DAL.Entities.User
             int missionsCount, 
             StarFleetRanks rank, 
             DateTime created, 
-            bool Confirmed = false)
+            bool Confirmed = false, 
+            float points = 0f)
         {
             Id = id;
             UserName = userName;
@@ -50,6 +53,7 @@ namespace Models.DAL.Entities.User
             Rank = rank;
             CreatedDate = created;
             this.Confirmed = Confirmed;
+            Points = points;
         }
 
         #endregion
@@ -58,7 +62,11 @@ namespace Models.DAL.Entities.User
 
         public override string ToString()
         {
-            return $"{Id} {UserName} M/F: {MaleFemale} Missions: {MissionsCount} Rank: {Rank} Enlisted: {CreatedDate.ToShortDateString()} Conf: {Confirmed}";
+            return $"{Id} {UserName} M/F: {MaleFemale} Missions: {MissionsCount}" +
+                $" Rank: {Rank} Enlisted: " +
+                $"{CreatedDate.ToShortDateString()} " +
+                $"Conf: {Confirmed}" +
+                $"Points: {Points}";
         }
 
         #endregion

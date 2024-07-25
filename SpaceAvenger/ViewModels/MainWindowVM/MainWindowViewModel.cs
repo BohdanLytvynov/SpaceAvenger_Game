@@ -62,6 +62,8 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
             PageManager.OnSwitchScreenMethodInvoked += PageManager_OnSwitchScreenMethodInvoked;
 
             m_mainframe = PageManager.GetPage("ChooseProfilePage")!;
+
+           //m_mainframe = PageManager.GetPage("UserProfileInfoPage")!;
         }
 
         private void PageManager_OnSwitchScreenMethodInvoked(Page obj)
