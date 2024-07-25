@@ -12,6 +12,8 @@ namespace SpaceAvenger.ViewModels.UserProfile
     {
         #region Events
         public event Func<User, Task>? OnUserProfileConfirmedEvent;
+
+        public event Action<User>? OnUserProfileSelectedEvent;
         #endregion
 
         #region Fields
@@ -50,10 +52,12 @@ namespace SpaceAvenger.ViewModels.UserProfile
 
         #region Commands
         public ICommand? OnConfirmButtonPressed { get; }
+
+        public ICommand OnSelectButtonPressed { get; }
         #endregion
 
         #region
-        
+
         public UserProfileVM(int number, User user)
         {            
             m_user = user;
@@ -82,6 +86,13 @@ namespace SpaceAvenger.ViewModels.UserProfile
             temp?.Invoke(user);
         }
 
+        private void OnUserProfileSelected(User user)
+        {
+            var temp = Volatile.Read(ref OnUserProfileSelectedEvent);
+
+            temp?.Invoke(user);
+        }
+
         public override string ToString()
         {
             return $"{m_Number}) {m_user.UserName} {m_user.MaleFemale} {m_user.Rank} {m_user.MissionsCount} {m_user.CreatedDate.ToShortDateString()}";
@@ -101,25 +112,40 @@ namespace SpaceAvenger.ViewModels.UserProfile
             return user.User.Id.Equals(this.User.Id);
         }
 
+        public bool Equals(UserProfileVM? other)
+        {
+            if (other == null) return false;
+
+            return other.User.Id.Equals(this.User.Id);
+        }
+
+        #region On Confirmed Button Pressed Execute
+
         private bool CanOnConfirmedButtonPressedExecute(object p) => true;
 
         private void OnConfirmButtonPressedExecute(object p)
-        { 
+        {
             Confirmed = true;
 
             EnlistedDate = DateTime.UtcNow;
 
             m_user.CreatedDate = EnlistedDate;
-            
+
             OnUserProfileConfirmed(m_user);
         }
 
-        public bool Equals(UserProfileVM? other)
-        {
-            if(other == null) return false;
+        #endregion
 
-            return other.User.Id.Equals(this.User.Id);
+        #region On Select Button Pressed Execute
+
+        private bool CanOnSelectButtonPressedExecute(object p) => true;
+
+        private void OnSelectButtonPressedExecute(object p)
+        {
+            OnUserProfileSelected(m_user);
         }
+        #endregion
+
         #endregion
     }
 }

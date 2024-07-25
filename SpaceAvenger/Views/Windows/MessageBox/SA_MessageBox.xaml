@@ -33,7 +33,7 @@
                />
         </Grid>
 
-        <Grid Grid.Row="1" x:Name="ButtonsGrid" Background="#FF253250">
+        <Grid Grid.Row="1" x:Name="ButtonsGrid" Background="{StaticResource btn_back}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="7*"/>
                 <ColumnDefinition Width="70"/>

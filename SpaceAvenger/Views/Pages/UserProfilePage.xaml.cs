@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace SpaceAvenger.Views.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для ChooseProfileWpf.xaml
+    /// Interaction logic for UserProfilePage.xaml
     /// </summary>
-    public partial class ChooseProfileWpf : Page
+    public partial class UserProfilePage : Page
     {
-        public ChooseProfileWpf()
+        public UserProfilePage()
         {
             InitializeComponent();
         }

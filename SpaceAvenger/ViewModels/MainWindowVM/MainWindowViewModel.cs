@@ -9,26 +9,22 @@ using SpaceAvenger.Views.Pages;
 using System.Windows.Input;
 using System.Windows.Controls;
 using SpaceAvenger.Managers.PageManager;
+using Models.DAL.Entities.User;
+using System.Reflection;
 
 namespace SpaceAvenger.ViewModels.MainWindowVM
 {
     public class MainWindowViewModel : ViewModelBase
-    {
-        #region Pages
-
-        MainPage m_mainPage;
-
-        LevelsPage m_levelsPage;
-
-        ChooseProfileWpf m_ChoosePofile;
-        
-        #endregion
-
+    {        
         #region Fields
 
         object m_mainframe;
 
         string m_title;
+
+        private Guid m_userId;
+
+        private string m_userName;
 
         #endregion
 
@@ -59,23 +55,13 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
 
             #region Init Pages
 
-            m_mainPage = new MainPage();
-
-            m_levelsPage = new LevelsPage();
-
-            m_ChoosePofile = new ChooseProfileWpf();
-
-            PageManager.AddPage("main",m_mainPage);
-
-            PageManager.AddPage("levels", m_levelsPage);
-
-            PageManager.AddPage("ChooseProfile", m_ChoosePofile);
-
+            LoadPages();
+            
             #endregion
 
             PageManager.OnSwitchScreenMethodInvoked += PageManager_OnSwitchScreenMethodInvoked;
 
-            m_mainframe = m_ChoosePofile;
+            m_mainframe = PageManager.GetPage("ChooseProfilePage")!;
         }
 
         private void PageManager_OnSwitchScreenMethodInvoked(Page obj)
@@ -85,7 +71,23 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
         #endregion
 
         #region Methods
+        private void LoadPages()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
 
+            var types = assembly.DefinedTypes;
+
+            var pages = types.Where(t => t is not null &&
+             t.BaseType!.Name.Equals(nameof(Page))
+             && t.Name.Contains("Page", StringComparison.OrdinalIgnoreCase));
+
+            foreach (var page in pages)
+            {
+                PageManager.AddPage(
+                    page.Name,
+                    Activator.CreateInstance(page.AsType()) as Page);
+            }
+        }
         #endregion
     }
 }

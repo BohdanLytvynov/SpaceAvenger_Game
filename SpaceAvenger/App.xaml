@@ -30,6 +30,9 @@
 
         <!--#region Colors-->
 
+        <Color x:Key="btn_back">#FF253250
+        </Color>
+
         <Color x:Key="But1ColorInit">#4D0B1D4D
         </Color>
 
@@ -53,6 +56,12 @@
 
         <Color x:Key="But2ColorDis">#7BEE2A2A
         </Color>
+               
+        <!--#endregion-->
+
+        <!--#region Brashes -->
+        <SolidColorBrush x:Key="btn_back_brush" Color="{StaticResource btn_back}"/>
+        <!--#endregion-->
 
         <!--#region Durations -->
 
@@ -62,8 +71,6 @@
         <Duration x:Key="TextBoxAnimDuration">0:0:0:0.02
         </Duration>
 
-        <!--#endregion-->
-        
         <!--#endregion-->
 
         <!--#region Styles-->
@@ -453,12 +460,16 @@
                                 />
 
                     </StackPanel>
-                    <Label Content="Profile Confirmed." 
-                           x:Name="profile_confirmed_block" 
-                           Foreground="LightGreen"
-                           FontSize="25"
-                           Margin="{Binding ElementName=confirm_block, Path=Margin, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
 
+                    <StackPanel Orientation="Vertical" x:Name="profile_confirmed_block"
+                                Margin="50,0,50,0">
+                        <Label Content="Profile Confirmed."                          
+                        Foreground="LightGreen"
+                        FontSize="25"
+                        Margin="{Binding ElementName=confirm_block, Path=Margin, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                        <Button Content="Select" Style="{DynamicResource Button}" Margin="0,20"/>
+                    </StackPanel>
+                   
                 </StackPanel>
             </Border>
             <DataTemplate.Triggers>

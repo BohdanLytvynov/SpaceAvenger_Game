@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace SpaceAvenger.Managers.CommunicationManager
 {
-    public static class CommunicationManager<TEntity>
+    internal static class CommunicationManager<TEntity>
+        where TEntity : class
     {
         private static Dictionary<string, TEntity> m_storage;
 
