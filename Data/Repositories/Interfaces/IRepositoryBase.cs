@@ -19,6 +19,8 @@ namespace Data.Repositories.Interfaces
 
         Task<bool> RemoveAsync(TEntity entity);
 
+        bool Remove(TEntity entity);
+
         Task<bool> UpdateAsync(TEntity entity);
 
         Task<TEntity> GetById(Guid id);

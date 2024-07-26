@@ -17,11 +17,11 @@ using System.Windows.Shapes;
 namespace SpaceAvenger.Views.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для LevelsPage.xaml
+    /// Interaction logic for UserProfileInfoPage.xaml
     /// </summary>
-    public partial class LevelsPage : Page
+    public partial class UserProfileInfoPage : Page
     {
-        public LevelsPage()
+        public UserProfileInfoPage()
         {
             CommunicationManager<Page>.Add(this.GetType().Name, this);
             InitializeComponent();

@@ -10,19 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SpaceAvenger.Views.Pages
+
+namespace SpaceAvenger.Views.Windows.MessageBox
 {
     /// <summary>
-    /// Логика взаимодействия для ChooseProfileWpf.xaml
+    /// Interaction logic for SA_MessageBox.xaml
     /// </summary>
-    public partial class ChooseProfileWpf : Page
+    public partial class SA_MessageBox : Window
     {
-        public ChooseProfileWpf()
+        public SA_MessageBox()
         {
-            InitializeComponent();
-        }
+            InitializeComponent();            
+        }                
     }
 }

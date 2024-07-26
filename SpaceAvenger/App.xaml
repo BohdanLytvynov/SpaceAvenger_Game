@@ -4,19 +4,53 @@
              xmlns:local="clr-namespace:SpaceAvenger"
              xmlns:userVM="clr-namespace:SpaceAvenger.ViewModels.UserProfile"
              xmlns:converters="clr-namespace:SpaceAvenger.Converters"
+             xmlns:glob_commands="clr-namespace:SpaceAvenger.CommonCommands"
+             xmlns:font_awesome="http://schemas.fontawesome.com/icons/" 
+             xmlns:system="http://schemas.microsoft.com/winfx/2009/xaml"
              StartupUri="Views/MainWindow/MainWindow.xaml">
     <Application.Resources>
+
+        <!--#region Font Awesome -->
+        <font_awesome:ImageAwesome x:Key="window_close_icon"
+            Stretch="Uniform"
+            Icon="Regular_WindowClose"
+            Foreground="DarkRed"/>
+
+        <font_awesome:ImageAwesome x:Key="window_ok_icon"
+            Stretch="Uniform" 
+            Icon="Regular_CheckCircle" 
+            Foreground="DarkBlue"/>
+
+        <font_awesome:ImageAwesome x:Key="triangleDown"
+                                   Stretch="Uniform"
+                                   Icon="Regular_CaretSquareDown"
+                                   Foreground="White"
+                                   />
+
+        <font_awesome:ImageAwesome x:Key="triangleUp"
+                                   Stretch="Uniform"
+                                   Icon="Regular_CaretSquareUp"
+                                   Foreground="White"/>
+        <!--#endregion-->
+
+        <!--#region Global Commands -->
+
+        <glob_commands:ExitCommand x:Key="ExitCommand"/>
+
+        <!--#endregion-->
+
+        <!--#region Converters -->
 
         <converters:BoolToMaleFemaleInvertedConverter x:Key="BoolToFemaleInvertConverter"/>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter"/>
 
-        <LinearGradientBrush x:Key="LVBack" EndPoint="0.5,1" StartPoint="0.5,0">
-            <GradientStop Color="#4D0B1D4D" Offset="1"/>
-            <GradientStop Color="#3636BEFF" Offset="0"/>
-        </LinearGradientBrush>
-
+        <!--#endregion-->
+       
         <!--#region Colors-->
+
+        <Color x:Key="btn_back">#FF253250
+        </Color>
 
         <Color x:Key="But1ColorInit">#4D0B1D4D
         </Color>
@@ -41,6 +75,45 @@
 
         <Color x:Key="But2ColorDis">#7BEE2A2A
         </Color>
+               
+        <!--#endregion-->
+
+        <!--#region Brashes -->
+
+        <LinearGradientBrush x:Key="LVBack" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#4D0B1D4D" Offset="1"/>
+            <GradientStop Color="#3636BEFF" Offset="0"/>
+        </LinearGradientBrush>
+
+        <SolidColorBrush x:Key="btn_back_brush" Color="{StaticResource btn_back}"/>
+
+        <LinearGradientBrush x:Key="linear_grad_brush_border_button">
+            <LinearGradientBrush.RelativeTransform>
+                <RotateTransform Angle="0"/>
+            </LinearGradientBrush.RelativeTransform>
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Color="{StaticResource brdButColor1}" Offset="1"/>
+                <GradientStop Color="{StaticResource brdButColor2}" Offset="0"/>
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="linear_grad_brush_back_button" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop x:Name="gs1" Color="{StaticResource But1ColorInit}" Offset="1"/>
+            <GradientStop x:Name="gs2" Color="{StaticResource But2ColorInit}" Offset="0"/>
+        </LinearGradientBrush>
+
+
+        <!--#endregion-->
+
+        <!--#region Animations -->
+
+        <DoubleKeyFrameCollection x:Key="button_grad_rotate_keyframes">
+            <LinearDoubleKeyFrame KeyTime="0%" Value="0"/>
+            <LinearDoubleKeyFrame KeyTime="50%" Value="90"/>
+            <LinearDoubleKeyFrame KeyTime="100%" Value="180"/>
+        </DoubleKeyFrameCollection>
+
+        <!--#endregion-->
 
         <!--#region Durations -->
 
@@ -51,11 +124,9 @@
         </Duration>
 
         <!--#endregion-->
-        
-        <!--#endregion-->
 
         <!--#region Styles-->
-
+        
         <Style x:Key="textBlockHeaders" TargetType="TextBlock">
             <Style.Setters>
                 <Setter Property="Foreground" Value="White"/>
@@ -73,24 +144,9 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Button}">
-                            <Border CornerRadius="10" x:Name="brd" BorderThickness="2">
-
-                                <Border.BorderBrush>
-                                    <LinearGradientBrush>
-                                        <LinearGradientBrush.RelativeTransform>
-                                            <RotateTransform x:Name="rtr" Angle="0"/>
-                                        </LinearGradientBrush.RelativeTransform>
-
-                                        <GradientStop x:Name="brd1gs" Color="{StaticResource brdButColor1}" Offset="1"/>
-                                        <GradientStop x:Name="brd2gs" Color="{StaticResource brdButColor2}" Offset="0"/>
-                                    </LinearGradientBrush>
-                                </Border.BorderBrush>
-                                <Border.Background>
-                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                        <GradientStop x:Name="gs1" Color="{StaticResource But1ColorInit}" Offset="1"/>
-                                        <GradientStop x:Name="gs2" Color="{StaticResource But2ColorInit}" Offset="0"/>
-                                    </LinearGradientBrush>
-                                </Border.Background>
+                            <Border CornerRadius="10" x:Name="brd" BorderThickness="2"
+                                    BorderBrush="{StaticResource linear_grad_brush_border_button}"
+                                    Background="{StaticResource linear_grad_brush_back_button }">
                                 <Label Content="{TemplateBinding Content}" 
                                        HorizontalContentAlignment="Center" 
                                        VerticalContentAlignment="Center" 
@@ -109,14 +165,14 @@
                                             Duration="{StaticResource ButAnimDuration}"/>
 
                                                 <ColorAnimation
-                                            Storyboard.TargetName="gs1"
-                                            Storyboard.TargetProperty="(Color)"
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="(Border.Background).GradientStops[0].Color"
                                             To="{StaticResource But1ColorInit}"
                                             Duration="{StaticResource ButAnimDuration}"/>
 
                                                 <ColorAnimation
-                                            Storyboard.TargetName="gs2"
-                                            Storyboard.TargetProperty="(Color)"
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="(Border.Background).GradientStops[1].Color"
                                             To="{StaticResource But2ColorInit}"
                                             Duration="{StaticResource ButAnimDuration}"/>
                                             </Storyboard>
@@ -130,17 +186,13 @@
                                             To="3"
                                             Duration="{StaticResource ButAnimDuration}"/>
                                                 <DoubleAnimationUsingKeyFrames
-                                            Storyboard.TargetName="rtr"
-                                            Storyboard.TargetProperty="(Angle)"                                                     
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="(Border.BorderBrush).(Brush.RelativeTransform).(RotateTransform.Angle)"                                                     
                                             AutoReverse="True"
                                             RepeatBehavior="Forever"
                                             DecelerationRatio="1"
-                                            Duration="0:0:3">
-                                                    <LinearDoubleKeyFrame KeyTime="0%" Value="0"/>
-                                                    <LinearDoubleKeyFrame KeyTime="50%" Value="90"/>
-                                                    <LinearDoubleKeyFrame KeyTime="100%" Value="180"/>
-                                                </DoubleAnimationUsingKeyFrames>
-
+                                            Duration="0:0:3" KeyFrames="{StaticResource button_grad_rotate_keyframes}"
+                                                    />
                                             </Storyboard>
                                         </VisualState>
 
@@ -152,14 +204,14 @@
                                             To="2"
                                             Duration="{StaticResource ButAnimDuration}"/>
                                                 <ColorAnimation
-                                            Storyboard.TargetName="gs1"
-                                            Storyboard.TargetProperty="(Color)"
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="(Border.Background).GradientStops[0].Color"
                                             To="{StaticResource But1ColorPress}"
                                             Duration="{StaticResource ButAnimDuration}"/>
 
                                                 <ColorAnimation
-                                            Storyboard.TargetName="gs2"
-                                            Storyboard.TargetProperty="(Color)"
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="(Border.Background).GradientStops[1].Color"
                                             To="{StaticResource But2ColorPress}"
                                             Duration="{StaticResource ButAnimDuration}"/>
                                             </Storyboard>
@@ -173,14 +225,14 @@
                                             To="2"
                                             Duration="{StaticResource ButAnimDuration}"/>
                                                 <ColorAnimation
-                                            Storyboard.TargetName="gs1"
-                                            Storyboard.TargetProperty="(Color)"
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="(Border.Background).GradientStops[0].Color"
                                             To="{StaticResource But1ColorDis}"
                                             Duration="{StaticResource ButAnimDuration}"/>
 
                                                 <ColorAnimation
-                                            Storyboard.TargetName="gs2"
-                                            Storyboard.TargetProperty="(Color)"
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="(Border.Background).GradientStops[1].Color"
                                             To="{StaticResource But2ColorDis}"
                                             Duration="{StaticResource ButAnimDuration}"/>
                                             </Storyboard>
@@ -201,24 +253,10 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type ToggleButton}">
-                            <Border CornerRadius="10" x:Name="brd" BorderThickness="2">
-
-                                <Border.BorderBrush>
-                                    <LinearGradientBrush>
-                                        <LinearGradientBrush.RelativeTransform>
-                                            <RotateTransform x:Name="rtr" Angle="0"/>
-                                        </LinearGradientBrush.RelativeTransform>
-
-                                        <GradientStop x:Name="brd1gs" Color="{StaticResource brdButColor1}" Offset="1"/>
-                                        <GradientStop x:Name="brd2gs" Color="{StaticResource brdButColor2}" Offset="0"/>
-                                    </LinearGradientBrush>
-                                </Border.BorderBrush>
-                                <Border.Background>
-                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                        <GradientStop x:Name="gs1" Color="{StaticResource But1ColorInit}" Offset="1"/>
-                                        <GradientStop x:Name="gs2" Color="{StaticResource But2ColorInit}" Offset="0"/>
-                                    </LinearGradientBrush>
-                                </Border.Background>
+                            <Border CornerRadius="10" x:Name="brd" BorderThickness="2"
+                                    BorderBrush="{StaticResource linear_grad_brush_border_button}"
+                                    Background="{StaticResource linear_grad_brush_back_button}">
+                                
                                 <Label Content="{TemplateBinding Content}" 
                                        HorizontalContentAlignment="Center" 
                                        VerticalContentAlignment="Center" 
@@ -237,14 +275,14 @@
                                     Duration="{StaticResource ButAnimDuration}"/>
 
                                                 <ColorAnimation
-                                    Storyboard.TargetName="gs1"
-                                    Storyboard.TargetProperty="(Color)"
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="(Border.Background).GradientStops[0].Color"
                                     To="{StaticResource But1ColorInit}"
                                     Duration="{StaticResource ButAnimDuration}"/>
 
                                                 <ColorAnimation
-                                    Storyboard.TargetName="gs2"
-                                    Storyboard.TargetProperty="(Color)"
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="(Border.Background).GradientStops[1].Color"
                                     To="{StaticResource But2ColorInit}"
                                     Duration="{StaticResource ButAnimDuration}"/>
                                             </Storyboard>
@@ -258,17 +296,14 @@
                                     To="3"
                                     Duration="{StaticResource ButAnimDuration}"/>
                                                 <DoubleAnimationUsingKeyFrames
-                                    Storyboard.TargetName="rtr"
-                                    Storyboard.TargetProperty="(Angle)"                                                     
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="(Border.BorderBrush).(Brush.RelativeTransform).(RotateTransform.Angle)"                                                     
                                     AutoReverse="True"
                                     RepeatBehavior="Forever"
                                     DecelerationRatio="1"
-                                    Duration="0:0:3">
-                                                    <LinearDoubleKeyFrame KeyTime="0%" Value="0"/>
-                                                    <LinearDoubleKeyFrame KeyTime="50%" Value="90"/>
-                                                    <LinearDoubleKeyFrame KeyTime="100%" Value="180"/>
-                                                </DoubleAnimationUsingKeyFrames>
-
+                                    Duration="0:0:3"
+                                    KeyFrames="{StaticResource button_grad_rotate_keyframes}"
+                                                    />
                                             </Storyboard>
                                         </VisualState>
 
@@ -280,14 +315,14 @@
                                     To="2"
                                     Duration="{StaticResource ButAnimDuration}"/>
                                                 <ColorAnimation
-                                    Storyboard.TargetName="gs1"
-                                    Storyboard.TargetProperty="(Color)"
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="(Border.Background).GradientStops[0].Color"
                                     To="{StaticResource But1ColorPress}"
                                     Duration="{StaticResource ButAnimDuration}"/>
 
                                                 <ColorAnimation
-                                    Storyboard.TargetName="gs2"
-                                    Storyboard.TargetProperty="(Color)"
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="(Border.Background).GradientStops[1].Color"
                                     To="{StaticResource But2ColorPress}"
                                     Duration="{StaticResource ButAnimDuration}"/>
                                             </Storyboard>
@@ -301,14 +336,14 @@
                                     To="2"
                                     Duration="{StaticResource ButAnimDuration}"/>
                                                 <ColorAnimation
-                                    Storyboard.TargetName="gs1"
-                                    Storyboard.TargetProperty="(Color)"
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="(Border.BorderBrush).GradientStops[0].Color"
                                     To="{StaticResource But1ColorDis}"
                                     Duration="{StaticResource ButAnimDuration}"/>
 
                                                 <ColorAnimation
-                                    Storyboard.TargetName="gs2"
-                                    Storyboard.TargetProperty="(Color)"
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="(Border.BorderBrush).GradientStops[1].Color"
                                     To="{StaticResource But2ColorDis}"
                                     Duration="{StaticResource ButAnimDuration}"/>
                                             </Storyboard>
@@ -382,6 +417,25 @@
 
         <!--#endregion-->
 
+        <!--#region Grid Splitter Style -->
+
+        <Style x:Key="grid_splitter_style_hor" TargetType="{x:Type GridSplitter}">
+            <Style.Setters>
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.Setters>
+                        <Setter Property="Background" Value="DarkGreen"/>
+                    </Trigger.Setters>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--#endregion-->
+
         <!--#endregion-->
 
         <!--#region UserProfileDataTemplate-->
@@ -421,12 +475,12 @@
                     <StackPanel Orientation="Vertical" Margin="30,0,0,0">
                         <TextBlock Text="Commander Info:" FontSize="22" Margin="0,0,0,10"/>
                         <TextBlock 
-                            Text="{Binding User.CreatedDate, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=Enlisted: {0:yyyy.MM.dd HH:MM}, Converter={StaticResource DateTimeToStringConverter}, ConverterParameter='Not yet'}" 
+                            Text="{Binding EnlistedDate, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=Enlisted: {0:yyyy.MM.dd HH:MM}, Converter={StaticResource DateTimeToStringConverter}, ConverterParameter='Not yet'}" 
                             Margin="0,0,0,10"/>
                         <TextBox Style="{DynamicResource TextBox}" 
                                  Text="{Binding User.UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                                  Margin="0,0,0,10" 
-                                 IsReadOnly="{Binding Confirmed, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                 IsReadOnly="{Binding Confirmed, UpdateSourceTrigger=PropertyChanged}"
                                  />
                         <TextBlock Text="{Binding User.Rank, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat= Rank: {0}}" Margin="0,0,0,10"/>
                         <TextBlock Text="{Binding User.MissionsCount, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=Missions_Completed: {0}}"/>
@@ -441,16 +495,21 @@
                                 />
 
                     </StackPanel>
-                    <Label Content="Profile Confirmed." 
-                           x:Name="profile_confirmed_block" 
-                           Foreground="LightGreen"
-                           FontSize="25"
-                           Margin="{Binding ElementName=confirm_block, Path=Margin, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
 
+                    <StackPanel Orientation="Vertical" x:Name="profile_confirmed_block"
+                                Margin="50,0,50,0">
+                        <Label Content="Profile Confirmed."                          
+                        Foreground="LightGreen"
+                        FontSize="25"
+                        Margin="{Binding ElementName=confirm_block, Path=Margin, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                        <Button Content="Select" Style="{DynamicResource Button}" Margin="0,20"
+                                Command="{Binding OnSelectButtonPressed}"/>
+                    </StackPanel>
+                   
                 </StackPanel>
             </Border>
             <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding Confirmed, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Value="True">
+                <DataTrigger Binding="{Binding Confirmed, UpdateSourceTrigger=PropertyChanged}" Value="True">
                     <DataTrigger.Setters>
                         <Setter Property="Visibility" TargetName="chooseSex_btn"
                                 Value="Collapsed"/>
@@ -461,7 +520,7 @@
                     </DataTrigger.Setters>
                 </DataTrigger>
 
-                <DataTrigger Binding="{Binding Confirmed, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Value="False">
+                <DataTrigger Binding="{Binding Confirmed, UpdateSourceTrigger=PropertyChanged}" Value="False">
                     <DataTrigger.Setters>
                         <Setter Property="Visibility" TargetName="profile_confirmed_block"
                                 Value="Collapsed"/>

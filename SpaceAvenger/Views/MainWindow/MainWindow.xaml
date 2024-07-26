@@ -9,13 +9,34 @@
         WindowState="Maximized"
         Title="{Binding Tittle,
     UpdateSourceTrigger=PropertyChanged}" Height="450" Width="800" 
-        >
-    <Window.DataContext>
-        <mainVm:MainWindowViewModel/>
-    </Window.DataContext>
-    <Frame Content="{Binding MainFrame, 
+        d:DataContext="{d:DesignInstance mainVm:MainWindowViewModel, IsDesignTimeCreatable=True}">
+    <Grid>
+        <Grid x:Name="UserInfoGrid" Panel.ZIndex="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="{Binding Height, 
+                    UpdateSourceTrigger=PropertyChanged,
+                    Mode=OneWay}"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="69*"/>
+            </Grid.RowDefinitions>
+            <Button Grid.Row="1" 
+                    Content="{Binding OpenClosedButton_Content,
+                UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                    Width="80" Height="40"
+                    Style="{StaticResource Button}"
+                    Command="{Binding OnOpenInfoButtonPressed}"
+                    />
+            <Frame Grid.Row="0"
+                   NavigationUIVisibility="Hidden"
+                   Content="{Binding InfoFrame,
+                UpdateSourceTrigger=PropertyChanged,
+                Mode=OneWay}"/>
+        </Grid>
+        <Frame Content="{Binding MainFrame, 
         UpdateSourceTrigger=PropertyChanged,
-        Mode=OneWay}" NavigationUIVisibility="Hidden">
+        Mode=OneWay}" 
+       NavigationUIVisibility="Hidden"
+               Panel.ZIndex="0"/>
+    </Grid>
 
-    </Frame>
 </Window>

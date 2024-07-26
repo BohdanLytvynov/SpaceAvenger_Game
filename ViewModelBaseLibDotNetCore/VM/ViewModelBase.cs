@@ -20,6 +20,11 @@ namespace ViewModelBaseLibDotNetCore.VM
 
         protected bool Set<T>(ref T field, T value, [CallerMemberName] string PropName = null )
         {
+            if (field == null)
+            { 
+                throw new ArgumentNullException(string.Format("Property: {0}", PropName));
+            }
+
             if (field.Equals(value))
             {
                 return false;

@@ -8,27 +8,39 @@ using ViewModelBaseLibDotNetCore.Commands;
 using SpaceAvenger.Views.Pages;
 using System.Windows.Input;
 using System.Windows.Controls;
+using SpaceAvenger.Managers.PageManager;
+using Models.DAL.Entities.User;
+using System.Reflection;
+using System.Windows;
+using SpaceAvenger.Enums.FrameTypes;
+using SpaceAvenger.Managers.CommunicationManager;
 
 namespace SpaceAvenger.ViewModels.MainWindowVM
 {
     public class MainWindowViewModel : ViewModelBase
-    {
-        #region Pages
-
-        MainPage m_mainPage;
-
-        LevelsPage m_levelsPage;
-
-        ChooseProfileWpf m_ChoosePofile;
-        
-        #endregion
-
+    {        
         #region Fields
-
+        
         object m_mainframe;
+
+        private object m_infoFrame;
 
         string m_title;
 
+        private Guid m_userId;
+
+        private string m_userName;
+
+        private bool m_InfoOpenClosed;
+
+        private GridLength m_Height;
+
+        private Window m_window;
+
+        private object[] m_imagesOpenClosedButton;
+
+        private object m_OpenClosedButton_Content;
+        
         #endregion
 
         #region Properties
@@ -39,51 +51,171 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
             set=> Set(ref m_mainframe, value);
         }
 
+        public object InfoFrame 
+        { get=> m_infoFrame; set=>Set(ref m_infoFrame, value); }
+
         public string Tittle 
         {
             get=> m_title;
             set=> Set(ref m_title, value);
         }
 
+        public object OpenClosedButton_Content 
+        { get=> m_OpenClosedButton_Content; set=> Set(ref m_OpenClosedButton_Content, value); }
+
+        public GridLength Height 
+        { get=> m_Height; set=> Set(ref m_Height, value); }
+
         #endregion
-        
+
+        #region Commands
+        public ICommand OnOpenInfoButtonPressed { get; }
+        #endregion
+
         #region Ctor
         public MainWindowViewModel()
-        {            
+        {
             #region Init Fields
 
+            m_imagesOpenClosedButton = new object[]
+                {
+                    App.Current.Resources["triangleUp"],
+                    App.Current.Resources["triangleDown"]
+                };
+
+            m_OpenClosedButton_Content = m_imagesOpenClosedButton[1];
+
+            m_Height = new GridLength(0, GridUnitType.Star);
+
             m_title = "Space Avenger V 1.0";
+
+            m_InfoOpenClosed = false;
+
+            m_window = CommunicationManager<Window>.Get(nameof(MainWindow))!;
 
             #endregion
 
             #region Init Pages
 
-            m_mainPage = new MainPage();
-
-            m_levelsPage = new LevelsPage();
-
-            m_ChoosePofile = new ChooseProfileWpf();
-
-            PageManager.AddPage("main",m_mainPage);
-
-            PageManager.AddPage("levels", m_levelsPage);
-
-            PageManager.AddPage("ChooseProfile", m_ChoosePofile);
+            LoadPages();
 
             #endregion
 
-            PageManager.OnSwitchScreenMethodInvoked += PageManager_OnSwitchScreenMethodInvoked;
+            #region Init Commands
+            OnOpenInfoButtonPressed = new Command(
+                canExecute: CanOnOpenInfoButtonPressedExecute,
+                execute: OnOpenInfoButtonPressedExecute);
+            #endregion
 
-            m_mainframe = m_ChoosePofile;
+            PageManager<FrameType>.OnSwitchScreenMethodInvoked += PageManager_OnSwitchScreenMethodInvoked;
+
+            m_mainframe = PageManager<FrameType>.GetPage("ChooseProfilePage")!;
+
+            m_infoFrame = PageManager<FrameType>.GetPage("UserProfileInfoPage")!;
         }
 
-        private void PageManager_OnSwitchScreenMethodInvoked(Page obj)
+        private void PageManager_OnSwitchScreenMethodInvoked(object? obj, PageManagerEventArgs<FrameType> args)
         {
-            MainFrame = obj;
+            switch (args.FrameType)
+            {
+                case FrameType.MainFrame:
+
+                    MainFrame = args.Page;
+                    break;
+                case FrameType.InfoFrame:
+
+                    InfoFrame = args.Page;
+                    break;                
+            }
+            
         }
         #endregion
 
         #region Methods
+        private void LoadPages()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+
+            var types = assembly.DefinedTypes;
+
+            var pages = types.Where(t => t is not null &&
+             t.BaseType!.Name.Equals(nameof(Page))
+             && t.Name.Contains("Page", StringComparison.OrdinalIgnoreCase));
+
+            foreach (var page in pages)
+            {
+                PageManager<FrameType>.AddPage(
+                    page.Name,
+                    Activator.CreateInstance(page.AsType()) as Page);
+            }
+        }
+
+        #region On Open Info Button Pressed 
+        private bool CanOnOpenInfoButtonPressedExecute(object p) => true;
+
+        private void OnOpenInfoButtonPressedExecute(object p)
+        {
+            if (m_InfoOpenClosed)
+            { 
+                CloseInfo();
+
+                OpenClosedButton_Content = m_imagesOpenClosedButton[1];
+            }
+            else
+            {
+                OpenInfo();
+
+                OpenClosedButton_Content = m_imagesOpenClosedButton[0];
+            }
+
+            m_InfoOpenClosed = !m_InfoOpenClosed;
+        }
+
+        private void OpenInfo()
+        {
+            Task.Run(() =>
+            {
+                double height = 0;
+                m_window.Dispatcher.Invoke(() =>
+                {
+                    height = (InfoFrame as Page)!.ActualHeight;
+                });
+
+                double curr_height = 0;
+
+                while (curr_height <= height)
+                {
+                    ++curr_height;
+                    m_window.Dispatcher.Invoke(() =>
+                    {
+                        Height = new GridLength(curr_height, GridUnitType.Star);
+                    });
+                }
+            });
+        }
+
+        private void CloseInfo()
+        {
+            Task.Run(() =>
+            {
+                double curr_height = 0;
+                m_window.Dispatcher?.Invoke(() =>
+                {
+                    curr_height = (InfoFrame as Page)!.ActualHeight;
+                });
+
+                while (curr_height > 0)
+                {
+                    --curr_height;
+                    m_window.Dispatcher?.Invoke(() =>
+                    {
+                        Height = new GridLength(curr_height, GridUnitType.Star);
+                    });
+                }
+            });
+        }
+
+        #endregion
 
         #endregion
     }

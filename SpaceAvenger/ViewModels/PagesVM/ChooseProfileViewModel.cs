@@ -3,11 +3,16 @@ using Data.Repositories.Realizations.UserRep;
 using JsonDataProvider;
 using LiteDB;
 using Models.DAL.Entities.User;
+using SpaceAvenger.Enums.FrameTypes;
+using SpaceAvenger.Managers.PageManager;
 using SpaceAvenger.ViewModels.UserProfile;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using ViewModelBaseLibDotNetCore.Commands;
 using ViewModelBaseLibDotNetCore.VM;
@@ -18,15 +23,21 @@ namespace SpaceAvenger.ViewModels.PagesVM
     {
         #region Fields
 
-        UserRepository m_userRepository;
+        private UserRepository m_userRepository;
 
-        ObservableCollection<UserProfileVM> m_profileList;
+        private ObservableCollection<UserProfileVM> m_profileList;
+
+        private int m_SelectedUserIndex;
                         
         #endregion
 
         #region Properties
 
-        public ObservableCollection<UserProfileVM> ProfileList { get=> m_profileList; set=> m_profileList = value; }
+        public ObservableCollection<UserProfileVM> ProfileList 
+        { get=> m_profileList; set=> m_profileList = value; }
+
+        public int SelectedUserIndex 
+        { get=> m_SelectedUserIndex; set => Set(ref m_SelectedUserIndex, value); }
 
         #endregion
 
@@ -34,11 +45,17 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
         public ICommand OnAddNewProfileButtonPressed { get; }
 
+        public ICommand OnEditUserProfileButtonPressed { get; }
+
+        public ICommand OnDeleteUserProfileButtonPressed { get; }
+
         #endregion
 
         #region Ctor
         public ChooseProfileViewModel()
         {
+            m_SelectedUserIndex = -1;
+
             m_userRepository = new UserRepository(
                 new SpaceAvengerDbContext(Environment.CurrentDirectory + 
                 Path.DirectorySeparatorChar + 
@@ -46,15 +63,38 @@ namespace SpaceAvenger.ViewModels.PagesVM
                         
             m_profileList = new ObservableCollection<UserProfileVM>();
 
-            // m_profileList = m_userRepository.GetAllAsync().Result;
+            var users = m_userRepository.GetAllAsync().Result;
+
+            foreach (var user in users)
+            {
+                var upvm = new UserProfileVM(m_profileList.Count + 1, user);
+                upvm.OnUserProfileConfirmedEvent += Up_OnUserProfileConfirmedEvent;
+                upvm.OnUserProfileSelectedEvent += Up_OnUserProfileSelectedEvent;
+                m_profileList.Add(upvm);
+            }
             
             OnAddNewProfileButtonPressed = new Command(
                 OnAddNewProfileButtonPressedExecute,
                 CanOnAddNewProfileButtonPressedExecute
                 );
+
+            OnEditUserProfileButtonPressed = new Command(
+                OnEditUserProfileButtonpressedExecute,
+                CanOnEditUserProfileButtonpressedExecute
+                );
+
+            OnDeleteUserProfileButtonPressed = new Command(
+                OnDeleteUserProfileButtonPressedExecute,
+                CanOnDeleteUserProfileButtonPressedExxecute
+                );
         }
 
-        
+        private void Up_OnUserProfileSelectedEvent(User obj)
+        {
+            PageManager<FrameType>.SwitchPage("", FrameType.MainFrame);
+        }
+
+
         #endregion
 
         #region Methods
@@ -67,14 +107,59 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
         private void OnAddNewProfileButtonPressedExecute(object p)
         {
-            ProfileList.Add(
-                new UserProfileVM(
+            var up = new UserProfileVM(
                     ProfileList.Count + 1,
-                    Guid.Empty,
+                    new User(Guid.Empty,
                     "Enter your name Commander",
-                    true,
+                    true, 0,
                     StarFleetRanks.Cadet_4th_Grade,
-                    0, default));
+                    default));
+
+            up.OnUserProfileConfirmedEvent += Up_OnUserProfileConfirmedEvent; 
+
+            ProfileList.Add(up);
+        }
+
+        private async Task Up_OnUserProfileConfirmedEvent(User obj)
+        {
+            if (obj.Id.Equals(Guid.Empty))
+            {
+                var r = await m_userRepository.AddAsync(obj);
+            }
+            else
+            {
+                var r = await m_userRepository.UpdateAsync(obj);
+            }            
+        }
+
+        #endregion
+
+        #region On Edit User Profile Button Pressed
+
+        private bool CanOnEditUserProfileButtonpressedExecute(object p)
+        {
+            return m_SelectedUserIndex >= 0;
+        }
+
+        private void OnEditUserProfileButtonpressedExecute(object p)
+        {
+            ProfileList[m_SelectedUserIndex]!.Confirmed = false;                         
+        }
+
+        #endregion
+
+        #region On Delete User Profile Button Presssed
+        private bool CanOnDeleteUserProfileButtonPressedExxecute(object p)
+        {
+            return m_SelectedUserIndex >= 0;
+        }
+
+        private void OnDeleteUserProfileButtonPressedExecute(object p)
+        {
+            var r = m_userRepository.Remove(ProfileList[SelectedUserIndex].User);
+
+            if(r)
+                ProfileList.RemoveAt(SelectedUserIndex);
         }
         #endregion
 
