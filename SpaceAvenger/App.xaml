@@ -502,7 +502,8 @@
                         Foreground="LightGreen"
                         FontSize="25"
                         Margin="{Binding ElementName=confirm_block, Path=Margin, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-                        <Button Content="Select" Style="{DynamicResource Button}" Margin="0,20"/>
+                        <Button Content="Select" Style="{DynamicResource Button}" Margin="0,20"
+                                Command="{Binding OnSelectButtonPressed}"/>
                     </StackPanel>
                    
                 </StackPanel>

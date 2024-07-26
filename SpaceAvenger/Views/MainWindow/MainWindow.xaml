@@ -9,11 +9,7 @@
         WindowState="Maximized"
         Title="{Binding Tittle,
     UpdateSourceTrigger=PropertyChanged}" Height="450" Width="800" 
-        >
-    <Window.DataContext>
-        <mainVm:MainWindowViewModel/>
-    </Window.DataContext>
-
+        d:DataContext="{d:DesignInstance mainVm:MainWindowViewModel, IsDesignTimeCreatable=True}">
     <Grid>
         <Grid x:Name="UserInfoGrid" Panel.ZIndex="1">
             <Grid.RowDefinitions>

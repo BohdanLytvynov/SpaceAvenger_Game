@@ -10,10 +10,8 @@
       d:DesignHeight="450" d:DesignWidth="800"
       MaxHeight="450" MinHeight="450"
       MaxWidth="800" MinWidth="800"
-      Title="UserProfileInfoPage">
-    <Page.DataContext>
-        <vm:UserProfileInfoViewModel/>
-    </Page.DataContext>
+      Title="UserProfileInfoPage"
+      d:DataContext="{d:DesignInstance vm:UserProfileInfoViewModel, IsDesignTimeCreatable=True}">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

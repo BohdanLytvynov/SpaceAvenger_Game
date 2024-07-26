@@ -3,6 +3,8 @@ using Data.Repositories.Realizations.UserRep;
 using JsonDataProvider;
 using LiteDB;
 using Models.DAL.Entities.User;
+using SpaceAvenger.Enums.FrameTypes;
+using SpaceAvenger.Managers.PageManager;
 using SpaceAvenger.ViewModels.UserProfile;
 using System;
 using System.Collections.ObjectModel;
@@ -10,6 +12,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using ViewModelBaseLibDotNetCore.Commands;
 using ViewModelBaseLibDotNetCore.VM;
@@ -64,7 +67,10 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
             foreach (var user in users)
             {
-                m_profileList.Add(new UserProfileVM(m_profileList.Count + 1, user));
+                var upvm = new UserProfileVM(m_profileList.Count + 1, user);
+                upvm.OnUserProfileConfirmedEvent += Up_OnUserProfileConfirmedEvent;
+                upvm.OnUserProfileSelectedEvent += Up_OnUserProfileSelectedEvent;
+                m_profileList.Add(upvm);
             }
             
             OnAddNewProfileButtonPressed = new Command(
@@ -83,7 +89,12 @@ namespace SpaceAvenger.ViewModels.PagesVM
                 );
         }
 
-        
+        private void Up_OnUserProfileSelectedEvent(User obj)
+        {
+            PageManager<FrameType>.SwitchPage("", FrameType.MainFrame);
+        }
+
+
         #endregion
 
         #region Methods
