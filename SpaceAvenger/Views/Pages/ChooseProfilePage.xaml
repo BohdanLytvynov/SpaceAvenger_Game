@@ -60,12 +60,11 @@ Background="{StaticResource LVBack}"
                 </Grid.RowDefinitions>
                 <Button Grid.Row="1"
             Content="Add" Foreground="White"
-            Style="{StaticResource Button}"
-            FontSize="16"
+            Style="{StaticResource Button}"            
             Command="{Binding OnAddNewProfileButtonPressed}"/>
 
                 <Button Grid.Row="3" Style="{DynamicResource Button}"
-                    Content="Edit" FontSize="16"
+                    Content="Edit" 
                     Foreground="White"
                     Command="{Binding OnEditUserProfileButtonPressed}"/>
 

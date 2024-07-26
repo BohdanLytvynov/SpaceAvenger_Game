@@ -5,12 +5,15 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SpaceAvenger.Views.Pages"
       xmlns:fa="http://schemas.fontawesome.com/icons/"
+      xmlns:vm="clr-namespace:SpaceAvenger.ViewModels.PagesVM"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       MaxHeight="450" MinHeight="450"
       MaxWidth="800" MinWidth="800"
       Title="UserProfileInfoPage">
-
+    <Page.DataContext>
+        <vm:UserProfileInfoViewModel/>
+    </Page.DataContext>
     <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -21,7 +24,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
             <RowDefinition/>
-            <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
         <TextBlock FontSize="30" 
                     Text="Commander Profile Info:" 
@@ -29,45 +31,44 @@
                    Style="{StaticResource textBlockHeaders}"/>
         <Grid Grid.Row="1" x:Name="Info">
             <DockPanel>
-                <Border Width="200" Height="200" Margin="10,0,30,80" CornerRadius="10"
+                <Border Width="200" Height="160" Margin="10,0,30,80" CornerRadius="10"
                         BorderThickness="5" BorderBrush="{StaticResource linear_grad_brush_border_button}">
-                    <Image Stretch="Uniform" DockPanel.Dock="Left" Margin="5"/>
-
+                    <Image Stretch="Uniform" DockPanel.Dock="Left" Margin="5"
+                           Source="{Binding UserImage.Source, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                 </Border>
 
-                
-
-                    <DockPanel Margin="10" DockPanel.Dock="Right">
+                <DockPanel Margin="10" DockPanel.Dock="Right">
                     <StackPanel DockPanel.Dock="Left" Orientation="Vertical">
                         <TextBlock Style="{StaticResource textBlockHeaders}"
                                FontSize="20" Margin="20"
-                               Text="Test"/>
+                               Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=OneWay,
+                            StringFormat=Name: {0}}"/>
                         <TextBlock Style="{StaticResource textBlockHeaders}"
                                FontSize="20" Margin="20"
-                               Text="Test"/>
+                               Text="{Binding Rank, UpdateSourceTrigger=PropertyChanged, Mode=OneWay
+                            ,StringFormat=Rank: {0}}"/>
                         <TextBlock Style="{StaticResource textBlockHeaders}"
                                 FontSize="20" Margin="20"
-                               Text="Test"/>
-                        <TextBlock Style="{StaticResource textBlockHeaders}"
-                                FontSize="20" Margin="20"
-                               Text="Test"/>
+                               Text="{Binding Enlisted, UpdateSourceTrigger=PropertyChanged, Mode=OneWay,
+                            StringFormat=Enlisted: {0:yyyy.MM.dd HH:MM},
+                            Converter={StaticResource DateTimeToStringConverter}}"/>
+                        <StackPanel Orientation="Vertical" Margin="0,15">
+                            <TextBlock Text="Points to next Rank:" 
+               Style="{StaticResource textBlockHeaders}" Margin="20,0"/>
+                            <ProgressBar Height="15"
+    FontSize="20" Margin="20"
+    Value="{Binding Points, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"             />
+                        </StackPanel>
                     </StackPanel>
                     <StackPanel DockPanel.Dock="Right" Margin="40,0,0,0">
                         <TextBlock Style="{StaticResource textBlockHeaders}"
-                                   FontSize="20" Margin="20"
-                                   Text="Test"/>
+                            FontSize="20" Margin="20"
+                            Text="{Binding MissionsCount, UpdateSourceTrigger=PropertyChanged, Mode=OneWay,
+                            StringFormat=Missions: {0}}"/>
                     </StackPanel>
                 </DockPanel>
             </DockPanel>
         </Grid>
-        <Grid Grid.Row="2" x:Name="buttons_grid">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="127*"/>
-                <ColumnDefinition Width="70"/>
-                <ColumnDefinition Width="10*"/>
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" Content="{StaticResource window_close_icon}"
-                    Style="{StaticResource Button}" Margin="3"/>
-        </Grid>
+
     </Grid>
 </Page>

@@ -20,6 +20,17 @@
             Stretch="Uniform" 
             Icon="Regular_CheckCircle" 
             Foreground="DarkBlue"/>
+
+        <font_awesome:ImageAwesome x:Key="triangleDown"
+                                   Stretch="Uniform"
+                                   Icon="Regular_CaretSquareDown"
+                                   Foreground="White"
+                                   />
+
+        <font_awesome:ImageAwesome x:Key="triangleUp"
+                                   Stretch="Uniform"
+                                   Icon="Regular_CaretSquareUp"
+                                   Foreground="White"/>
         <!--#endregion-->
 
         <!--#region Global Commands -->
@@ -35,12 +46,7 @@
         <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter"/>
 
         <!--#endregion-->
-        
-        <LinearGradientBrush x:Key="LVBack" EndPoint="0.5,1" StartPoint="0.5,0">
-            <GradientStop Color="#4D0B1D4D" Offset="1"/>
-            <GradientStop Color="#3636BEFF" Offset="0"/>
-        </LinearGradientBrush>
-
+       
         <!--#region Colors-->
 
         <Color x:Key="btn_back">#FF253250
@@ -73,6 +79,12 @@
         <!--#endregion-->
 
         <!--#region Brashes -->
+
+        <LinearGradientBrush x:Key="LVBack" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#4D0B1D4D" Offset="1"/>
+            <GradientStop Color="#3636BEFF" Offset="0"/>
+        </LinearGradientBrush>
+
         <SolidColorBrush x:Key="btn_back_brush" Color="{StaticResource btn_back}"/>
 
         <LinearGradientBrush x:Key="linear_grad_brush_border_button">
@@ -114,27 +126,7 @@
         <!--#endregion-->
 
         <!--#region Styles-->
-
-        <!--#region Grid Splitter Style -->
-
-        <Style x:Key="grid_splitter_style_hor" TargetType="{x:Type GridSplitter}">
-            <Style.Setters>
-                <Setter Property="Background" Value="Orange"/>
-                <Setter Property="Height" Value="10"/>
-                <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                <Setter Property="VerticalAlignment" Value="Stretch"/>
-            </Style.Setters>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Trigger.Setters>
-                        <Setter Property="Background" Value="DarkGreen"/>
-                    </Trigger.Setters>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!--#endregion-->
-
+        
         <Style x:Key="textBlockHeaders" TargetType="TextBlock">
             <Style.Setters>
                 <Setter Property="Foreground" Value="White"/>
@@ -421,6 +413,25 @@
                     </Setter.Value> 
                 </Setter>
             </Style.Setters>
+        </Style>
+
+        <!--#endregion-->
+
+        <!--#region Grid Splitter Style -->
+
+        <Style x:Key="grid_splitter_style_hor" TargetType="{x:Type GridSplitter}">
+            <Style.Setters>
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.Setters>
+                        <Setter Property="Background" Value="DarkGreen"/>
+                    </Trigger.Setters>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <!--#endregion-->

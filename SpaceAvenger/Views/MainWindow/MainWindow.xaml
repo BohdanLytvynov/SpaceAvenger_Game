@@ -17,12 +17,19 @@
     <Grid>
         <Grid x:Name="UserInfoGrid" Panel.ZIndex="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="17*"/>
+                <RowDefinition Height="{Binding Height, 
+                    UpdateSourceTrigger=PropertyChanged,
+                    Mode=OneWay}"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="69*"/>
             </Grid.RowDefinitions>
-            <GridSplitter Grid.Row="1" 
-                          Style="{StaticResource grid_splitter_style_hor}"/>
+            <Button Grid.Row="1" 
+                    Content="{Binding OpenClosedButton_Content,
+                UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                    Width="80" Height="40"
+                    Style="{StaticResource Button}"
+                    Command="{Binding OnOpenInfoButtonPressed}"
+                    />
             <Frame Grid.Row="0"
                    NavigationUIVisibility="Hidden"
                    Content="{Binding InfoFrame,
@@ -30,8 +37,8 @@
                 Mode=OneWay}"/>
         </Grid>
         <Frame Content="{Binding MainFrame, 
-    UpdateSourceTrigger=PropertyChanged,
-    Mode=OneWay}" 
+        UpdateSourceTrigger=PropertyChanged,
+        Mode=OneWay}" 
        NavigationUIVisibility="Hidden"
                Panel.ZIndex="0"/>
     </Grid>

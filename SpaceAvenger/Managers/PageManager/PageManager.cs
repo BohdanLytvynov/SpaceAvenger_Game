@@ -1,17 +1,30 @@
-﻿using System;
+﻿using SpaceAvenger.Managers.PageManager;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace SpaceAvenger.Managers.PageManager
 {
-    public static class PageManager
+    public class PageManagerEventArgs<TFrameType> : EventArgs
+        where TFrameType : struct, Enum
+    {
+        public  Page Page { get; }
+
+        public TFrameType FrameType { get; }
+
+        public PageManagerEventArgs(Page p, TFrameType frameType)
+        {
+            Page = p;
+            FrameType = frameType;
+        }
+    }
+
+    public static class PageManager<TFrameType>       
+        where TFrameType : struct, Enum
     {
         static Dictionary<string, Page> m_Pages;
 
-        public static event Action<Page>? OnSwitchScreenMethodInvoked;
+        public static EventHandler<PageManagerEventArgs<TFrameType>> OnSwitchScreenMethodInvoked;
 
         static PageManager()
         {
@@ -49,7 +62,7 @@ namespace SpaceAvenger.Managers.PageManager
             return temp;
         }
 
-        public static void SwitchPage(string pageKey)
+        public static void SwitchPage(string pageKey, TFrameType frame = default)
         {
             Page? temp;
 
@@ -57,7 +70,9 @@ namespace SpaceAvenger.Managers.PageManager
 
             if (temp != null)
             {
-                OnSwitchScreenMethodInvoked?.Invoke(temp);
+                OnSwitchScreenMethodInvoked?.Invoke(
+                    null, 
+                    new PageManagerEventArgs<TFrameType>(temp, frame));
             }
             else
                 throw new Exception("Storage has no key value pairs with {pageKey} key");            
