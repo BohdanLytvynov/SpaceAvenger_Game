@@ -22,8 +22,7 @@ namespace SpaceAvenger.Views.Pages
     public partial class UserProfileInfoPage : Page
     {
         public UserProfileInfoPage()
-        {
-            CommunicationManager<Page>.Add(this.GetType().Name, this);
+        {           
             InitializeComponent();
         }
     }

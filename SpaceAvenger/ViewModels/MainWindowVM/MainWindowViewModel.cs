@@ -8,12 +8,12 @@ using ViewModelBaseLibDotNetCore.Commands;
 using SpaceAvenger.Views.Pages;
 using System.Windows.Input;
 using System.Windows.Controls;
-using SpaceAvenger.Managers.PageManager;
 using Models.DAL.Entities.User;
 using System.Reflection;
 using System.Windows;
 using SpaceAvenger.Enums.FrameTypes;
 using SpaceAvenger.Managers.CommunicationManager;
+using SpaceAvenger.Services.Realizations;
 
 namespace SpaceAvenger.ViewModels.MainWindowVM
 {
@@ -107,11 +107,11 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
                 execute: OnOpenInfoButtonPressedExecute);
             #endregion
 
-            PageManager<FrameType>.OnSwitchScreenMethodInvoked += PageManager_OnSwitchScreenMethodInvoked;
+            PageManagerService<FrameType>.OnSwitchScreenMethodInvoked += PageManager_OnSwitchScreenMethodInvoked;
 
-            m_mainframe = PageManager<FrameType>.GetPage("ChooseProfilePage")!;
+            m_mainframe = PageManagerService<FrameType>.GetPage("ChooseProfilePage")!;
 
-            m_infoFrame = PageManager<FrameType>.GetPage("UserProfileInfoPage")!;
+            m_infoFrame = PageManagerService<FrameType>.GetPage("UserProfileInfoPage")!;
         }
 
         private void PageManager_OnSwitchScreenMethodInvoked(object? obj, PageManagerEventArgs<FrameType> args)
@@ -144,7 +144,7 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
 
             foreach (var page in pages)
             {
-                PageManager<FrameType>.AddPage(
+                PageManagerService<FrameType>.AddPage(
                     page.Name,
                     Activator.CreateInstance(page.AsType()) as Page);
             }

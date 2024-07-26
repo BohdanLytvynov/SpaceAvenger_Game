@@ -22,8 +22,7 @@ namespace SpaceAvenger.Views.Pages
     public partial class LevelsPage : Page
     {
         public LevelsPage()
-        {
-            CommunicationManager<Page>.Add(this.GetType().Name, this);
+        {            
             InitializeComponent();
         }
     }

@@ -4,7 +4,7 @@ using JsonDataProvider;
 using LiteDB;
 using Models.DAL.Entities.User;
 using SpaceAvenger.Enums.FrameTypes;
-using SpaceAvenger.Managers.PageManager;
+using SpaceAvenger.Services.Realizations;
 using SpaceAvenger.ViewModels.UserProfile;
 using System;
 using System.Collections.ObjectModel;
@@ -91,7 +91,7 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
         private void Up_OnUserProfileSelectedEvent(User obj)
         {
-            PageManager<FrameType>.SwitchPage("", FrameType.MainFrame);
+            PageManagerService<FrameType>.SwitchPage("", FrameType.MainFrame);
         }
 
 

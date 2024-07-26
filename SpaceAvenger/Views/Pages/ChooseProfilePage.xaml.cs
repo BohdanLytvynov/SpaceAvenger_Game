@@ -22,8 +22,7 @@ namespace SpaceAvenger.Views.Pages
     public partial class ChooseProfilePage : Page
     {
         public ChooseProfilePage()
-        {
-            CommunicationManager<Page>.Add(this.GetType().Name, this);
+        {            
             InitializeComponent();
         }
     }

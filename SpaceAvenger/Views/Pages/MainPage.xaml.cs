@@ -22,8 +22,7 @@ namespace SpaceAvenger.Views.Pages
     public partial class MainPage : Page
     {
         public MainPage()
-        {
-            CommunicationManager<Page>.Add(this.GetType().Name, this);
+        {            
             InitializeComponent();
         }
     }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using SpaceAvenger.Enums.FrameTypes;
-using SpaceAvenger.Managers.PageManager;
+using SpaceAvenger.Services.Realizations;
 using ViewModelBaseLibDotNetCore.Commands;
 using ViewModelBaseLibDotNetCore.VM;
 
@@ -56,7 +56,7 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
         public void OnNewGameButtonPressedExecute(object p)
         {
-            PageManager<FrameType>.SwitchPage("levels", FrameType.MainFrame);
+            PageManagerService<FrameType>.SwitchPage("levels", FrameType.MainFrame);
         }
 
         #endregion
