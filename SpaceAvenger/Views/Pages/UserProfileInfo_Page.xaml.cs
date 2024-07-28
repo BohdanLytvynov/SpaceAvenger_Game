@@ -1,5 +1,4 @@
-﻿using SpaceAvenger.Managers.CommunicationManager;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,12 +16,12 @@ using System.Windows.Shapes;
 namespace SpaceAvenger.Views.Pages
 {
     /// <summary>
-    /// Interaction logic for UserProfileInfoPage.xaml
+    /// Interaction logic for UserProfileInfo_Page.xaml
     /// </summary>
-    public partial class UserProfileInfoPage : Page
+    public partial class UserProfileInfo_Page : Page
     {
-        public UserProfileInfoPage()
-        {           
+        public UserProfileInfo_Page()
+        {
             InitializeComponent();
         }
     }

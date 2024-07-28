@@ -1,19 +1,22 @@
-﻿<Page x:Class="SpaceAvenger.Views.Pages.MainPage"
+﻿<Page x:Class="SpaceAvenger.Views.Pages.Main_Page"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"       
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SpaceAvenger.Views.Pages"
       xmlns:vm="clr-namespace:SpaceAvenger.ViewModels.PagesVM"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      d:DataContext="{d:DesignInstance vm:MainPageViewModel, IsDesignTimeCreatable=True}"
-      Title="MainPage">
+      Title="Main_Page"
+      d:DataContext="{d:DesignInstance vm:Main_ViewModel, IsDesignTimeCreatable=True}"
+      >
+
     <Page.Background>
         <ImageBrush 
-        ImageSource="pack://siteoforigin:,,,/Images/Backgrounds/MainPage/SAMainBack.jpg"
-            Stretch="UniformToFill"/>
+    ImageSource="pack://siteoforigin:,,,/Images/Backgrounds/MainPage/SAMainBack.jpg"
+        Stretch="UniformToFill"/>
     </Page.Background>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -28,8 +31,8 @@
             </Grid.RowDefinitions>
 
             <Border Grid.Row="1" 
-                BorderThickness="7" CornerRadius="30"
-                Margin="25">
+            BorderThickness="7" CornerRadius="30"
+            Margin="25">
                 <Border.BorderBrush>
                     <RadialGradientBrush RadiusX="1" RadiusY="1" SpreadMethod="Pad" Center="0,0">
                         <GradientStop Color="#FF12102E" Offset="1"/>
@@ -57,17 +60,17 @@
                         <ColumnDefinition Width="10"/>
                     </Grid.ColumnDefinitions>
                     <Button Grid.Row="1" Grid.Column="1"
-                    Content="New Game" Style="{StaticResource Button}"
-                            Foreground="White" FontSize="16"
-                            Command="{Binding OnNewGameButtonPressed}"/>
+                Content="New Game" Style="{StaticResource Button}"
+                        Foreground="White" FontSize="16"
+                        Command="{Binding OnNewGameButtonPressed}"/>
                     <Button Grid.Row="3" Grid.Column="1"
-                    Content="Exit" 
-                           Foreground="White" FontSize="16" Style="{StaticResource Button}">
-                        
+                Content="Exit" 
+                       Foreground="White" FontSize="16" Style="{StaticResource Button}">
+
 
                         <!--<Button.Command>
-                            <exitcom:ExitCommand/>
-                        </Button.Command>-->
+                        <exitcom:ExitCommand/>
+                    </Button.Command>-->
                     </Button>
 
                 </Grid>
@@ -81,9 +84,9 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <TextBlock Text="Space Avenger V 1.0"
-                       TextAlignment="Center"
-                       FontSize="70"                       
-                       >
+                   TextAlignment="Center"
+                   FontSize="70"                       
+                   >
                 <TextBlock.Effect>
                     <DropShadowEffect BlurRadius="0" Color="#FF5466BE" RenderingBias="Quality" ShadowDepth="4"/>
                 </TextBlock.Effect>

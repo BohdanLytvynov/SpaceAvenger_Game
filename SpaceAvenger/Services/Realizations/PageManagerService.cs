@@ -26,8 +26,12 @@ namespace SpaceAvenger.Services.Realizations
 
         private EventHandler<PageManagerEventArgs<TFrameType>>? m_OnSwitchScreenMethodInvoked;
 
-        public EventHandler<PageManagerEventArgs<TFrameType>>? OnSwitchScreenMethodInvoked => 
-            m_OnSwitchScreenMethodInvoked;
+        public EventHandler<PageManagerEventArgs<TFrameType>>? OnSwitchScreenMethodInvoked
+        {
+            get => m_OnSwitchScreenMethodInvoked;
+            set => m_OnSwitchScreenMethodInvoked = value;
+        }
+            
 
         static PageManagerService()
         {
@@ -79,6 +83,11 @@ namespace SpaceAvenger.Services.Realizations
             }
             else
                 throw new Exception("Storage has no key value pairs with {pageKey} key");
+        }
+
+        public IEnumerable<string> GetAllKeys()
+        {
+            return m_Pages.Keys;
         }
     }
 }

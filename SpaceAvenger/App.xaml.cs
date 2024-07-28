@@ -3,13 +3,10 @@ using SpaceAvenger.Enums.FrameTypes;
 using SpaceAvenger.Services.Interfaces;
 using SpaceAvenger.Services.Realizations;
 using SpaceAvenger.ViewModels.MainWindowVM;
+using SpaceAvenger.Extensions.Services;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
+using SpaceAvenger.Views.Pages;
 
 namespace SpaceAvenger
 {
@@ -28,9 +25,11 @@ namespace SpaceAvenger
 
             services.AddSingleton<IPageManagerService<FrameType>, PageManagerService<FrameType>>();
 
+            services.ConfigurePageManagerService();
+
             services.AddSingleton<MainWindowViewModel>();
 
-            services.AddSingleton<MainWindow>(
+            services.AddSingleton(
                 s =>
                 { 
                     var vm = s.GetService<MainWindowViewModel>();
@@ -38,7 +37,7 @@ namespace SpaceAvenger
                     MainWindow main = new MainWindow();
 
                     main.DataContext = vm;
-
+                    vm.Dispatcher = main.Dispatcher;
                     return main;
                 }
                 );
@@ -51,6 +50,17 @@ namespace SpaceAvenger
             base.OnStartup(e);
 
             Services.GetRequiredService<MainWindow>().Show();
+
+            var PageManager = Services.GetService<IPageManagerService<FrameType>>();
+
+            if (PageManager is null)
+                throw new Exception($"Fail to get {nameof(PageManagerService<FrameType>)} on Startup!");
+
+            PageManager.SwitchPage(nameof(ChooseProfile_Page), FrameType.MainFrame);
+
+            PageManager.SwitchPage(nameof(UserProfileInfo_Page), FrameType.InfoFrame);
         }
+
+        
     }
 }

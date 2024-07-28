@@ -10,7 +10,7 @@ using ViewModelBaseLibDotNetCore.VM;
 
 namespace SpaceAvenger.ViewModels.PagesVM
 {
-    internal class UserProfileInfoViewModel : ViewModelBase
+    internal class UserProfileInfo_ViewModel : ViewModelBase
     {
         #region Fields
         private string m_userName;
@@ -70,7 +70,7 @@ namespace SpaceAvenger.ViewModels.PagesVM
         #endregion
 
         #region Ctor
-        public UserProfileInfoViewModel()
+        public UserProfileInfo_ViewModel()
         {
             #region Init Fields
 

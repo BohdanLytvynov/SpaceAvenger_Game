@@ -4,6 +4,7 @@ using JsonDataProvider;
 using LiteDB;
 using Models.DAL.Entities.User;
 using SpaceAvenger.Enums.FrameTypes;
+using SpaceAvenger.Services.Interfaces;
 using SpaceAvenger.Services.Realizations;
 using SpaceAvenger.ViewModels.UserProfile;
 using System;
@@ -19,7 +20,7 @@ using ViewModelBaseLibDotNetCore.VM;
 
 namespace SpaceAvenger.ViewModels.PagesVM
 {
-    public class ChooseProfileViewModel : ViewModelBase
+    internal class ChooseProfile_ViewModel : ViewModelBase
     {
         #region Fields
 
@@ -28,6 +29,8 @@ namespace SpaceAvenger.ViewModels.PagesVM
         private ObservableCollection<UserProfileVM> m_profileList;
 
         private int m_SelectedUserIndex;
+
+        private IPageManagerService<FrameType> m_PageManager;
                         
         #endregion
 
@@ -52,8 +55,16 @@ namespace SpaceAvenger.ViewModels.PagesVM
         #endregion
 
         #region Ctor
-        public ChooseProfileViewModel()
+
+        public ChooseProfile_ViewModel() : this(default)
         {
+            
+        }
+
+        public ChooseProfile_ViewModel(IPageManagerService<FrameType> pageManager)
+        {
+            m_PageManager = pageManager;
+
             m_SelectedUserIndex = -1;
 
             m_userRepository = new UserRepository(
@@ -91,7 +102,7 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
         private void Up_OnUserProfileSelectedEvent(User obj)
         {
-            PageManagerService<FrameType>.SwitchPage("", FrameType.MainFrame);
+            m_PageManager.SwitchPage("", FrameType.MainFrame);
         }
 
 

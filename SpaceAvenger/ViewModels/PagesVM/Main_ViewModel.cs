@@ -5,16 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using SpaceAvenger.Enums.FrameTypes;
+using SpaceAvenger.Services.Interfaces;
 using SpaceAvenger.Services.Realizations;
 using ViewModelBaseLibDotNetCore.Commands;
 using ViewModelBaseLibDotNetCore.VM;
 
 namespace SpaceAvenger.ViewModels.PagesVM
 {
-    public class MainPageViewModel : ViewModelBase
-    {       
+    internal class Main_ViewModel : ViewModelBase
+    {
         #region Fields
-
+        private IPageManagerService<FrameType> m_PageManager;
         #endregion
 
         #region Properties
@@ -28,11 +29,17 @@ namespace SpaceAvenger.ViewModels.PagesVM
         #endregion
 
         #region Ctor
-        public MainPageViewModel()
+
+        public Main_ViewModel() : this(default)
         {
             
+        }
 
+        public Main_ViewModel(IPageManagerService<FrameType> pageManagerService) 
+        {            
             #region Init Commands
+
+            m_PageManager = pageManagerService;
 
             OnNewGameButtonPressed = new Command(
                 OnNewGameButtonPressedExecute,
@@ -56,7 +63,7 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
         public void OnNewGameButtonPressedExecute(object p)
         {
-            PageManagerService<FrameType>.SwitchPage("levels", FrameType.MainFrame);
+            m_PageManager.SwitchPage("levels", FrameType.MainFrame);
         }
 
         #endregion
