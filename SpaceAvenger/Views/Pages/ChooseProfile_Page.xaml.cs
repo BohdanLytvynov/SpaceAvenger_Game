@@ -1,5 +1,4 @@
-﻿using SpaceAvenger.Managers.CommunicationManager;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,13 +16,12 @@ using System.Windows.Shapes;
 namespace SpaceAvenger.Views.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для LevelsPage.xaml
+    /// Interaction logic for ChooseProfile_Page.xaml
     /// </summary>
-    public partial class LevelsPage : Page
+    public partial class ChooseProfile_Page : Page
     {
-        public LevelsPage()
+        public ChooseProfile_Page()
         {
-            CommunicationManager<Page>.Add(this.GetType().Name, this);
             InitializeComponent();
         }
     }

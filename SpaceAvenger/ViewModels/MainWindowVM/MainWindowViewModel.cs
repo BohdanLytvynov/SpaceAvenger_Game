@@ -8,19 +8,21 @@ using ViewModelBaseLibDotNetCore.Commands;
 using SpaceAvenger.Views.Pages;
 using System.Windows.Input;
 using System.Windows.Controls;
-using SpaceAvenger.Managers.PageManager;
 using Models.DAL.Entities.User;
 using System.Reflection;
 using System.Windows;
 using SpaceAvenger.Enums.FrameTypes;
 using SpaceAvenger.Managers.CommunicationManager;
+using SpaceAvenger.Services.Realizations;
+using Microsoft.Extensions.DependencyInjection;
+using SpaceAvenger.Services.Interfaces;
 
 namespace SpaceAvenger.ViewModels.MainWindowVM
 {
-    public class MainWindowViewModel : ViewModelBase
-    {        
+    internal class MainWindowViewModel : ViewModelBase
+    {
         #region Fields
-        
+               
         object m_mainframe;
 
         private object m_infoFrame;
@@ -34,12 +36,12 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
         private bool m_InfoOpenClosed;
 
         private GridLength m_Height;
-
-        private Window m_window;
-
+        
         private object[] m_imagesOpenClosedButton;
 
         private object m_OpenClosedButton_Content;
+
+        private IPageManagerService<FrameType> m_pageManager;
         
         #endregion
 
@@ -73,9 +75,21 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
         #endregion
 
         #region Ctor
-        public MainWindowViewModel()
+
+        public MainWindowViewModel() : this(default)
+        {
+            
+        }
+
+        public MainWindowViewModel(IPageManagerService<FrameType> pageManager)
         {
             #region Init Fields
+
+            m_mainframe = new object();
+
+            m_infoFrame = new object();
+
+            m_pageManager = pageManager;
 
             m_imagesOpenClosedButton = new object[]
                 {
@@ -91,13 +105,7 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
 
             m_InfoOpenClosed = false;
 
-            m_window = CommunicationManager<Window>.Get(nameof(MainWindow))!;
-
-            #endregion
-
-            #region Init Pages
-
-            LoadPages();
+            m_pageManager.OnSwitchScreenMethodInvoked += PageManager_OnSwitchScreenMethodInvoked;
 
             #endregion
 
@@ -107,11 +115,7 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
                 execute: OnOpenInfoButtonPressedExecute);
             #endregion
 
-            PageManager<FrameType>.OnSwitchScreenMethodInvoked += PageManager_OnSwitchScreenMethodInvoked;
-
-            m_mainframe = PageManager<FrameType>.GetPage("ChooseProfilePage")!;
-
-            m_infoFrame = PageManager<FrameType>.GetPage("UserProfileInfoPage")!;
+            
         }
 
         private void PageManager_OnSwitchScreenMethodInvoked(object? obj, PageManagerEventArgs<FrameType> args)
@@ -132,24 +136,7 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
         #endregion
 
         #region Methods
-        private void LoadPages()
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-
-            var types = assembly.DefinedTypes;
-
-            var pages = types.Where(t => t is not null &&
-             t.BaseType!.Name.Equals(nameof(Page))
-             && t.Name.Contains("Page", StringComparison.OrdinalIgnoreCase));
-
-            foreach (var page in pages)
-            {
-                PageManager<FrameType>.AddPage(
-                    page.Name,
-                    Activator.CreateInstance(page.AsType()) as Page);
-            }
-        }
-
+        
         #region On Open Info Button Pressed 
         private bool CanOnOpenInfoButtonPressedExecute(object p) => true;
 
@@ -176,20 +163,16 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
             Task.Run(() =>
             {
                 double height = 0;
-                m_window.Dispatcher.Invoke(() =>
-                {
-                    height = (InfoFrame as Page)!.ActualHeight;
-                });
 
+                QueueWorkToDispatcher(() => height = (InfoFrame as Page)!.ActualHeight);
+                
                 double curr_height = 0;
 
                 while (curr_height <= height)
                 {
                     ++curr_height;
-                    m_window.Dispatcher.Invoke(() =>
-                    {
-                        Height = new GridLength(curr_height, GridUnitType.Star);
-                    });
+
+                    QueueWorkToDispatcher(() => Height = new GridLength(curr_height, GridUnitType.Star));                    
                 }
             });
         }
@@ -199,18 +182,14 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
             Task.Run(() =>
             {
                 double curr_height = 0;
-                m_window.Dispatcher?.Invoke(() =>
-                {
-                    curr_height = (InfoFrame as Page)!.ActualHeight;
-                });
 
+                QueueWorkToDispatcher(() => curr_height = (InfoFrame as Page)!.ActualHeight);
+                
                 while (curr_height > 0)
                 {
                     --curr_height;
-                    m_window.Dispatcher?.Invoke(() =>
-                    {
-                        Height = new GridLength(curr_height, GridUnitType.Star);
-                    });
+                    QueueWorkToDispatcher(() =>
+                    Height = new GridLength(curr_height, GridUnitType.Star));
                 }
             });
         }

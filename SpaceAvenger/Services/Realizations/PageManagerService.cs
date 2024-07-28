@@ -1,14 +1,14 @@
-﻿using SpaceAvenger.Managers.PageManager;
+﻿using SpaceAvenger.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
 
-namespace SpaceAvenger.Managers.PageManager
+namespace SpaceAvenger.Services.Realizations
 {
     public class PageManagerEventArgs<TFrameType> : EventArgs
         where TFrameType : struct, Enum
     {
-        public  Page Page { get; }
+        public Page Page { get; }
 
         public TFrameType FrameType { get; }
 
@@ -19,19 +19,26 @@ namespace SpaceAvenger.Managers.PageManager
         }
     }
 
-    public static class PageManager<TFrameType>       
+    public class PageManagerService<TFrameType> : IPageManagerService<TFrameType>
         where TFrameType : struct, Enum
     {
         static Dictionary<string, Page> m_Pages;
 
-        public static EventHandler<PageManagerEventArgs<TFrameType>> OnSwitchScreenMethodInvoked;
+        private EventHandler<PageManagerEventArgs<TFrameType>>? m_OnSwitchScreenMethodInvoked;
 
-        static PageManager()
+        public EventHandler<PageManagerEventArgs<TFrameType>>? OnSwitchScreenMethodInvoked
+        {
+            get => m_OnSwitchScreenMethodInvoked;
+            set => m_OnSwitchScreenMethodInvoked = value;
+        }
+            
+
+        static PageManagerService()
         {
             m_Pages = new Dictionary<string, Page>();
         }
 
-        public static void AddPages(IEnumerable<KeyValuePair<string, Page?>> pages)
+        public void AddPages(IEnumerable<KeyValuePair<string, Page?>> pages)
         {
             foreach (var page in pages)
             {
@@ -39,7 +46,7 @@ namespace SpaceAvenger.Managers.PageManager
             }
         }
 
-        public static void AddPage(string key, Page? page)
+        public void AddPage(string key, Page? page)
         {
             if (!m_Pages.ContainsKey(key) && page is not null)
                 m_Pages.Add(key, page);
@@ -47,7 +54,7 @@ namespace SpaceAvenger.Managers.PageManager
                 throw new Exception($"Storage has already key-value pair with {key} key!");
         }
 
-        public static void RemovePage(string pageKey)
+        public void RemovePage(string pageKey)
         {
             if (m_Pages.ContainsKey(pageKey))
                 m_Pages.Remove(pageKey);
@@ -55,14 +62,14 @@ namespace SpaceAvenger.Managers.PageManager
                 throw new Exception($"Storage has no key value pairs with {pageKey} key");
         }
 
-        public static Page? GetPage(string pageKey)
+        public Page? GetPage(string pageKey)
         {
             Page? temp = null;
             m_Pages.TryGetValue(pageKey, out temp);
             return temp;
         }
 
-        public static void SwitchPage(string pageKey, TFrameType frame = default)
+        public void SwitchPage(string pageKey, TFrameType frame = default)
         {
             Page? temp;
 
@@ -70,12 +77,17 @@ namespace SpaceAvenger.Managers.PageManager
 
             if (temp != null)
             {
-                OnSwitchScreenMethodInvoked?.Invoke(
-                    null, 
+                m_OnSwitchScreenMethodInvoked?.Invoke(
+                    null,
                     new PageManagerEventArgs<TFrameType>(temp, frame));
             }
             else
-                throw new Exception("Storage has no key value pairs with {pageKey} key");            
+                throw new Exception("Storage has no key value pairs with {pageKey} key");
+        }
+
+        public IEnumerable<string> GetAllKeys()
+        {
+            return m_Pages.Keys;
         }
     }
 }

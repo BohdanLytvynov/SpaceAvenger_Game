@@ -1,5 +1,4 @@
-﻿using SpaceAvenger.Managers.CommunicationManager;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,13 +16,12 @@ using System.Windows.Shapes;
 namespace SpaceAvenger.Views.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для MainPage.xaml
+    /// Interaction logic for Main_Page.xaml
     /// </summary>
-    public partial class MainPage : Page
+    public partial class Main_Page : Page
     {
-        public MainPage()
+        public Main_Page()
         {
-            CommunicationManager<Page>.Add(this.GetType().Name, this);
             InitializeComponent();
         }
     }

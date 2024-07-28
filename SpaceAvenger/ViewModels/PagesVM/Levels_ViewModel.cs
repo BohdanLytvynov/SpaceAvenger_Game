@@ -7,7 +7,7 @@ using ViewModelBaseLibDotNetCore.VM;
 
 namespace SpaceAvenger.ViewModels.PagesVM
 {
-    public class LevelsViewModel : ViewModelBase
+    public class Levels_ViewModel : ViewModelBase
     {
         #region Fields
 
@@ -24,7 +24,7 @@ namespace SpaceAvenger.ViewModels.PagesVM
         #endregion
 
         #region Ctor
-        public LevelsViewModel()
+        public Levels_ViewModel()
         {
 
         }

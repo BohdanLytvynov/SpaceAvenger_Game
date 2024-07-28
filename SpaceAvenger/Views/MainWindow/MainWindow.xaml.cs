@@ -22,8 +22,7 @@ namespace SpaceAvenger
     public partial class MainWindow : Window
     {
         public MainWindow()
-        {
-            CommunicationManager<Window>.Add(this.GetType().Name, this);
+        {            
             InitializeComponent();            
         }
     }
