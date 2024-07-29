@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SpaceAvenger.Attributes.PageManager;
 using SpaceAvenger.Enums.FrameTypes;
-using SpaceAvenger.Services.Interfaces;
-using SpaceAvenger.Services.Realizations;
+using SpaceAvenger.Services.Interfaces.PageManager;
+using SpaceAvenger.Services.Realizations.PageManager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +42,8 @@ namespace SpaceAvenger.Extensions.Services
 
             var viewModels = types.Where(t => t is not null &&
             (t.BaseType?.Name.Equals(nameof(ViewModelBase)) ?? false )
-            && t.Name.Contains("ViewModel"));
+            && t.Name.Contains("ViewModel") 
+            && t.GetCustomAttribute<PageManagerDetectionIgnore>() is null);
 
             if (viewModels.Count() <= 0)
                 throw new Exception("Fail to find some ViewModels!");
@@ -77,7 +79,7 @@ namespace SpaceAvenger.Extensions.Services
                 
 
                 pageView!.DataContext = viewModel;
-                viewModel.Dispatcher = pageView.Dispatcher;
+                viewModel!.Dispatcher = pageView.Dispatcher;
 
                 pageManager.AddPage(
                     page.Name, pageView);

@@ -4,7 +4,7 @@ using JsonDataProvider;
 using LiteDB;
 using Models.DAL.Entities.User;
 using SpaceAvenger.Enums.FrameTypes;
-using SpaceAvenger.Services.Interfaces;
+using SpaceAvenger.Services.Interfaces.PageManager;
 using SpaceAvenger.Services.Realizations;
 using SpaceAvenger.ViewModels.UserProfile;
 using System;

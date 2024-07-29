@@ -1,12 +1,14 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SpaceAvenger.Enums.FrameTypes;
-using SpaceAvenger.Services.Interfaces;
-using SpaceAvenger.Services.Realizations;
 using SpaceAvenger.ViewModels.MainWindowVM;
 using SpaceAvenger.Extensions.Services;
 using System;
 using System.Windows;
 using SpaceAvenger.Views.Pages;
+using SpaceAvenger.Services.Interfaces.PageManager;
+using SpaceAvenger.Services.Realizations.PageManager;
+using SpaceAvenger.Services.Interfaces.MessageBus;
+using SpaceAvenger.Services.Realizations.MessageBus;
 
 namespace SpaceAvenger
 {
@@ -26,6 +28,8 @@ namespace SpaceAvenger
             services.AddSingleton<IPageManagerService<FrameType>, PageManagerService<FrameType>>();
 
             services.ConfigurePageManagerService();
+
+            services.AddSingleton<IMessageBus, MessageBusService>();
 
             services.AddSingleton<MainWindowViewModel>();
 

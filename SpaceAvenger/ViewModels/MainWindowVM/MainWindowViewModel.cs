@@ -13,12 +13,15 @@ using System.Reflection;
 using System.Windows;
 using SpaceAvenger.Enums.FrameTypes;
 using SpaceAvenger.Managers.CommunicationManager;
-using SpaceAvenger.Services.Realizations;
 using Microsoft.Extensions.DependencyInjection;
-using SpaceAvenger.Services.Interfaces;
+using SpaceAvenger.Services.Interfaces.PageManager;
+using SpaceAvenger.Services.Realizations.PageManager;
+using SpaceAvenger.Attributes.PageManager;
+using SpaceAvenger.Services.Interfaces.MessageBus;
 
 namespace SpaceAvenger.ViewModels.MainWindowVM
 {
+    [PageManagerDetectionIgnore]
     internal class MainWindowViewModel : ViewModelBase
     {
         #region Fields
@@ -42,6 +45,8 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
         private object m_OpenClosedButton_Content;
 
         private IPageManagerService<FrameType> m_pageManager;
+
+        private IMessageBus m_messageBus;
         
         #endregion
 
@@ -76,14 +81,16 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
 
         #region Ctor
 
-        public MainWindowViewModel() : this(default)
+        public MainWindowViewModel() : this(default, default)
         {
             
         }
 
-        public MainWindowViewModel(IPageManagerService<FrameType> pageManager)
+        public MainWindowViewModel(IPageManagerService<FrameType> pageManager, IMessageBus msgBus)
         {
             #region Init Fields
+
+            m_messageBus = msgBus;
 
             m_mainframe = new object();
 

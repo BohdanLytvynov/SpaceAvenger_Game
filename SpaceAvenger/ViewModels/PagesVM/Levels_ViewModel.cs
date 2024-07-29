@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpaceAvenger.Attributes.PageManager;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,7 @@ using ViewModelBaseLibDotNetCore.VM;
 
 namespace SpaceAvenger.ViewModels.PagesVM
 {
+
     public class Levels_ViewModel : ViewModelBase
     {
         #region Fields

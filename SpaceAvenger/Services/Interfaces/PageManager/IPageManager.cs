@@ -1,5 +1,5 @@
 ﻿using SpaceAvenger.Enums.FrameTypes;
-using SpaceAvenger.Services.Realizations;
+using SpaceAvenger.Services.Realizations.PageManager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace SpaceAvenger.Services.Interfaces
+namespace SpaceAvenger.Services.Interfaces.PageManager
 {
     internal interface IPageManagerService<TFrameType>
         where TFrameType : struct, Enum
@@ -24,6 +24,6 @@ namespace SpaceAvenger.Services.Interfaces
 
         public IEnumerable<string> GetAllKeys();
 
-        public void SwitchPage(string pageKey, TFrameType frame = default);       
+        public void SwitchPage(string pageKey, TFrameType frame = default);
     }
 }
