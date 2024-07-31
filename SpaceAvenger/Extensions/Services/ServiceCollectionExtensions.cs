@@ -24,7 +24,7 @@ namespace SpaceAvenger.Extensions.Services
             var viewModels = ReflexionUtility.GetObjectsTypeInfo(assembly,
                 (TypeInfo t) => 
                 t is not null && t.Name.Contains("ViewModel")
-                && (t.BaseType?.Name.Equals(nameof(ViewModelBase)) ?? false)
+                && (t.GetCustomAttribute<ViewModelType>()?.Usage.Equals(ViewModelUsage.Page) ?? false)
                 && t.GetCustomAttribute<ReflexionDetectionIgnore>() is null);
 
             foreach (var viewModel in viewModels)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using SpaceAvenger.Attributes.PageManager;
 using SpaceAvenger.Enums.FrameTypes;
 using SpaceAvenger.Services.Interfaces.MessageBus;
 using SpaceAvenger.Services.Interfaces.PageManager;
@@ -13,6 +14,7 @@ using ViewModelBaseLibDotNetCore.VM;
 
 namespace SpaceAvenger.ViewModels.PagesVM
 {
+    [ViewModelType(ViewModelUsage.Page)]
     internal class Main_ViewModel : ViewModelBase
     {
         #region Fields
@@ -35,20 +37,22 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
         public Main_ViewModel() 
         {
-            
-        }
-
-        public Main_ViewModel(IPageManagerService<FrameType> pageManagerService) : this()
-        {            
             #region Init Commands
-            
-            m_PageManager = pageManagerService;
 
             OnNewGameButtonPressed = new Command(
                 OnNewGameButtonPressedExecute,
                 CanOnNewGameButtonPressedExecute
                 );
 
+            #endregion
+        }
+
+        public Main_ViewModel(IPageManagerService<FrameType> pageManagerService) : this()
+        {            
+            #region Init Fields
+            
+            m_PageManager = pageManagerService;
+            
             #endregion
         }
         #endregion

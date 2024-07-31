@@ -8,7 +8,7 @@ using ViewModelBaseLibDotNetCore.VM;
 
 namespace SpaceAvenger.ViewModels.PagesVM
 {
-
+    [ViewModelType(ViewModelUsage.Page)]
     public class Levels_ViewModel : ViewModelBase
     {
         #region Fields

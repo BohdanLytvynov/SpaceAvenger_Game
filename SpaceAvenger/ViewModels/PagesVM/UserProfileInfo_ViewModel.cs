@@ -1,7 +1,9 @@
 ﻿using Models.DAL.Entities.User;
+using SpaceAvenger.Attributes.PageManager;
 using SpaceAvenger.Services.Interfaces.Message;
 using SpaceAvenger.Services.Interfaces.MessageBus;
 using SpaceAvenger.Services.Realizations.Message;
+using SpaceAvenger.ViewModels.Base;
 using SpaceAvenger.Views.Pages;
 using System;
 using System.Collections.Generic;
@@ -14,7 +16,8 @@ using ViewModelBaseLibDotNetCore.VM;
 
 namespace SpaceAvenger.ViewModels.PagesVM
 {
-    internal class UserProfileInfo_ViewModel : ViewModelBase, IDisposable
+    [ViewModelType(ViewModelUsage.Page)]
+    internal class UserProfileInfo_ViewModel : SubscriptableViewModel, IDisposable
     {
         #region Fields
         private string m_userName;
@@ -32,9 +35,7 @@ namespace SpaceAvenger.ViewModels.PagesVM
         private Image m_userImage;
 
         private IMessageBus m_messageBus;
-
-        private List<IDisposable> m_subscriptions;
-
+        
         #endregion
 
         #region Properties
@@ -93,14 +94,12 @@ namespace SpaceAvenger.ViewModels.PagesVM
             MaleFemale = false;
 
             m_messageBus = messageBus;
-
-            m_subscriptions = new List<IDisposable>();
-
+            
             #endregion
 
             #region Create Subscription
 
-            m_subscriptions.Add(m_messageBus.RegisterHandler<ChooseProfileMessage_User, User>(OnMessageRecieved));
+            Subscriptions.Add(m_messageBus.RegisterHandler<ChooseProfileMessage_User, User>(OnMessageRecieved));
 
             #endregion
         }
@@ -132,8 +131,7 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
         public void Dispose()
         {
-            foreach (IDisposable disposable in m_subscriptions)
-                disposable.Dispose();
+            Unsubscribe();
         }
         #endregion
     }

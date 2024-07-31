@@ -3,6 +3,7 @@ using Data.Repositories.Realizations.UserRep;
 using JsonDataProvider;
 using LiteDB;
 using Models.DAL.Entities.User;
+using SpaceAvenger.Attributes.PageManager;
 using SpaceAvenger.Enums.FrameTypes;
 using SpaceAvenger.Services.Interfaces.Message;
 using SpaceAvenger.Services.Interfaces.MessageBus;
@@ -24,6 +25,7 @@ using ViewModelBaseLibDotNetCore.VM;
 
 namespace SpaceAvenger.ViewModels.PagesVM
 {
+    [ViewModelType(ViewModelUsage.Page)]
     internal class ChooseProfile_ViewModel : ViewModelBase
     {
         #region Fields
@@ -37,9 +39,7 @@ namespace SpaceAvenger.ViewModels.PagesVM
         private IPageManagerService<FrameType> m_PageManager;
 
         private IMessageBus m_messageBus;
-
-        //private IDisposable m_subscription;
-                        
+                                
         #endregion
 
         #region Properties
@@ -185,7 +185,7 @@ namespace SpaceAvenger.ViewModels.PagesVM
         #region On Delete User Profile Button Presssed
         private bool CanOnDeleteUserProfileButtonPressedExxecute(object p)
         {
-            return m_SelectedUserIndex >= 0;
+            return SelectedUserIndex >= 0;
         }
 
         private void OnDeleteUserProfileButtonPressedExecute(object p)
@@ -194,6 +194,8 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
             if(r)
                 ProfileList.RemoveAt(SelectedUserIndex);
+
+            SelectedUserIndex = -1;
         }       
         #endregion
 

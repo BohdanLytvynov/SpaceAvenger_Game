@@ -20,11 +20,12 @@ using SpaceAvenger.Attributes.PageManager;
 using SpaceAvenger.Services.Interfaces.MessageBus;
 using SpaceAvenger.Services.Interfaces.Message;
 using SpaceAvenger.Services.Realizations.Message;
+using SpaceAvenger.ViewModels.Base;
 
 namespace SpaceAvenger.ViewModels.MainWindowVM
 {
     [ReflexionDetectionIgnore]
-    internal class MainWindowViewModel : ViewModelBase, IDisposable
+    internal class MainWindowViewModel : SubscriptableViewModel, IDisposable
     {
         #region Fields
                
@@ -49,9 +50,7 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
         private IPageManagerService<FrameType>? m_pageManager;
 
         private IMessageBus? m_messageBus;
-
-        private List<IDisposable> m_subscriptions;
-        
+                
         #endregion
 
         #region Properties
@@ -125,12 +124,10 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
             m_messageBus = msgBus;
             
             m_pageManager = pageManager;
-
-            m_subscriptions = new List<IDisposable>();
-
+            
             m_pageManager.OnSwitchScreenMethodInvoked += PageManager_OnSwitchScreenMethodInvoked;
 
-            m_subscriptions.Add(m_messageBus.RegisterHandler<ChooseProfileMessage_User, User>(OnMessageRecieved));
+            Subscriptions.Add(m_messageBus.RegisterHandler<ChooseProfileMessage_User, User>(OnMessageRecieved));
         }
 
         private void OnMessageRecieved(ChooseProfileMessage_User message)
@@ -217,10 +214,7 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
 
         public void Dispose()
         {
-            foreach (var s in m_subscriptions)
-            {
-                s.Dispose();
-            }
+            Unsubscribe();
         }
 
         #endregion
