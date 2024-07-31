@@ -13,13 +13,18 @@ using System.Reflection;
 using System.Windows;
 using SpaceAvenger.Enums.FrameTypes;
 using SpaceAvenger.Managers.CommunicationManager;
-using SpaceAvenger.Services.Realizations;
 using Microsoft.Extensions.DependencyInjection;
-using SpaceAvenger.Services.Interfaces;
+using SpaceAvenger.Services.Interfaces.PageManager;
+using SpaceAvenger.Services.Realizations.PageManager;
+using SpaceAvenger.Attributes.PageManager;
+using SpaceAvenger.Services.Interfaces.MessageBus;
+using SpaceAvenger.Services.Interfaces.Message;
+using SpaceAvenger.Services.Realizations.Message;
 
 namespace SpaceAvenger.ViewModels.MainWindowVM
 {
-    internal class MainWindowViewModel : ViewModelBase
+    [ReflexionDetectionIgnore]
+    internal class MainWindowViewModel : ViewModelBase, IDisposable
     {
         #region Fields
                
@@ -41,7 +46,11 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
 
         private object m_OpenClosedButton_Content;
 
-        private IPageManagerService<FrameType> m_pageManager;
+        private IPageManagerService<FrameType>? m_pageManager;
+
+        private IMessageBus? m_messageBus;
+
+        private List<IDisposable> m_subscriptions;
         
         #endregion
 
@@ -76,20 +85,11 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
 
         #region Ctor
 
-        public MainWindowViewModel() : this(default)
+        public MainWindowViewModel()
         {
-            
-        }
-
-        public MainWindowViewModel(IPageManagerService<FrameType> pageManager)
-        {
-            #region Init Fields
-
             m_mainframe = new object();
 
             m_infoFrame = new object();
-
-            m_pageManager = pageManager;
 
             m_imagesOpenClosedButton = new object[]
                 {
@@ -105,7 +105,7 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
 
             m_InfoOpenClosed = false;
 
-            m_pageManager.OnSwitchScreenMethodInvoked += PageManager_OnSwitchScreenMethodInvoked;
+            m_userName = string.Empty;
 
             #endregion
 
@@ -115,7 +115,28 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
                 execute: OnOpenInfoButtonPressedExecute);
             #endregion
 
+
+        }
+
+        public MainWindowViewModel(IPageManagerService<FrameType> pageManager, IMessageBus msgBus) : this()
+        {
+            #region Init Fields
+
+            m_messageBus = msgBus;
             
+            m_pageManager = pageManager;
+
+            m_subscriptions = new List<IDisposable>();
+
+            m_pageManager.OnSwitchScreenMethodInvoked += PageManager_OnSwitchScreenMethodInvoked;
+
+            m_subscriptions.Add(m_messageBus.RegisterHandler<ChooseProfileMessage_User, User>(OnMessageRecieved));
+        }
+
+        private void OnMessageRecieved(ChooseProfileMessage_User message)
+        {
+            if (message.Content is not null)
+                OnOpenInfoButtonPressedExecute(null);
         }
 
         private void PageManager_OnSwitchScreenMethodInvoked(object? obj, PageManagerEventArgs<FrameType> args)
@@ -192,6 +213,14 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
                     Height = new GridLength(curr_height, GridUnitType.Star));
                 }
             });
+        }
+
+        public void Dispose()
+        {
+            foreach (var s in m_subscriptions)
+            {
+                s.Dispose();
+            }
         }
 
         #endregion

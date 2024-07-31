@@ -1,9 +1,9 @@
-﻿using SpaceAvenger.Services.Interfaces;
+﻿using SpaceAvenger.Services.Interfaces.PageManager;
 using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
 
-namespace SpaceAvenger.Services.Realizations
+namespace SpaceAvenger.Services.Realizations.PageManager
 {
     public class PageManagerEventArgs<TFrameType> : EventArgs
         where TFrameType : struct, Enum
@@ -31,7 +31,7 @@ namespace SpaceAvenger.Services.Realizations
             get => m_OnSwitchScreenMethodInvoked;
             set => m_OnSwitchScreenMethodInvoked = value;
         }
-            
+
 
         static PageManagerService()
         {

@@ -1,4 +1,8 @@
 ﻿using Models.DAL.Entities.User;
+using SpaceAvenger.Services.Interfaces.Message;
+using SpaceAvenger.Services.Interfaces.MessageBus;
+using SpaceAvenger.Services.Realizations.Message;
+using SpaceAvenger.Views.Pages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +14,7 @@ using ViewModelBaseLibDotNetCore.VM;
 
 namespace SpaceAvenger.ViewModels.PagesVM
 {
-    internal class UserProfileInfo_ViewModel : ViewModelBase
+    internal class UserProfileInfo_ViewModel : ViewModelBase, IDisposable
     {
         #region Fields
         private string m_userName;
@@ -26,6 +30,10 @@ namespace SpaceAvenger.ViewModels.PagesVM
         private bool m_male_Female;
 
         private Image m_userImage;
+
+        private IMessageBus m_messageBus;
+
+        private List<IDisposable> m_subscriptions;
 
         #endregion
 
@@ -68,9 +76,13 @@ namespace SpaceAvenger.ViewModels.PagesVM
         { get=> m_userImage; set=>Set(ref m_userImage, value); }
 
         #endregion
+        public UserProfileInfo_ViewModel()
+        { 
+            
+        }
 
         #region Ctor
-        public UserProfileInfo_ViewModel()
+        public UserProfileInfo_ViewModel(IMessageBus messageBus) : this()
         {
             #region Init Fields
 
@@ -79,12 +91,33 @@ namespace SpaceAvenger.ViewModels.PagesVM
             m_userImage = new Image();
 
             MaleFemale = false;
-                        
+
+            m_messageBus = messageBus;
+
+            m_subscriptions = new List<IDisposable>();
+
+            #endregion
+
+            #region Create Subscription
+
+            m_subscriptions.Add(m_messageBus.RegisterHandler<ChooseProfileMessage_User, User>(OnMessageRecieved));
+
             #endregion
         }
         #endregion
 
         #region Methods
+
+        private void OnMessageRecieved(ChooseProfileMessage_User msg)
+        { 
+            UserName = msg.Content.UserName;
+            MaleFemale = msg.Content.MaleFemale;
+            Rank = msg.Content.Rank;
+            Enlisted = msg.Content.CreatedDate;
+            MissionsCount = msg.Content.MissionsCount;
+            Points = msg.Content.Points;
+        }
+
         private Image LoadImageUsingUri(string uri, UriKind kind)
         {             
             BitmapImage bitmap = new BitmapImage();
@@ -95,6 +128,12 @@ namespace SpaceAvenger.ViewModels.PagesVM
             Image image = new Image();
             image.Source = bitmap;
             return image;
+        }
+
+        public void Dispose()
+        {
+            foreach (IDisposable disposable in m_subscriptions)
+                disposable.Dispose();
         }
         #endregion
     }

@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using SpaceAvenger.Enums.FrameTypes;
-using SpaceAvenger.Services.Interfaces;
+using SpaceAvenger.Services.Interfaces.MessageBus;
+using SpaceAvenger.Services.Interfaces.PageManager;
 using SpaceAvenger.Services.Realizations;
 using ViewModelBaseLibDotNetCore.Commands;
 using ViewModelBaseLibDotNetCore.VM;
@@ -16,6 +17,8 @@ namespace SpaceAvenger.ViewModels.PagesVM
     {
         #region Fields
         private IPageManagerService<FrameType> m_PageManager;
+
+        private IMessageBus m_messageBus;
         #endregion
 
         #region Properties
@@ -30,15 +33,15 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
         #region Ctor
 
-        public Main_ViewModel() : this(default)
+        public Main_ViewModel() 
         {
             
         }
 
-        public Main_ViewModel(IPageManagerService<FrameType> pageManagerService) 
+        public Main_ViewModel(IPageManagerService<FrameType> pageManagerService) : this()
         {            
             #region Init Commands
-
+            
             m_PageManager = pageManagerService;
 
             OnNewGameButtonPressed = new Command(

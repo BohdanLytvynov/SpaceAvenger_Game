@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SpaceAvenger.Views.Pages"
-      xmlns:vm="clr-namespace:SpaceAvenger.ViewModels.PagesVM"
+      xmlns:vm="clr-namespace:SpaceAvenger.ViewModels.PagesVM"      
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Main_Page"
@@ -65,12 +65,8 @@
                         Command="{Binding OnNewGameButtonPressed}"/>
                     <Button Grid.Row="3" Grid.Column="1"
                 Content="Exit" 
-                       Foreground="White" FontSize="16" Style="{StaticResource Button}">
-
-
-                        <!--<Button.Command>
-                        <exitcom:ExitCommand/>
-                    </Button.Command>-->
+                       Foreground="White" FontSize="16" Style="{StaticResource Button}"
+                            Command="{StaticResource ExitCommand}">
                     </Button>
 
                 </Grid>
