@@ -68,9 +68,9 @@ namespace SpaceAvenger
              (t.BaseType?.Name.Equals(nameof(Page)) ?? false)
              && t.Name.Contains("Page"));
 
-            var viewModels = ReflexionUtility.GetObjectsTypeInfo(assembly,
+            var pageViewModels = ReflexionUtility.GetObjectsTypeInfo(assembly,
                 (TypeInfo t) => t is not null &&
-            (t.BaseType?.Name.Equals(nameof(ViewModelBase)) ?? false)
+            (t.GetCustomAttribute<ViewModelType>()?.Usage.Equals(ViewModelUsage.Page) ?? false)
             && t.Name.Contains("ViewModel")
             && t.GetCustomAttribute<ReflexionDetectionIgnore>() is null); 
                                    
@@ -83,7 +83,7 @@ namespace SpaceAvenger
             foreach (var page in pages)
             {
                 string pageName = page.Name.Split(SEPARATOR)[0];
-                viewModelInfo = viewModels.FirstOrDefault(
+                viewModelInfo = pageViewModels.FirstOrDefault(
                     vm => vm.Name.Split(SEPARATOR)[0].Equals(pageName));
 
                 if (viewModelInfo is null)
