@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SpaceAvenger.Attributes.PageManager
 {
     [AttributeUsage( AttributeTargets.Class)]
-    internal class PageManagerDetectionIgnore : Attribute
+    internal class ReflexionDetectionIgnore : Attribute
     {
     }
 }

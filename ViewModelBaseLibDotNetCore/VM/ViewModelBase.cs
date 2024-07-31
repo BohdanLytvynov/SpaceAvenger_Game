@@ -13,7 +13,7 @@ namespace ViewModelBaseLibDotNetCore.VM
 {
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
-        private Dispatcher m_dispatcher;
+        private Dispatcher? m_dispatcher;
 
         public virtual Dispatcher Dispatcher { set => m_dispatcher = value; }
 

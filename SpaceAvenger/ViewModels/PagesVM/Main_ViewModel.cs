@@ -33,12 +33,12 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
         #region Ctor
 
-        public Main_ViewModel() : this(default)
+        public Main_ViewModel() 
         {
             
         }
 
-        public Main_ViewModel(IPageManagerService<FrameType> pageManagerService) 
+        public Main_ViewModel(IPageManagerService<FrameType> pageManagerService) : this()
         {            
             #region Init Commands
             

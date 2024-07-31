@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpaceAvenger.Services.Interfaces.Message;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,12 +10,15 @@ namespace SpaceAvenger.Services.Interfaces.MessageBus
 {
     internal interface IMessageBus
     {
-        IDisposable RegisterHandler<T>(Action<T> handler);
-
+        IDisposable RegisterHandler<T, U>(Action<T> handler)
+            where T : IMessage<U>;
+            
         public ReaderWriterLockSlim Lock { get; }
 
-        public Dictionary<Type, IEnumerable<WeakReference>> Subscriptions { get; }
+        public Dictionary<string, IEnumerable<WeakReference>> Subscriptions { get; }
 
-        void Send<T>(T message);
+        void Send<T, U>(T message)
+            where T : IMessage<U>;
+            
     }
 }

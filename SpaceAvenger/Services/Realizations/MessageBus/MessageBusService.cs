@@ -1,4 +1,5 @@
-﻿using SpaceAvenger.Services.Interfaces.MessageBus;
+﻿using SpaceAvenger.Services.Interfaces.Message;
+using SpaceAvenger.Services.Interfaces.MessageBus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +11,16 @@ namespace SpaceAvenger.Services.Realizations.MessageBus
 {
     internal class MessageBusService : IMessageBus
     {
-        private class Subscription<TMsg> : IDisposable
+        #region Nested Classes
+
+        private class Subscription<T, U> : IDisposable   
+            where T : IMessage<U>
         {
             private readonly WeakReference<IMessageBus> m_bus;
 
-            public Action<TMsg> Handler { get; }
+            public Action<T> Handler { get; }
 
-            public Subscription(IMessageBus bus, Action<TMsg> action)
+            public Subscription(IMessageBus bus, Action<T> action)
             {
                 m_bus = new(bus);
 
@@ -33,7 +37,7 @@ namespace SpaceAvenger.Services.Realizations.MessageBus
                 var Lock = bus.Lock;
 
                 Lock.EnterWriteLock();
-                var msg_type = typeof(TMsg);
+                var msg_type = typeof(T).Name;
 
                 try
                 {
@@ -47,10 +51,10 @@ namespace SpaceAvenger.Services.Realizations.MessageBus
                     foreach (var r in alived_refs)
                     {
                         if (ReferenceEquals(r.Target, this))
-                        { 
+                        {
                             curr_ref = r;
                             break;
-                        }    
+                        }
                     }
 
                     if (curr_ref is null)
@@ -68,7 +72,14 @@ namespace SpaceAvenger.Services.Realizations.MessageBus
             }
         }
 
-        private readonly Dictionary<Type, IEnumerable<WeakReference>> m_Subscriptions = new();
+        #endregion
+
+        private readonly Dictionary<string, IEnumerable<WeakReference>> m_Subscriptions;
+
+        public Dictionary<string, IEnumerable<WeakReference>> Subscriptions
+        {
+            get => m_Subscriptions;
+        }
 
         private readonly ReaderWriterLockSlim m_lock = new ReaderWriterLockSlim();
 
@@ -77,22 +88,23 @@ namespace SpaceAvenger.Services.Realizations.MessageBus
             get => m_lock;
         }
 
-        public Dictionary<Type, IEnumerable<WeakReference>> Subscriptions
+        public MessageBusService()
         {
-            get => m_Subscriptions;
+            m_Subscriptions = new Dictionary<string, IEnumerable<WeakReference>>();
         }
 
-        public IDisposable RegisterHandler<T>(Action<T> handler)
+        public IDisposable RegisterHandler<T,U>(Action<T> handler)  
+            where T : IMessage<U>
         {
-            Subscription<T> subscription = new Subscription<T>(this, handler); 
+            Subscription<T, U> subscription = new Subscription<T, U>(this, handler); 
             m_lock.EnterWriteLock();
             try
             {                
-                var sub_ref = new WeakReference(subscription);
-                var msg_type = typeof(T);
+                var sub_weak_ref = new WeakReference(subscription);
+                var msg_type = typeof(T).Name;
 
                 m_Subscriptions[msg_type] = m_Subscriptions.TryGetValue(msg_type, out var subscriptions) ?
-                    subscriptions.Append(sub_ref) : new[] { sub_ref };                
+                    subscriptions.Append(sub_weak_ref) : new[] { sub_weak_ref };                
             }
             finally
             { 
@@ -102,10 +114,11 @@ namespace SpaceAvenger.Services.Realizations.MessageBus
             return subscription;
         }
 
-        private IEnumerable<Action<T>> GetHandlersAccordingToType<T>()
+        private IEnumerable<Action<T>>? GetHandlersAccordingToMsgType<T, U>()
+            where T : IMessage<U>
         {
             var handlers = new List<Action<T>>();
-            var message_type = typeof(T);
+            var message_type = typeof(T).Name;
             var exist_die_refs = false;
 
             Lock.EnterReadLock();
@@ -115,7 +128,7 @@ namespace SpaceAvenger.Services.Realizations.MessageBus
                     return null;
 
                 foreach (var @ref in refs)
-                    if (@ref.Target is Subscription<T> { Handler: var handler })
+                    if (@ref.Target is Subscription<T, U> { Handler: var handler })
                         handlers.Add(handler);
                     else
                         exist_die_refs = true;
@@ -144,9 +157,12 @@ namespace SpaceAvenger.Services.Realizations.MessageBus
             return handlers;
         }
 
-        public void Send<T>(T message)
+        public void Send<T, U>(T message)
+            where T : IMessage<U>
         {
-            if (GetHandlersAccordingToType<T>() is not { } handlers)
+            var handlers = GetHandlersAccordingToMsgType<T, U>();
+
+            if (handlers is null)
                 return;
 
             foreach (var h in handlers)

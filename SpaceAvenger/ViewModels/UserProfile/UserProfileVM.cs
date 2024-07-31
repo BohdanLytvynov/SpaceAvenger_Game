@@ -72,6 +72,10 @@ namespace SpaceAvenger.ViewModels.UserProfile
             OnConfirmButtonPressed = new Command(
                 canExecute: CanOnConfirmedButtonPressedExecute,
                 execute: OnConfirmButtonPressedExecute);
+
+            OnSelectButtonPressed = new Command(
+                canExecute: CanOnSelectButtonPressedExecute,
+                execute: OnSelectButtonPressedExecute);
             #endregion
         }
 

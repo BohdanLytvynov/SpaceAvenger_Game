@@ -9,6 +9,15 @@ using SpaceAvenger.Services.Interfaces.PageManager;
 using SpaceAvenger.Services.Realizations.PageManager;
 using SpaceAvenger.Services.Interfaces.MessageBus;
 using SpaceAvenger.Services.Realizations.MessageBus;
+using System.Reflection;
+using System.Linq;
+using System.Windows.Controls;
+using SpaceAvenger.ViewModels.PagesVM;
+using ViewModelBaseLibDotNetCore.VM;
+using SpaceAvenger.Attributes.PageManager;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using Domain.Utilities;
 
 namespace SpaceAvenger
 {
@@ -17,52 +26,91 @@ namespace SpaceAvenger
     /// </summary>
     public partial class App : Application
     {
+        private const string SEPARATOR = "_";
+
         private static IServiceProvider? _Services;
 
         public static IServiceProvider Services => _Services ??= InitializeServices().BuildServiceProvider();
-
+        
         private static IServiceCollection InitializeServices()
         {
             var services = new ServiceCollection();
-
-            services.AddSingleton<IPageManagerService<FrameType>, PageManagerService<FrameType>>();
-
-            services.ConfigurePageManagerService();
-
-            services.AddSingleton<IMessageBus, MessageBusService>();
-
+            // Add ViewModels (Windows)
             services.AddSingleton<MainWindowViewModel>();
+            // Add ViewModels (Pages)
 
-            services.AddSingleton(
-                s =>
-                { 
-                    var vm = s.GetService<MainWindowViewModel>();
+            services.AddSingleton<MainWindow>();
 
-                    MainWindow main = new MainWindow();
+            services.AddPageViewModelsAsSingleton();
 
-                    main.DataContext = vm;
-                    vm.Dispatcher = main.Dispatcher;
-                    return main;
-                }
-                );
-
+            services.AddSingleton<IPageManagerService<FrameType>, PageManagerService<FrameType>>();               
+            
+            services.AddSingleton<IMessageBus, MessageBusService>();
+                                                    
             return services;
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+            
+            var pm = Services.GetRequiredService<IPageManagerService<FrameType>>();
 
-            Services.GetRequiredService<MainWindow>().Show();
-
-            var PageManager = Services.GetService<IPageManagerService<FrameType>>();
-
-            if (PageManager is null)
+            if (pm is null)
                 throw new Exception($"Fail to get {nameof(PageManagerService<FrameType>)} on Startup!");
 
-            PageManager.SwitchPage(nameof(ChooseProfile_Page), FrameType.MainFrame);
+            // Init PageManager
 
-            PageManager.SwitchPage(nameof(UserProfileInfo_Page), FrameType.InfoFrame);
+            var assembly = Assembly.GetExecutingAssembly();
+
+            var pages = ReflexionUtility.GetObjectsTypeInfo(assembly,
+                (TypeInfo t) => t is not null &&
+             (t.BaseType?.Name.Equals(nameof(Page)) ?? false)
+             && t.Name.Contains("Page"));
+
+            var viewModels = ReflexionUtility.GetObjectsTypeInfo(assembly,
+                (TypeInfo t) => t is not null &&
+            (t.BaseType?.Name.Equals(nameof(ViewModelBase)) ?? false)
+            && t.Name.Contains("ViewModel")
+            && t.GetCustomAttribute<ReflexionDetectionIgnore>() is null); 
+                                   
+            TypeInfo? viewModelInfo = null;
+
+            Page? view = null;
+
+            ViewModelBase? vm = null;
+
+            foreach (var page in pages)
+            {
+                string pageName = page.Name.Split(SEPARATOR)[0];
+                viewModelInfo = viewModels.FirstOrDefault(
+                    vm => vm.Name.Split(SEPARATOR)[0].Equals(pageName));
+
+                if (viewModelInfo is null)
+                    throw new Exception($"Can't find corresponding ViewModel to the View {pageName}! Please check you page's and viewmodel's namings.");
+
+                vm = Services.GetRequiredService(viewModelInfo.AsType()) as ViewModelBase;
+                view = Activator.CreateInstance(page.AsType()) as Page;
+
+                view.DataContext = vm;
+                vm.Dispatcher = view.Dispatcher;
+
+                pm.AddPage(
+                page.Name, view);
+            }
+
+            var mainWindow = Services.GetRequiredService<MainWindow>();
+
+            var mainWindowViewModel = Services.GetRequiredService<MainWindowViewModel>();
+
+            mainWindow.DataContext = mainWindowViewModel;
+            mainWindowViewModel.Dispatcher = mainWindow.Dispatcher;
+
+            mainWindow.Show();
+
+            pm.SwitchPage(nameof(ChooseProfile_Page), FrameType.MainFrame);
+
+            pm.SwitchPage(nameof(UserProfileInfo_Page), FrameType.InfoFrame);
         }
 
         

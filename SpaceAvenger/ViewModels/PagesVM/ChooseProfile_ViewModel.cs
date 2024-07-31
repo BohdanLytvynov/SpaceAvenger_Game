@@ -4,9 +4,13 @@ using JsonDataProvider;
 using LiteDB;
 using Models.DAL.Entities.User;
 using SpaceAvenger.Enums.FrameTypes;
+using SpaceAvenger.Services.Interfaces.Message;
+using SpaceAvenger.Services.Interfaces.MessageBus;
 using SpaceAvenger.Services.Interfaces.PageManager;
 using SpaceAvenger.Services.Realizations;
+using SpaceAvenger.Services.Realizations.Message;
 using SpaceAvenger.ViewModels.UserProfile;
+using SpaceAvenger.Views.Pages;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -31,6 +35,10 @@ namespace SpaceAvenger.ViewModels.PagesVM
         private int m_SelectedUserIndex;
 
         private IPageManagerService<FrameType> m_PageManager;
+
+        private IMessageBus m_messageBus;
+
+        //private IDisposable m_subscription;
                         
         #endregion
 
@@ -56,13 +64,16 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
         #region Ctor
 
-        public ChooseProfile_ViewModel() : this(default)
+        public ChooseProfile_ViewModel()
         {
             
         }
 
-        public ChooseProfile_ViewModel(IPageManagerService<FrameType> pageManager)
+        public ChooseProfile_ViewModel(IPageManagerService<FrameType> pageManager,
+            IMessageBus messageBus) : this()
         {
+            m_messageBus = messageBus;
+
             m_PageManager = pageManager;
 
             m_SelectedUserIndex = -1;
@@ -98,17 +109,29 @@ namespace SpaceAvenger.ViewModels.PagesVM
                 OnDeleteUserProfileButtonPressedExecute,
                 CanOnDeleteUserProfileButtonPressedExxecute
                 );
+
+            #region Subscriptions
+            
+            #endregion
         }
 
         private void Up_OnUserProfileSelectedEvent(User obj)
         {
-            m_PageManager.SwitchPage("", FrameType.MainFrame);
+            m_PageManager.SwitchPage(nameof(Main_Page), FrameType.MainFrame);
+
+            m_messageBus.Send<ChooseProfileMessage_User, User>(new ChooseProfileMessage_User(obj));
         }
 
 
         #endregion
 
         #region Methods
+
+        #region On Recieve Message
+
+        
+
+        #endregion
 
         #region On Add New Profile Button Pressed
         private bool CanOnAddNewProfileButtonPressedExecute(object p)
@@ -171,7 +194,7 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
             if(r)
                 ProfileList.RemoveAt(SelectedUserIndex);
-        }
+        }       
         #endregion
 
         #endregion
