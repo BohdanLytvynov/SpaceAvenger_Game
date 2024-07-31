@@ -37,7 +37,7 @@ Background="{StaticResource LVBack}"
             Mode=TwoWay}"
                   SelectedIndex="{Binding SelectedUserIndex,
             UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-      Margin="10"/>
+      Margin="10" SelectionMode="Single"/>
             <Grid x:Name="Buttons" 
               Grid.Column="2"
               Margin="10"

@@ -185,7 +185,7 @@ namespace SpaceAvenger.ViewModels.PagesVM
         #region On Delete User Profile Button Presssed
         private bool CanOnDeleteUserProfileButtonPressedExxecute(object p)
         {
-            return m_SelectedUserIndex >= 0;
+            return SelectedUserIndex >= 0;
         }
 
         private void OnDeleteUserProfileButtonPressedExecute(object p)
@@ -194,6 +194,8 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
             if(r)
                 ProfileList.RemoveAt(SelectedUserIndex);
+
+            SelectedUserIndex = -1;
         }       
         #endregion
 
