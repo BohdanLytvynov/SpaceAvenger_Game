@@ -133,7 +133,7 @@ namespace SpaceAvenger.ViewModels.MainWindowVM
         private void OnMessageRecieved(ChooseProfileMessage_User message)
         {
             if (message.Content is not null)
-                OnOpenInfoButtonPressedExecute(null);
+                OnOpenInfoButtonPressedExecute(null);            
         }
 
         private void PageManager_OnSwitchScreenMethodInvoked(object? obj, PageManagerEventArgs<FrameType> args)

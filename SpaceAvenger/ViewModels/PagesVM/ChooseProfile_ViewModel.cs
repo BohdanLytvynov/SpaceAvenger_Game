@@ -150,6 +150,7 @@ namespace SpaceAvenger.ViewModels.PagesVM
                     default));
 
             up.OnUserProfileConfirmedEvent += Up_OnUserProfileConfirmedEvent; 
+            up.OnUserProfileSelectedEvent += Up_OnUserProfileSelectedEvent;
 
             ProfileList.Add(up);
         }

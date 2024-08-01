@@ -22,7 +22,7 @@ namespace SpaceAvenger.Services.Realizations.PageManager
     public class PageManagerService<TFrameType> : IPageManagerService<TFrameType>
         where TFrameType : struct, Enum
     {
-        static Dictionary<string, Page> m_Pages;
+        private Dictionary<string, Page> m_Pages;
 
         private EventHandler<PageManagerEventArgs<TFrameType>>? m_OnSwitchScreenMethodInvoked;
 
@@ -33,7 +33,7 @@ namespace SpaceAvenger.Services.Realizations.PageManager
         }
 
 
-        static PageManagerService()
+        public PageManagerService()
         {
             m_Pages = new Dictionary<string, Page>();
         }
