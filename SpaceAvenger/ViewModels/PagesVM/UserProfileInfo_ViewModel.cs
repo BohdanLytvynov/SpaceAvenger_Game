@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using ViewModelBaseLibDotNetCore.VM;
@@ -78,12 +79,6 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
         #endregion
         public UserProfileInfo_ViewModel()
-        { 
-            
-        }
-
-        #region Ctor
-        public UserProfileInfo_ViewModel(IMessageBus messageBus) : this()
         {
             #region Init Fields
 
@@ -92,10 +87,14 @@ namespace SpaceAvenger.ViewModels.PagesVM
             m_userImage = new Image();
 
             MaleFemale = false;
-
-            m_messageBus = messageBus;
             
             #endregion
+        }
+
+        #region Ctor
+        public UserProfileInfo_ViewModel(IMessageBus messageBus) : this()
+        {
+            m_messageBus = messageBus;
 
             #region Create Subscription
 

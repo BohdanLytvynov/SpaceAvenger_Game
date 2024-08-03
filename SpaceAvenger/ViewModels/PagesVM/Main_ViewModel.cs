@@ -9,6 +9,7 @@ using SpaceAvenger.Enums.FrameTypes;
 using SpaceAvenger.Services.Interfaces.MessageBus;
 using SpaceAvenger.Services.Interfaces.PageManager;
 using SpaceAvenger.Services.Realizations;
+using SpaceAvenger.Views.Pages;
 using ViewModelBaseLibDotNetCore.Commands;
 using ViewModelBaseLibDotNetCore.VM;
 
@@ -31,6 +32,8 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
         public ICommand OnNewGameButtonPressed { get; }
 
+        public ICommand OnSurvivalModeButtonPressed { get; }
+
         #endregion
 
         #region Ctor
@@ -42,6 +45,11 @@ namespace SpaceAvenger.ViewModels.PagesVM
             OnNewGameButtonPressed = new Command(
                 OnNewGameButtonPressedExecute,
                 CanOnNewGameButtonPressedExecute
+                );
+
+            OnSurvivalModeButtonPressed = new Command(
+                OnSurvivalModeButtonPressedExecute,
+                CanOnSurvivalModeButtonPressedExecute
                 );
 
             #endregion
@@ -71,6 +79,17 @@ namespace SpaceAvenger.ViewModels.PagesVM
         public void OnNewGameButtonPressedExecute(object p)
         {
             m_PageManager.SwitchPage("levels", FrameType.MainFrame);
+        }
+
+        #endregion
+
+        #region OnSurvivalModeButtonPressed
+
+        private bool CanOnSurvivalModeButtonPressedExecute(object p) => true;
+
+        private void OnSurvivalModeButtonPressedExecute(object p)
+        {
+            m_PageManager.SwitchPage(nameof(Game_Page), FrameType.MainFrame);
         }
 
         #endregion

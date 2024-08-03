@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:mainVm="clr-namespace:SpaceAvenger.ViewModels.MainWindowVM"
         mc:Ignorable="d"
-        WindowStyle="None" 
-        WindowState="Maximized"
+        WindowStyle="SingleBorderWindow" 
+        WindowState="Normal"
         Title="{Binding Tittle,
     UpdateSourceTrigger=PropertyChanged}" Height="450" Width="800" 
         d:DataContext="{d:DesignInstance mainVm:MainWindowViewModel, IsDesignTimeCreatable=True}">
