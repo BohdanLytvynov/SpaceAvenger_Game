@@ -17,6 +17,7 @@ namespace SpaceAvenger.ViewModels.Base
 
         #endregion
 
+
         #region Ctor
 
         public SubscriptableViewModel()
