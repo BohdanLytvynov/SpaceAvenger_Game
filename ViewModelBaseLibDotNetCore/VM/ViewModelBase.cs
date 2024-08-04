@@ -24,6 +24,22 @@ namespace ViewModelBaseLibDotNetCore.VM
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropName));
         }
 
+        protected bool SetIfNull<T>(ref T field, T value, [CallerMemberName] string PropName = null)
+        {            
+            if (field is not null && field.Equals(value))
+            {
+                return false;
+            }
+            else
+            {
+                field = value;
+
+                OnPropertyChanged(PropName);
+
+                return true;
+            }
+        }
+
         protected bool Set<T>(ref T field, T value, [CallerMemberName] string PropName = null)
         {            
             if (field == null)

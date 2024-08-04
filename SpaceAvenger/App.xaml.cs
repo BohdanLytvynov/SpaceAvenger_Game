@@ -83,8 +83,11 @@ namespace SpaceAvenger
             foreach (var page in pages)
             {
                 string pageName = page.Name.Split(SEPARATOR)[0];
+
                 viewModelInfo = pageViewModels.FirstOrDefault(
-                    vm => vm.Name.Split(SEPARATOR)[0].Equals(pageName));
+                    vm => vm.GetCustomAttribute<ViewModelName>() is null? 
+                    vm.Name.Split(SEPARATOR)[0].Equals(pageName)
+                    : vm.GetCustomAttribute<ViewModelName>()?.Name?.Split(SEPARATOR)[0].Equals(pageName) ?? false);
 
                 if (viewModelInfo is null)
                     throw new Exception($"Can't find corresponding ViewModel to the View {pageName}! Please check you page's and viewmodel's namings.");
@@ -108,7 +111,7 @@ namespace SpaceAvenger
 
             mainWindow.Show();
 
-            pm.SwitchPage(nameof(ChooseProfile_Page), FrameType.MainFrame);
+            pm.SwitchPage(nameof(Game_Page), FrameType.MainFrame);
 
             pm.SwitchPage(nameof(UserProfileInfo_Page), FrameType.InfoFrame);
         }
