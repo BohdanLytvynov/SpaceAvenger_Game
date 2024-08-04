@@ -81,7 +81,7 @@ namespace SpaceAvenger.ViewModels.PagesVM
             m_userRepository = new UserRepository(
                 new SpaceAvengerDbContext(Environment.CurrentDirectory + 
                 Path.DirectorySeparatorChar + 
-                "DataBase" + Path.DirectorySeparatorChar + "Local.db"));
+                "Database" + Path.DirectorySeparatorChar + "Local.db"));
                         
             m_profileList = new ObservableCollection<UserProfileVM>();
 

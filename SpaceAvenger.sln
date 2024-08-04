@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpaceAvenger_xUnit_Tests", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataBaseUtility", "DataBaseUtility\DataBaseUtility.csproj", "{E74A96D8-4573-4C31-B9BB-1C07D124EFFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFGameEngine", "WPFGameEngine\WPFGameEngine.csproj", "{2DA69B80-B163-4A50-8A21-EE6EA727C1FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFGameEngine", "WPFGameEngine\WPFGameEngine.csproj", "{2DA69B80-B163-4A50-8A21-EE6EA727C1FA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonogameEngine", "MonoGameEngine\MonogameEngine.csproj", "{9B95F513-4C04-4482-8610-F8991473FF32}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{2DA69B80-B163-4A50-8A21-EE6EA727C1FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DA69B80-B163-4A50-8A21-EE6EA727C1FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DA69B80-B163-4A50-8A21-EE6EA727C1FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B95F513-4C04-4482-8610-F8991473FF32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B95F513-4C04-4482-8610-F8991473FF32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B95F513-4C04-4482-8610-F8991473FF32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B95F513-4C04-4482-8610-F8991473FF32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
