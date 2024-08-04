@@ -43,7 +43,9 @@ namespace WPFGameEngine.AnimatedControls
         {
             InitializeComponent();
 
-            m_storyboard = new Storyboard();                
+            m_storyboard = new Storyboard();            
+            
+
         }
 
         public void ConfigureAnimation(Action<Storyboard> conf)
