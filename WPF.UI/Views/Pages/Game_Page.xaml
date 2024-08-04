@@ -5,17 +5,15 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WPF.UI.Views.Pages"   
       xmlns:monoGame="clr-namespace:WPF.UI.MonoGameControls"
+      xmlns:monoGameVM="clr-namespace:WPF.UI.ViewModels.Game"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Game_Page"
       xmlns:vm="clr-namespace:WPF.UI.ViewModels.PagesVM"
       d:DataContext="{d:DesignInstance vm:GamePage_ViewModel, IsDesignTimeCreatable=True}">
-    <Grid>
-        <Image 
-            Source="{Binding Background, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-            Stretch="UniformToFill"/>
-        <monoGame:MonoGameContentControl>
-            
-        </monoGame:MonoGameContentControl>
-    </Grid>
+    <monoGame:MonoGameContentControl>
+        <monoGame:MonoGameContentControl.DataContext>
+            <monoGameVM:GameViewModel/>
+        </monoGame:MonoGameContentControl.DataContext>
+    </monoGame:MonoGameContentControl>
 </Page>

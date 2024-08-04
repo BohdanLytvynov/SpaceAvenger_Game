@@ -45,6 +45,10 @@ namespace WPF.UI
             services.AddSingleton<IPageManagerService<FrameType>, PageManagerService<FrameType>>();               
             
             services.AddSingleton<IMessageBus, MessageBusService>();
+
+            services.AddSingleton<Game_Page>();
+
+            services.AddSingleton<GamePage_ViewModel>();
                                                     
             return services;
         }
@@ -56,10 +60,10 @@ namespace WPF.UI
             App.Current.MainWindow = mainWindow;
 
             var pm = Services.GetRequiredService<IPageManagerService<FrameType>>();
-
+            
             if (pm is null)
                 throw new Exception($"Fail to get {nameof(PageManagerService<FrameType>)} on Startup!");
-
+            
             // Init PageManager
 
             var assembly = Assembly.GetExecutingAssembly();
@@ -67,7 +71,7 @@ namespace WPF.UI
             var pages = ReflexionUtility.GetObjectsTypeInfo(assembly,
                 (TypeInfo t) => t is not null &&
              (t.BaseType?.Name.Equals(nameof(Page)) ?? false)
-             && t.Name.Contains("Page"));
+             && t.Name.Contains("Page") && t.GetCustomAttribute<ReflexionDetectionIgnore>() is null);
 
             var pageViewModels = ReflexionUtility.GetObjectsTypeInfo(assembly,
                 (TypeInfo t) => t is not null &&
