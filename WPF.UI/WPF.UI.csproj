@@ -1,0 +1,128 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>10</LangVersion>
+    <WarningsAsErrors>Nullable</WarningsAsErrors>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FontAwesome5" Version="2.1.11" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.1.303" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MonoGameContentReference Include="**\*.mgcb" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="WPFResources\Images\Animations\PulsatingStar\00.png" />
+    <None Remove="WPFResources\Images\Animations\PulsatingStar\01.png" />
+    <None Remove="WPFResources\Images\Animations\PulsatingStar\02.png" />
+    <None Remove="WPFResources\Images\Animations\PulsatingStar\03.png" />
+    <None Remove="WPFResources\Images\Animations\PulsatingStar\04.png" />
+    <None Remove="WPFResources\Images\Animations\PulsatingStar\05.png" />
+    <None Remove="WPFResources\Images\Backgrounds\ChooseProfilePage\SAChooseProfile.jpg" />
+    <None Remove="WPFResources\Images\Backgrounds\ChooseProfilePage\SAChooseProfile1.jpg" />
+    <None Remove="WPFResources\Images\Backgrounds\GamePage\Back1.jpg" />
+    <None Remove="WPFResources\Images\Backgrounds\GamePage\Back2.jpg" />
+    <None Remove="WPFResources\Images\Backgrounds\GamePage\Back3.jpg" />
+    <None Remove="WPFResources\Images\Backgrounds\LevelsPage\SALevels.jpg" />
+    <None Remove="WPFResources\Images\Backgrounds\LevelsPage\SALevels1.jpg" />
+    <None Remove="WPFResources\Images\Backgrounds\LevelsPage\SALevels2.jpg" />
+    <None Remove="WPFResources\Images\Backgrounds\LevelsPage\SALevels3.jpg" />
+    <None Remove="WPFResources\Images\Backgrounds\MainPage\SAMainBack.jpg" />
+    <None Remove="WPFResources\Images\Backgrounds\MainPage\SAMainBack1.jpg" />
+    <None Remove="WPFResources\Images\Backgrounds\MainPage\SAMainBack2.jpg" />
+    <None Remove="WPFResources\Images\Backgrounds\MainPage\SAMainBack3.jpg" />
+    <None Remove="WPFResources\Images\Backgrounds\MainPage\SAMainBack4.jpg" />
+    <None Remove="WPFResources\Images\Chars\Commanders\CommandersF.png" />
+    <None Remove="WPFResources\Images\Chars\Commanders\CommandersM.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="WPFResources\Images\Animations\PulsatingStar\00.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WPFResources\Images\Animations\PulsatingStar\01.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WPFResources\Images\Animations\PulsatingStar\02.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WPFResources\Images\Animations\PulsatingStar\03.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WPFResources\Images\Animations\PulsatingStar\04.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WPFResources\Images\Animations\PulsatingStar\05.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WPFResources\Images\Backgrounds\ChooseProfilePage\SAChooseProfile.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WPFResources\Images\Backgrounds\ChooseProfilePage\SAChooseProfile1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WPFResources\Images\Backgrounds\GamePage\Back1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WPFResources\Images\Backgrounds\GamePage\Back2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WPFResources\Images\Backgrounds\GamePage\Back3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WPFResources\Images\Backgrounds\LevelsPage\SALevels.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WPFResources\Images\Backgrounds\LevelsPage\SALevels1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WPFResources\Images\Backgrounds\LevelsPage\SALevels2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WPFResources\Images\Backgrounds\LevelsPage\SALevels3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WPFResources\Images\Backgrounds\MainPage\SAMainBack.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WPFResources\Images\Backgrounds\MainPage\SAMainBack1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WPFResources\Images\Backgrounds\MainPage\SAMainBack2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WPFResources\Images\Backgrounds\MainPage\SAMainBack3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WPFResources\Images\Backgrounds\MainPage\SAMainBack4.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WPFResources\Images\Chars\Commanders\CommandersF.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WPFResources\Images\Chars\Commanders\CommandersM.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\ViewModelBaseLibDotNetCore\ViewModelBaseLibDotNetCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="WPFResources\Images\SpaceShips\" />
+  </ItemGroup>
+</Project>
