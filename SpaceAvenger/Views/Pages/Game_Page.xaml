@@ -14,13 +14,7 @@
         <Image 
             Source="{Binding Background, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
             Stretch="UniformToFill"/>
-        <Canvas Width="{Binding RelativeSource={RelativeSource AncestorType=Page},
-                UpdateSourceTrigger=PropertyChanged, Path=ActualWidth}"
-                    Height="{Binding RelativeSource={RelativeSource AncestorType=Page},
-                UpdateSourceTrigger=PropertyChanged, Path=ActualHeight}">
-            <animControls:AnimatedControl Width="100" Height="100" Canvas.Left="200"
-                                              Canvas.Top="100"/>
-
-        </Canvas>
+        <Label Content="{Binding Canvas, UpdateSourceTrigger=PropertyChanged}">
+        </Label>
     </Grid>
 </Page>

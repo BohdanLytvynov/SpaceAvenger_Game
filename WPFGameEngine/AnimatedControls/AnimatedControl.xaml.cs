@@ -13,6 +13,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPFGameEngine.Utilities.Images;
 
 namespace WPFGameEngine.AnimatedControls
 {
@@ -21,49 +22,40 @@ namespace WPFGameEngine.AnimatedControls
     /// </summary>
     public partial class AnimatedControl : UserControl
     {
-        #region Fields        
-        ObjectAnimationUsingKeyFrames m_imgAnim;
+        #region Fields
+        
+        private Storyboard m_storyboard;
+
+        public Image Image { get=> this.img; }
+
         #endregion
 
         #region Dependency Properties
-
-
-        public ObjectAnimationUsingKeyFrames ImgAnimation
-        {
-            get { return (ObjectAnimationUsingKeyFrames)GetValue(ImgAnimationProperty); }
-            set { SetValue(ImgAnimationProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for ImgAnimation.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ImgAnimationProperty;
-
-        private static void OnImgAnimatonChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            (d as AnimatedControl).m_imgAnim = e.NewValue as ObjectAnimationUsingKeyFrames;
-        }
-
+              
         #endregion
 
         static AnimatedControl()
         {
-            ImgAnimationProperty =
-            DependencyProperty.Register("ImageAnimation", typeof(ObjectAnimationUsingKeyFrames),
-                typeof(AnimatedControl), new PropertyMetadata(new ObjectAnimationUsingKeyFrames(),
-                    OnImgAnimatonChanged));
+            
         }
-
+       
         public AnimatedControl()
         {
-            InitializeComponent();           
+            InitializeComponent();
 
-            m_imgAnim = new();            
+            m_storyboard = new Storyboard();                
         }
 
-        public void ConfigureImageAnimation(Action<ObjectAnimationUsingKeyFrames> conf)
+        public void ConfigureAnimation(Action<Storyboard> conf)
         {
-            if (m_imgAnim == null) throw new Exception("Animation instance hasn't been initialized!");
+            if (m_storyboard == null) throw new Exception("Storyboard hasn't been initialized yet!");
 
-            conf?.Invoke(m_imgAnim);
-        }        
+            conf(m_storyboard);
+        }
+
+        public void Begin()
+        {            
+            m_storyboard.Begin();
+        }
     }
 }
