@@ -26,7 +26,7 @@
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition/>
-                <RowDefinition Height="395"/>
+                <RowDefinition Height="450"/>
                 <RowDefinition Height="8*"/>
             </Grid.RowDefinitions>
 
@@ -58,6 +58,8 @@
                         <RowDefinition Height="35"/>
                         <RowDefinition Height="20"/>
                         <RowDefinition Height="35"/>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="35"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -73,15 +75,21 @@
                 Content="Continue" Style="{StaticResource Button}"
                     Foreground="White" FontSize="16"
                     />
-                    <Button Grid.Row="5" Grid.Column="1"
+
+                    <Button Grid.Row="5" Grid.Column="1" Style="{StaticResource Button}"
+                            Content="Surviaval Mode" FontSize="16"
+                            Command="{Binding OnSurvivalModeButtonPressed}"/>
+
+
+                    <Button Grid.Row="7" Grid.Column="1"
                     Content="Load Game" Style="{StaticResource Button}"
                     Foreground="White" FontSize="16"
                     />
-                    <Button Grid.Row="7" Grid.Column="1"
+                    <Button Grid.Row="9" Grid.Column="1"
                         Content="Settings" Style="{StaticResource Button}"
                         Foreground="White" FontSize="16"
 />
-                    <Button Grid.Row="9" Grid.Column="1"
+                    <Button Grid.Row="11" Grid.Column="1"
                 Content="Exit" 
                        Foreground="White" FontSize="16" Style="{StaticResource Button}"
                             Command="{StaticResource ExitCommand}">

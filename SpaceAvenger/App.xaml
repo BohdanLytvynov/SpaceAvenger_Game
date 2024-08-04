@@ -10,6 +10,23 @@
              >
     <Application.Resources>
 
+        <!--#region Image Sources -->
+
+        <!--#region BackGrounds-GamePage -->
+
+        <ImageSource x:Key="Back1_GamePage">pack://siteoforigin:,,,/Images/Backgrounds/GamePage/Back1.jpg
+        </ImageSource>
+        
+        <ImageSource x:Key="Back2_GamePage">pack://siteoforigin:,,,/Images/Backgrounds/GamePage/Back2.jpg            
+        </ImageSource>
+
+        <ImageSource x:Key="Back3_GamePage">pack://siteoforigin:,,,/Images/Backgrounds/GamePage/Back3.jpg
+        </ImageSource>
+
+        <!--#endregion-->
+
+        <!--#endregion-->
+
         <!--#region Font Awesome -->
         <font_awesome:ImageAwesome x:Key="window_close_icon"
             Stretch="Uniform"

@@ -13,9 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{C7EA0BD9-C96D-4E20-A841-43BE8676ACE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceAvenger_xUnit_Tests", "SpaceAvenger_xUnit_Tests\SpaceAvenger_xUnit_Tests.csproj", "{0BCC65ED-A877-45FD-AAD2-1CF98807C88B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpaceAvenger_xUnit_Tests", "SpaceAvenger_xUnit_Tests\SpaceAvenger_xUnit_Tests.csproj", "{0BCC65ED-A877-45FD-AAD2-1CF98807C88B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBaseUtility", "DataBaseUtility\DataBaseUtility.csproj", "{E74A96D8-4573-4C31-B9BB-1C07D124EFFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataBaseUtility", "DataBaseUtility\DataBaseUtility.csproj", "{E74A96D8-4573-4C31-B9BB-1C07D124EFFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFGameEngine", "WPFGameEngine\WPFGameEngine.csproj", "{2DA69B80-B163-4A50-8A21-EE6EA727C1FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{E74A96D8-4573-4C31-B9BB-1C07D124EFFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E74A96D8-4573-4C31-B9BB-1C07D124EFFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E74A96D8-4573-4C31-B9BB-1C07D124EFFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DA69B80-B163-4A50-8A21-EE6EA727C1FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DA69B80-B163-4A50-8A21-EE6EA727C1FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DA69B80-B163-4A50-8A21-EE6EA727C1FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DA69B80-B163-4A50-8A21-EE6EA727C1FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
