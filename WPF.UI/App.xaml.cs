@@ -45,7 +45,7 @@ namespace WPF.UI
             services.AddSingleton<IPageManagerService<FrameType>, PageManagerService<FrameType>>();               
             
             services.AddSingleton<IMessageBus, MessageBusService>();
-
+            
             services.AddSingleton<Game_Page>();
 
             services.AddSingleton<GamePage_ViewModel>();
@@ -63,9 +63,9 @@ namespace WPF.UI
             
             if (pm is null)
                 throw new Exception($"Fail to get {nameof(PageManagerService<FrameType>)} on Startup!");
-            
-            // Init PageManager
 
+            // Init PageManager
+            
             var assembly = Assembly.GetExecutingAssembly();
 
             var pages = ReflexionUtility.GetObjectsTypeInfo(assembly,
@@ -106,17 +106,23 @@ namespace WPF.UI
                 pm.AddPage(
                 page.Name, view);
             }
-
             
-
             var mainWindowViewModel = Services.GetRequiredService<MainWindowViewModel>();
 
             mainWindow.DataContext = mainWindowViewModel;
             mainWindowViewModel.Dispatcher = mainWindow.Dispatcher;
 
+            var game_page = Services.GetRequiredService<Game_Page>();
+
+            var game_vm = Services.GetRequiredService<GamePage_ViewModel>();
+
+            game_page.GameControl.DataContext = game_vm;
+
+            pm.AddPage(nameof(Game_Page), game_page);
+
             mainWindow.Show();
 
-            pm.SwitchPage(nameof(Game_Page), FrameType.MainFrame);
+            pm.SwitchPage(nameof(ChooseProfile_Page), FrameType.MainFrame);
 
             pm.SwitchPage(nameof(UserProfileInfo_Page), FrameType.InfoFrame);
             

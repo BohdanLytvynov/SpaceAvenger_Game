@@ -91,7 +91,7 @@ namespace WPF.UI.ViewModels.PagesVM
 
             #region Create Subscription
 
-            Subscriptions.Add(m_messageBus.RegisterHandler<ChooseProfileMessage_User, User>(OnMessageRecieved));
+            Subscriptions.Add(m_messageBus.RegisterHandler<ChooseProfileMessage_User>(OnMessageRecieved));
 
             #endregion
         }

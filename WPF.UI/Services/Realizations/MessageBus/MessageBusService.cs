@@ -13,8 +13,8 @@ namespace WPF.UI.Services.Realizations.MessageBus
     {
         #region Nested Classes
 
-        private class Subscription<T, U> : IDisposable   
-            where T : IMessage<U>
+        private class Subscription<T> : IDisposable   
+            where T : IMessage   
         {
             private readonly WeakReference<IMessageBus> m_bus;
 
@@ -37,7 +37,7 @@ namespace WPF.UI.Services.Realizations.MessageBus
                 var Lock = bus.Lock;
 
                 Lock.EnterWriteLock();
-                var msg_type = typeof(T).Name;
+                var msg_type = typeof(T);
 
                 try
                 {
@@ -74,9 +74,9 @@ namespace WPF.UI.Services.Realizations.MessageBus
 
         #endregion
 
-        private readonly Dictionary<string, IEnumerable<WeakReference>> m_Subscriptions;
+        private readonly Dictionary<Type, IEnumerable<WeakReference>> m_Subscriptions;
 
-        public Dictionary<string, IEnumerable<WeakReference>> Subscriptions
+        public Dictionary<Type, IEnumerable<WeakReference>> Subscriptions
         {
             get => m_Subscriptions;
         }
@@ -90,18 +90,18 @@ namespace WPF.UI.Services.Realizations.MessageBus
 
         public MessageBusService()
         {
-            m_Subscriptions = new Dictionary<string, IEnumerable<WeakReference>>();
+            m_Subscriptions = new Dictionary<Type, IEnumerable<WeakReference>>();
         }
 
-        public IDisposable RegisterHandler<T,U>(Action<T> handler)  
-            where T : IMessage<U>
+        public IDisposable RegisterHandler<T>(Action<T> handler)  
+            where T : IMessage
         {
-            Subscription<T, U> subscription = new Subscription<T, U>(this, handler); 
+            Subscription<T> subscription = new Subscription<T>(this, handler); 
             m_lock.EnterWriteLock();
             try
             {                
                 var sub_weak_ref = new WeakReference(subscription);
-                var msg_type = typeof(T).Name;
+                var msg_type = typeof(T);
 
                 m_Subscriptions[msg_type] = m_Subscriptions.TryGetValue(msg_type, out var subscriptions) ?
                     subscriptions.Append(sub_weak_ref) : new[] { sub_weak_ref };                
@@ -114,11 +114,11 @@ namespace WPF.UI.Services.Realizations.MessageBus
             return subscription;
         }
 
-        private IEnumerable<Action<T>>? GetHandlersAccordingToMsgType<T, U>()
-            where T : IMessage<U>
+        private IEnumerable<Action<T>>? GetHandlersAccordingToMsgType<T>()
+            where T : IMessage
         {
             var handlers = new List<Action<T>>();
-            var message_type = typeof(T).Name;
+            var message_type = typeof(T);
             var exist_die_refs = false;
 
             Lock.EnterReadLock();
@@ -128,7 +128,7 @@ namespace WPF.UI.Services.Realizations.MessageBus
                     return null;
 
                 foreach (var @ref in refs)
-                    if (@ref.Target is Subscription<T, U> { Handler: var handler })
+                    if (@ref.Target is Subscription<T> { Handler: var handler })
                         handlers.Add(handler);
                     else
                         exist_die_refs = true;
@@ -157,10 +157,10 @@ namespace WPF.UI.Services.Realizations.MessageBus
             return handlers;
         }
 
-        public void Send<T, U>(T message)
-            where T : IMessage<U>
+        public void Send<T>(T message)
+            where T : IMessage
         {
-            var handlers = GetHandlersAccordingToMsgType<T, U>();
+            var handlers = GetHandlersAccordingToMsgType<T>();
 
             if (handlers is null)
                 return;

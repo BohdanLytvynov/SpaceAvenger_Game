@@ -12,6 +12,7 @@ using WPF.UI.Attributes.PageManager;
 using WPF.UI.Services.Interfaces.MessageBus;
 using WPF.UI.Services.Realizations.Message;
 using WPF.UI.ViewModels.Base;
+using WPF.UI.Services.Interfaces.Message;
 
 namespace WPF.UI.ViewModels.MainWindowVM
 {
@@ -118,7 +119,7 @@ namespace WPF.UI.ViewModels.MainWindowVM
             
             m_pageManager.OnSwitchScreenMethodInvoked += PageManager_OnSwitchScreenMethodInvoked;
 
-            Subscriptions.Add(m_messageBus.RegisterHandler<ChooseProfileMessage_User, User>(OnMessageRecieved));
+            Subscriptions.Add(m_messageBus.RegisterHandler<ChooseProfileMessage_User>(OnMessageRecieved));
         }
 
         private void OnMessageRecieved(ChooseProfileMessage_User message)
@@ -171,6 +172,8 @@ namespace WPF.UI.ViewModels.MainWindowVM
         {
             Task.Run(() =>
             {
+                m_messageBus!.Send<IGameMessage>(new PauseGame());
+
                 double height = 0;
 
                 QueueWorkToDispatcher(() => height = (InfoFrame as Page)!.ActualHeight);
@@ -183,6 +186,8 @@ namespace WPF.UI.ViewModels.MainWindowVM
 
                     QueueWorkToDispatcher(() => Height = new GridLength(curr_height, GridUnitType.Star));                    
                 }
+
+                m_messageBus!.Send<IGameMessage>(new ResumeGame());
             });
         }
 
@@ -190,6 +195,8 @@ namespace WPF.UI.ViewModels.MainWindowVM
         {
             Task.Run(() =>
             {
+                m_messageBus!.Send<IGameMessage>(new PauseGame());
+
                 double curr_height = 0;
 
                 QueueWorkToDispatcher(() => curr_height = (InfoFrame as Page)!.ActualHeight);
@@ -200,6 +207,8 @@ namespace WPF.UI.ViewModels.MainWindowVM
                     QueueWorkToDispatcher(() =>
                     Height = new GridLength(curr_height, GridUnitType.Star));
                 }
+
+                m_messageBus!.Send<IGameMessage>(new ResumeGame());
             });
         }
 

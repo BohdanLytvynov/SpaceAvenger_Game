@@ -38,7 +38,7 @@ public class MonoGameViewModel : ViewModelBase, IMonoGameViewModel //Here Must b
     {
     }
 
-    public void Dispose()
+    public virtual void Dispose()
     {
         Content?.Dispose();
     }

@@ -5,14 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace WPF.UI.Services.Interfaces.Message
-{    
-    internal interface IMessage<T> : IMessage
+{
+    internal interface IGameMessage : IMessage
     {
-        public T Content { get; }
-    }
-
-    internal interface IMessage
-    { 
-    
     }
 }

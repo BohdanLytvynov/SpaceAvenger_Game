@@ -6,6 +6,8 @@ using WPF.UI.Services.Interfaces.PageManager;
 using ViewModelBaseLibDotNetCore.Commands;
 using ViewModelBaseLibDotNetCore.VM;
 using WPF.UI.Views.Pages;
+using WPF.UI.Services.Realizations.Message;
+using WPF.UI.Services.Interfaces.Message;
 
 namespace WPF.UI.ViewModels.PagesVM
 {
@@ -49,11 +51,13 @@ namespace WPF.UI.ViewModels.PagesVM
             #endregion
         }
 
-        public Main_ViewModel(IPageManagerService<FrameType> pageManagerService) : this()
+        public Main_ViewModel(IPageManagerService<FrameType> pageManagerService, IMessageBus messBus) : this()
         {            
             #region Init Fields
             
             m_PageManager = pageManagerService;
+
+            m_messageBus = messBus;
             
             #endregion
         }
@@ -82,7 +86,9 @@ namespace WPF.UI.ViewModels.PagesVM
         private bool CanOnSurvivalModeButtonPressedExecute(object p) => true;
 
         private void OnSurvivalModeButtonPressedExecute(object p)
-        {
+        {            
+            m_messageBus!.Send<IGameMessage>(new StartGame());
+
             m_PageManager!.SwitchPage(nameof(Game_Page), FrameType.MainFrame);
         }
 

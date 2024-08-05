@@ -10,15 +10,15 @@ namespace WPF.UI.Services.Interfaces.MessageBus
 {
     internal interface IMessageBus
     {
-        IDisposable RegisterHandler<T, U>(Action<T> handler)
-            where T : IMessage<U>;
+        IDisposable RegisterHandler<T>(Action<T> handler)
+            where T : IMessage;           
             
         public ReaderWriterLockSlim Lock { get; }
 
-        public Dictionary<string, IEnumerable<WeakReference>> Subscriptions { get; }
+        public Dictionary<Type, IEnumerable<WeakReference>> Subscriptions { get; }
 
-        void Send<T, U>(T message)
-            where T : IMessage<U>;
+        void Send<T>(T message)
+            where T : IMessage;
             
     }
 }

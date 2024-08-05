@@ -110,7 +110,7 @@ namespace WPF.UI.ViewModels.PagesVM
         {
             m_PageManager!.SwitchPage(nameof(Main_Page), FrameType.MainFrame);
 
-            m_messageBus!.Send<ChooseProfileMessage_User, User>(new ChooseProfileMessage_User(obj));
+            m_messageBus!.Send<ChooseProfileMessage_User>(new ChooseProfileMessage_User(obj));
         }
 
 
