@@ -1,24 +1,21 @@
-﻿using WPF.UI.Attributes.PageManager;
-using WPF.UI.ViewModels.Base;
-using System;
+﻿using WPF.UI.ViewModels.Base;
 using WPF.UI.Services.Interfaces.MessageBus;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
-using System.IO;
 using Microsoft.Xna.Framework.Graphics;
 using WPF.UI.Services.Interfaces.Message;
 using WPF.UI.Services.Realizations.Message;
 using WPF.UI.Services.Interfaces.PageManager;
 using WPF.UI.Enums.FrameTypes;
-using WPF.UI.Views.Pages;
-using System.Collections.Generic;
-using System.Windows;
 using Point = Microsoft.Xna.Framework.Point;
+using WPF.UI.MonoGameCore.Screens;
+using SharpDX.Win32;
+using System;
 
 
 namespace WPF.UI.ViewModels.GameWindowVM
 {
-    internal class GameWindow_ViewModel : SubscriptableMonoGameViewModel
+    internal unsafe class GameWindow_ViewModel : SubscriptableMonoGameViewModel
     {
         #region Fields
         private IMessageBus? m_msgBus;
@@ -31,29 +28,25 @@ namespace WPF.UI.ViewModels.GameWindowVM
         #region Fields
         //Indicates the current Game State
         bool m_play;
-
-        Random random;
-
+        
         private SpriteBatch _spriteBatch = default!;
 
-        private Texture2D? m_Currentbackground;
+        private StartScreen? m_startScreen;
 
-        SortedDictionary<string, object> m_AssetStore;
-
+        private StartScreenUpdateArgs? m_startScreenUpdateArgs;
+        
         Point m_screen_Dimensions;
-
+                        
         #endregion
 
         #region Ctors
         //Will be called first
 
         public GameWindow_ViewModel()
-        {
-            random = new Random();
-
+        {            
             m_play = true;
 
-            m_AssetStore = new SortedDictionary<string, object>();            
+            m_startScreenUpdateArgs = new();
         }
 
         public GameWindow_ViewModel(IPageManagerService<FrameType> pm, IMessageBus bus) : this()
@@ -80,18 +73,19 @@ namespace WPF.UI.ViewModels.GameWindowVM
         /// </summary>
         public override void LoadContent()
         {
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            // Init Screens
+
+            m_startScreen = new StartScreen("Start", Content, GraphicsDevice, _spriteBatch);
+
+            m_startScreen!.Load();
+
             m_screen_Dimensions = new Point(
                 (int)App.Current.MainWindow.ActualWidth,
                 (int)App.Current.MainWindow.ActualHeight
                 );
-
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            m_AssetStore.Add("Background-ChooseProfile",
-                Content.Load<Texture2D>("Backgrounds/UI/ChooseProfile/0"));
-
-            m_Currentbackground = m_AssetStore["Background-ChooseProfile"] as Texture2D;
-
+                        
             base.LoadContent();
         }
 
@@ -104,12 +98,13 @@ namespace WPF.UI.ViewModels.GameWindowVM
             if (!m_play)
                 return;
 
+            m_startScreen!.Update(m_startScreenUpdateArgs!, ref m_play);
+
 #if DEBUG
             Debug.WriteLine($"Update Runs: {m_play}");
 #endif
 
             base.Update(gameTime);
-
         }
         /// <summary>
         /// The part of the game cycle. Calls Permanently after Update
@@ -122,11 +117,11 @@ namespace WPF.UI.ViewModels.GameWindowVM
 #if DEBUG
             Debug.WriteLine($"Draw Runs: {m_play}");
 #endif
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.White);
 
             _spriteBatch.Begin();
 
-            _spriteBatch.Draw(m_Currentbackground, Vector2.Zero, null, Color.White);
+            m_startScreen!.Draw(ref m_play);
 
             _spriteBatch.End();
 
@@ -139,10 +134,9 @@ namespace WPF.UI.ViewModels.GameWindowVM
         /// </summary>
         public override void UnloadContent()
         {
-            m_Currentbackground?.Dispose();
-
-            _spriteBatch?.Dispose();
-
+            if(m_startScreen!.Loaded)
+                m_startScreen!.UnLoad();
+            
             base.UnloadContent();
         }
         #endregion
@@ -159,9 +153,9 @@ namespace WPF.UI.ViewModels.GameWindowVM
             {
                 m_play = true;
             }
-            else if (msg is SetGameLevel)
-            {
-                // Change Level Environment
+            else if (msg is SetStartScreen start)
+            {                
+                m_startScreenUpdateArgs!.Args = start.Args;
             }
         }
 
@@ -172,6 +166,15 @@ namespace WPF.UI.ViewModels.GameWindowVM
         public override void Dispose()
         {
             Unsubscribe();
+
+            if (!GraphicsDevice.IsDisposed)
+                GraphicsDevice.Dispose();
+
+            if (!_spriteBatch.IsDisposed)
+                _spriteBatch?.Dispose();
+
+            if(!m_startScreen!.Disposed)
+                m_startScreen?.Dispose();
 
             base.Dispose();
         }

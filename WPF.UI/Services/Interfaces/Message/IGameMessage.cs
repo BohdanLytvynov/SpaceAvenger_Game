@@ -9,4 +9,9 @@ namespace WPF.UI.Services.Interfaces.Message
     internal interface IGameMessage : IMessage
     {
     }
+
+    internal interface IGameMessage<T> : IGameMessage
+    {
+        public T Args { get; }
+    }
 }

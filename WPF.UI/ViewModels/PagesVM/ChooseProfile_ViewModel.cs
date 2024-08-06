@@ -15,6 +15,7 @@ using System.Windows.Input;
 using ViewModelBaseLibDotNetCore.Commands;
 using ViewModelBaseLibDotNetCore.VM;
 using WPF.UI.Views.Pages;
+using WPF.UI.MonoGameCore.Screens;
 
 namespace WPF.UI.ViewModels.PagesVM
 {
@@ -110,7 +111,9 @@ namespace WPF.UI.ViewModels.PagesVM
         {
             m_PageManager!.SwitchPage(nameof(Main_Page), FrameType.MainFrame);
 
-            m_messageBus!.Send<ChooseProfileMessage_User>(new ChooseProfileMessage_User(obj));
+            m_messageBus!.Send(new ChooseProfileMessage_User(obj));
+
+            m_messageBus!.Send(new SetStartScreen(StartScreenType.Main));            
         }
 
 

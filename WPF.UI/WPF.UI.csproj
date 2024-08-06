@@ -6,6 +6,7 @@
     <LangVersion>10</LangVersion>
     <WarningsAsErrors>Nullable</WarningsAsErrors>
     <UseWPF>true</UseWPF>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>

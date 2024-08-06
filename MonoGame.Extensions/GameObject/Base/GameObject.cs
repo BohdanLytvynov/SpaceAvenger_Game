@@ -1,11 +1,15 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extensions.AssetStorages.Interface;
 using MonoGame.Extensions.AssetStorages.Realization;
+using MonoGame.Extensions.GameComponents.Base;
+using MonoGame.Extensions.GameObject.Base;
 using System;
 
 namespace MonoGame.Extensions.ScreenView.Base
 {
-    public abstract class ScreenViewBase : IScreenView
+    public abstract class GameObject : IGameObject
     {
         #region Fields
         private bool disposedValue;
@@ -13,6 +17,14 @@ namespace MonoGame.Extensions.ScreenView.Base
         private bool m_loaded;
 
         private IAssetStorage m_storage;
+
+        private readonly string m_name;
+
+        private readonly ContentManager m_contentManager;
+
+        private readonly GraphicsDevice m_graphicsDevice;
+
+        private readonly SpriteBatch m_spriteBatch;
 
         #endregion
 
@@ -22,23 +34,47 @@ namespace MonoGame.Extensions.ScreenView.Base
 
         public bool Disposed => disposedValue;
 
+        public string Name => m_name;
+
+        protected ContentManager ContentManager => m_contentManager;
+
+        protected IAssetStorage Storage => m_storage;
+
+        protected GraphicsDevice GraphicsDevice => m_graphicsDevice;
+
+        protected SpriteBatch SpriteBatch => m_spriteBatch;
+
         #endregion
 
         #region Ctor
 
-        protected ScreenViewBase(IAssetStorage assetStorage = null)
+        public GameObject(
+            string name, ContentManager contentmanager,
+            GraphicsDevice graphicsDevice, SpriteBatch spriteBatch,
+            IAssetStorage? assetStorage = null)
         {
+            m_name = name;
+
             disposedValue = false;
 
             m_loaded = false;
 
             if (assetStorage is null)
                 m_storage = new AssetStorage();
+
+            m_contentManager = contentmanager;
+
+            m_graphicsDevice = graphicsDevice;
+
+            m_spriteBatch = spriteBatch;
         }
 
         #endregion
 
-        public abstract void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch);
+        public virtual void Draw(ref bool play)
+        {
+            if (!play) return;
+        }
 
         public virtual void Load()
         { 
@@ -50,7 +86,10 @@ namespace MonoGame.Extensions.ScreenView.Base
             m_loaded = false;
         }
 
-        public abstract unsafe void Update(void* ptr);
+        public virtual void Update(IUpdateArgs args, ref bool play)
+        { 
+            if(!play) return;
+        }
 
         protected virtual void Dispose(bool disposing)
         {
@@ -59,7 +98,7 @@ namespace MonoGame.Extensions.ScreenView.Base
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects)
-                    UnLoad();
+                    
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer

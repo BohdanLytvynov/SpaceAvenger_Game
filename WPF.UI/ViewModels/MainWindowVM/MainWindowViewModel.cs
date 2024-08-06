@@ -170,10 +170,10 @@ namespace WPF.UI.ViewModels.MainWindowVM
 
         private void OpenInfo()
         {
-            Task.Run(() =>
-            {
-                m_messageBus!.Send<IGameMessage>(new PauseGame());
+            m_messageBus!.Send<IGameMessage>(new PauseGame());
 
+            Task.Run(() =>
+            {                
                 double height = 0;
 
                 QueueWorkToDispatcher(() => height = (InfoFrame as Page)!.ActualHeight);
@@ -192,9 +192,7 @@ namespace WPF.UI.ViewModels.MainWindowVM
         private void CloseInfo()
         {
             Task.Run(() =>
-            {
-                //m_messageBus!.Send<IGameMessage>(new PauseGame());
-
+            {                
                 double curr_height = 0;
 
                 QueueWorkToDispatcher(() => curr_height = (InfoFrame as Page)!.ActualHeight);

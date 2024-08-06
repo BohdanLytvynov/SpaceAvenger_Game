@@ -8,9 +8,11 @@ namespace MonoGame.Extensions.AssetStorages.Interface
 {
     public interface IAssetStorage
     {
-        void AddAsset(string key, IDisposable asset);
+        public IDisposable this [string key] { get; }
 
-        void AddAssets(params KeyValuePair<string, IDisposable> [] assets);
+        void AddAsset(string key, string path, IDisposable asset);
+
+        void AddAssets(params (string key, string path, IDisposable obj) [] assets);
 
         void RemoveAsset(string key);
 
@@ -19,6 +21,10 @@ namespace MonoGame.Extensions.AssetStorages.Interface
         void RemoveAssets(params string[] keys);
 
         IEnumerable<IDisposable> GetAssets(Func<KeyValuePair<string, IDisposable>, bool> predicate);
+
+        IEnumerable<string> GetPaths(Func<KeyValuePair<string, string>, bool> predicate);
+
+        string GetPath(Func<KeyValuePair<string, string>, bool> predicate);
 
         void Clear();
     }
