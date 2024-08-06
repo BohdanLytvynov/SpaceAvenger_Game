@@ -61,6 +61,30 @@
 /processorParam:TextureFormat=Color
 /build:Backgrounds/Back4.jpg
 
+#begin Backgrounds/UI/ChooseProfile/0.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Backgrounds/UI/ChooseProfile/0.jpg
+
+#begin Backgrounds/UI/ChooseProfile/1.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Backgrounds/UI/ChooseProfile/1.jpg
+
 #begin monogame-logo.png
 /importer:TextureImporter
 /processor:TextureProcessor

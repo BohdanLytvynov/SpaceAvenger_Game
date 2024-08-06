@@ -26,8 +26,8 @@
     <None Remove="WPFResources\Images\Animations\PulsatingStar\03.png" />
     <None Remove="WPFResources\Images\Animations\PulsatingStar\04.png" />
     <None Remove="WPFResources\Images\Animations\PulsatingStar\05.png" />
-    <None Remove="WPFResources\Images\Backgrounds\ChooseProfilePage\SAChooseProfile.jpg" />
-    <None Remove="WPFResources\Images\Backgrounds\ChooseProfilePage\SAChooseProfile1.jpg" />
+    <None Remove="WPFResources\Images\Backgrounds\ChooseProfilePage\SAChooseProfilePage.jpg" />
+    <None Remove="WPFResources\Images\Backgrounds\ChooseProfilePage\SAChooseProfilePage1.jpg" />
     <None Remove="WPFResources\Images\Backgrounds\GamePage\Back1.jpg" />
     <None Remove="WPFResources\Images\Backgrounds\GamePage\Back2.jpg" />
     <None Remove="WPFResources\Images\Backgrounds\GamePage\Back3.jpg" />
@@ -63,10 +63,10 @@
     <Content Include="WPFResources\Images\Animations\PulsatingStar\05.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="WPFResources\Images\Backgrounds\ChooseProfilePage\SAChooseProfile.jpg">
+    <Content Include="WPFResources\Images\Backgrounds\ChooseProfilePage\SAChooseProfilePage.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="WPFResources\Images\Backgrounds\ChooseProfilePage\SAChooseProfile1.jpg">
+    <Content Include="WPFResources\Images\Backgrounds\ChooseProfilePage\SAChooseProfilePage1.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="WPFResources\Images\Backgrounds\GamePage\Back1.jpg">
@@ -119,6 +119,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\MonoGame.Extensions\MonoGame.Extensions.csproj" />
     <ProjectReference Include="..\ViewModelBaseLibDotNetCore\ViewModelBaseLibDotNetCore.csproj" />
   </ItemGroup>
 

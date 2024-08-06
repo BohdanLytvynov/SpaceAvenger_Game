@@ -32,6 +32,8 @@ namespace WPF.UI.ViewModels.Base
         {
             foreach (var subscription in m_subscriptions)
                 subscription.Dispose();
+
+            Subscriptions.Clear();
         }
 
         #endregion

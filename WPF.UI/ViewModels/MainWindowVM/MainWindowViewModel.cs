@@ -185,9 +185,7 @@ namespace WPF.UI.ViewModels.MainWindowVM
                     ++curr_height;
 
                     QueueWorkToDispatcher(() => Height = new GridLength(curr_height, GridUnitType.Star));                    
-                }
-
-                m_messageBus!.Send<IGameMessage>(new ResumeGame());
+                }                
             });
         }
 
@@ -195,7 +193,7 @@ namespace WPF.UI.ViewModels.MainWindowVM
         {
             Task.Run(() =>
             {
-                m_messageBus!.Send<IGameMessage>(new PauseGame());
+                //m_messageBus!.Send<IGameMessage>(new PauseGame());
 
                 double curr_height = 0;
 

@@ -107,7 +107,6 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\JsonDataProvider\JsonDataProvider.csproj" />
     <ProjectReference Include="..\ViewModelBaseLibDotNetCore\ViewModelBaseLibDotNetCore.csproj" />
-    <ProjectReference Include="..\WPFGameEngine\WPFGameEngine.csproj" />
   </ItemGroup>
 
   <ItemGroup>
