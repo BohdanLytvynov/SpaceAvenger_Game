@@ -214,7 +214,7 @@ namespace WPF.UI.ViewModels.MainWindowVM
 
         public void Dispose()
         {
-            Unsubscribe();
+            Unsubscribe();            
         }
 
         #endregion

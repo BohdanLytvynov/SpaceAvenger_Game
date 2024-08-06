@@ -12,10 +12,9 @@ using WPF.UI.Services.Interfaces.PageManager;
 using WPF.UI.Enums.FrameTypes;
 using WPF.UI.Views.Pages;
 
-namespace WPF.UI.ViewModels.PagesVM
-{
-    [ReflexionDetectionIgnore]
-    internal class GamePage_ViewModel : SubscriptableMonoGameViewModel
+namespace WPF.UI.ViewModels.GameWindowVM
+{    
+    internal class GameWindow_ViewModel : SubscriptableMonoGameViewModel
     {
         #region Fields
         private IMessageBus? m_msgBus;
@@ -27,26 +26,22 @@ namespace WPF.UI.ViewModels.PagesVM
 
         bool m_play;
 
-        bool m_start;
-
         Random random;
 
         private SpriteBatch _spriteBatch = default!;
 
         private Texture2D? m_back;
 
-        public GamePage_ViewModel()
+        public GameWindow_ViewModel()
         {
             random = new Random();
 
             m_play = true;
-
-            m_start = true;
         }
 
-        public GamePage_ViewModel(IPageManagerService<FrameType> pm, IMessageBus bus) : this()
+        public GameWindow_ViewModel(IMessageBus bus) : this()
         {
-            m_pageManager = pm;
+            //m_pageManager = pm;
 
             m_msgBus = bus;
 
@@ -81,24 +76,11 @@ namespace WPF.UI.ViewModels.PagesVM
             if (m_play)
             {
                 base.Update(gameTime);
-            }            
+            }
         }
 
         public override void Draw(GameTime gameTime)
         {
-            if (m_start)
-            {
-                GraphicsDevice.Clear(Color.Green);
-
-                // Start Logo
-                                
-                m_start = !m_start;
-
-                m_play = !m_play;
-
-                m_pageManager!.SwitchPage(nameof(ChooseProfile_Page), FrameType.MainFrame);
-            }
-
             if (m_play)
             {
                 Debug.WriteLine($"Activated: {m_play}");
@@ -112,14 +94,14 @@ namespace WPF.UI.ViewModels.PagesVM
                 _spriteBatch.End();
 
                 base.Draw(gameTime);
-            }                        
+            }
         }
         #endregion
 
         #region Message Bus Handlers
 
         private void OnMessageRecieved(IGameMessage msg)
-        {            
+        {
             if (msg is StartGame)
             {
                 m_play = true;
@@ -140,14 +122,14 @@ namespace WPF.UI.ViewModels.PagesVM
 
         #endregion
 
-        //public override void Dispose()
-        //{
-        //    Unsubscribe();
+        public override void Dispose()
+        {
+            Unsubscribe();
 
-        //    Subscriptions.Clear();
+            Subscriptions.Clear();
 
-        //    base.Dispose();
-        //}
+            base.Dispose();
+        }
 
         #endregion
     }

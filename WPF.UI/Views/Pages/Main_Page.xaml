@@ -10,13 +10,7 @@
       Title="Main_Page"
       d:DataContext="{d:DesignInstance vm:Main_ViewModel, IsDesignTimeCreatable=True}"
       >
-
-    <Page.Background>
-        <ImageBrush 
-    ImageSource="pack://siteoforigin:,,,/WPFResources/Images/Backgrounds/MainPage/SAMainBack.jpg"
-        Stretch="UniformToFill"/>
-    </Page.Background>
-
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>

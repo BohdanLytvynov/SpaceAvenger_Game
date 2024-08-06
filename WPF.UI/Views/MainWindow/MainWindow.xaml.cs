@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using WPF.UI.MonoGameControls;
 
 namespace WPF.UI
 {
@@ -7,9 +8,13 @@ namespace WPF.UI
     /// </summary>
     public partial class MainWindow : Window
     {
+        public MonoGameContentControl MonoGameContentControl { get; }
+
         public MainWindow()
         {            
-            InitializeComponent();            
+            InitializeComponent();
+
+            MonoGameContentControl = this.MonoGameControl;
         }
     }
 }

@@ -62,7 +62,7 @@ public sealed class MonoGameContentControl : ContentControl, IDisposable
     }
 
     public GraphicsDevice GraphicsDevice => _graphicsDeviceService?.GraphicsDevice!;
-    public Window Window { get; set; } = App.Current.MainWindow;
+    public Window? Window { get; set; } = App.Current.MainWindow;
    
     public bool IsDisposed { get; private set; }
 

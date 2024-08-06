@@ -10,11 +10,6 @@
       Title="ChooseProfile_Page"
       d:DataContext="{d:DesignInstance vm:ChooseProfile_ViewModel, IsDesignTimeCreatable=True}"
       >
-
-    <Page.Background>
-        <ImageBrush ImageSource="pack://siteoforigin:,,,/WPFResources/Images/Backgrounds/ChooseProfilePage/SAChooseProfile.jpg"/>
-    </Page.Background>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>

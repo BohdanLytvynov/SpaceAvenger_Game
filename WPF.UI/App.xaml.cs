@@ -12,11 +12,10 @@ using WPF.UI.Services.Realizations.MessageBus;
 using System.Reflection;
 using System.Linq;
 using System.Windows.Controls;
-using WPF.UI.ViewModels.PagesVM;
 using ViewModelBaseLibDotNetCore.VM;
 using WPF.UI.Attributes.PageManager;
-using System.Collections.Generic;
 using Domain.Utilities;
+using WPF.UI.ViewModels.GameWindowVM;
 
 namespace WPF.UI
 {
@@ -45,17 +44,26 @@ namespace WPF.UI
             services.AddSingleton<IPageManagerService<FrameType>, PageManagerService<FrameType>>();               
             
             services.AddSingleton<IMessageBus, MessageBusService>();
-            
-            services.AddSingleton<Game_Page>();
-
-            services.AddSingleton<GamePage_ViewModel>();
+                        
+            services.AddSingleton<GameWindow_ViewModel>();
                                                     
             return services;
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            base.OnStartup(e);
+
             var mainWindow = Services.GetRequiredService<MainWindow>();
+
+            var gameViewModel = Services.GetRequiredService<GameWindow_ViewModel>();
+
+            mainWindow.MonoGameControl.DataContext = gameViewModel;
+
+            var mainWindowViewModel = Services.GetRequiredService<MainWindowViewModel>();
+
+            mainWindow.DataContext = mainWindowViewModel;
+            mainWindowViewModel.Dispatcher = mainWindow.Dispatcher;
 
             App.Current.MainWindow = mainWindow;
 
@@ -94,39 +102,29 @@ namespace WPF.UI
                     vm.Name.Split(SEPARATOR)[0].Equals(pageName)
                     : vm.GetCustomAttribute<ViewModelName>()?.Name?.Split(SEPARATOR)[0].Equals(pageName) ?? false);
 
-                if (viewModelInfo is null)
+                if (viewModelInfo is null && page.GetCustomAttribute<IgnoreVVMMapping>() is null)
                     throw new Exception($"Can't find corresponding ViewModel to the View {pageName}! Please check you page's and viewmodel's namings.");
 
-                vm = Services.GetRequiredService(viewModelInfo.AsType()) as ViewModelBase;
+                if(viewModelInfo is not null)
+                    vm = Services.GetRequiredService(viewModelInfo.AsType()) as ViewModelBase;
+
                 view = Activator.CreateInstance(page.AsType()) as Page;
 
-                view!.DataContext = vm;
-                vm!.Dispatcher = view.Dispatcher;
-
+                if (viewModelInfo is not null)
+                {
+                    view!.DataContext = vm;
+                    vm!.Dispatcher = view.Dispatcher;
+                }
+                
                 pm.AddPage(
                 page.Name, view);
             }
-            
-            var mainWindowViewModel = Services.GetRequiredService<MainWindowViewModel>();
-
-            mainWindow.DataContext = mainWindowViewModel;
-            mainWindowViewModel.Dispatcher = mainWindow.Dispatcher;
-
-            var game_page = Services.GetRequiredService<Game_Page>();
-
-            var game_vm = Services.GetRequiredService<GamePage_ViewModel>();
-
-            game_page.GameControl.DataContext = game_vm;
-
-            pm.AddPage(nameof(Game_Page), game_page);
-
+                                                            
             mainWindow.Show();
 
             pm.SwitchPage(nameof(ChooseProfile_Page), FrameType.MainFrame);
 
-            pm.SwitchPage(nameof(UserProfileInfo_Page), FrameType.InfoFrame);
-            
-            base.OnStartup(e);
+            pm.SwitchPage(nameof(UserProfileInfo_Page), FrameType.InfoFrame);                        
         }
 
         

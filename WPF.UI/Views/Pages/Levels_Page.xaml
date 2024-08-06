@@ -8,10 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Levels_Page">
 
-    <Page.Background>
-        <ImageBrush 
-  ImageSource="pack://siteoforigin:,,,/WPFResources/Images/Backgrounds/LevelsPage/SALevels1.jpg"/>
-    </Page.Background>
+    
 
     <Page.Resources>
 
