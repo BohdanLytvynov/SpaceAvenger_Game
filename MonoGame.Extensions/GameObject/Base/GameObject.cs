@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extensions.AssetStorages.Interface;
@@ -6,6 +7,7 @@ using MonoGame.Extensions.AssetStorages.Realization;
 using MonoGame.Extensions.GameComponents.Base;
 using MonoGame.Extensions.GameObject.Base;
 using System;
+using System.Linq;
 
 namespace MonoGame.Extensions.ScreenView.Base
 {
@@ -26,6 +28,8 @@ namespace MonoGame.Extensions.ScreenView.Base
 
         private readonly SpriteBatch m_spriteBatch;
 
+        Vector2 m_ScreenDimensions;
+
         #endregion
 
         #region Properties
@@ -44,6 +48,8 @@ namespace MonoGame.Extensions.ScreenView.Base
 
         protected SpriteBatch SpriteBatch => m_spriteBatch;
 
+        protected Vector2 ScreenDimensions { get=> m_ScreenDimensions; }
+
         #endregion
 
         #region Ctor
@@ -51,7 +57,7 @@ namespace MonoGame.Extensions.ScreenView.Base
         public GameObject(
             string name, ContentManager contentmanager,
             GraphicsDevice graphicsDevice, SpriteBatch spriteBatch,
-            IAssetStorage? assetStorage = null)
+            IAssetStorage? assetStorage = null, Vector2 screenDimensions = default)
         {
             m_name = name;
 
@@ -67,11 +73,13 @@ namespace MonoGame.Extensions.ScreenView.Base
             m_graphicsDevice = graphicsDevice;
 
             m_spriteBatch = spriteBatch;
+
+            m_ScreenDimensions = screenDimensions;
         }
 
         #endregion
 
-        public virtual void Draw(ref bool play)
+        public virtual void Draw(GameTime time, ref bool play)
         {
             if (!play) return;
         }
@@ -83,10 +91,17 @@ namespace MonoGame.Extensions.ScreenView.Base
 
         public virtual void UnLoad()
         {
-            m_loaded = false;
+            if (m_loaded)
+            {
+                ContentManager.UnloadAssets(Storage!.GetPaths(p => true).ToList());
+
+                m_storage.Clear();
+
+                m_loaded = false;
+            }            
         }
 
-        public virtual void Update(IUpdateArgs args, ref bool play)
+        public virtual void Update(IUpdateArgs args, GameTime time, ref bool play)
         { 
             if(!play) return;
         }

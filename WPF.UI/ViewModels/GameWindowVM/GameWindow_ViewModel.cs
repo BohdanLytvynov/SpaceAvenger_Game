@@ -11,6 +11,10 @@ using Point = Microsoft.Xna.Framework.Point;
 using WPF.UI.MonoGameCore.Screens;
 using SharpDX.Win32;
 using System;
+using MonoGame.Extensions.ScreenView.Base;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 
 namespace WPF.UI.ViewModels.GameWindowVM
@@ -30,8 +34,10 @@ namespace WPF.UI.ViewModels.GameWindowVM
         bool m_play;
         
         private SpriteBatch _spriteBatch = default!;
+       
+        private GameObject? m_currentScreen;
 
-        private StartScreen? m_startScreen;
+        private List<GameObject?> m_screens;
 
         private StartScreenUpdateArgs? m_startScreenUpdateArgs;
         
@@ -47,6 +53,8 @@ namespace WPF.UI.ViewModels.GameWindowVM
             m_play = true;
 
             m_startScreenUpdateArgs = new();
+
+            m_screens = new List<GameObject?>();
         }
 
         public GameWindow_ViewModel(IPageManagerService<FrameType> pm, IMessageBus bus) : this()
@@ -77,9 +85,11 @@ namespace WPF.UI.ViewModels.GameWindowVM
 
             // Init Screens
 
-            m_startScreen = new StartScreen("Start", Content, GraphicsDevice, _spriteBatch);
+            m_currentScreen = new StartScreen("StartScreen", Content, GraphicsDevice, _spriteBatch);
+           
+            m_screens.Add(m_currentScreen);
 
-            m_startScreen!.Load();
+            m_currentScreen!.Load();
 
             m_screen_Dimensions = new Point(
                 (int)App.Current.MainWindow.ActualWidth,
@@ -98,7 +108,7 @@ namespace WPF.UI.ViewModels.GameWindowVM
             if (!m_play)
                 return;
 
-            m_startScreen!.Update(m_startScreenUpdateArgs!, ref m_play);
+            m_currentScreen!.Update(m_startScreenUpdateArgs!, gameTime, ref m_play);
 
 #if DEBUG
             Debug.WriteLine($"Update Runs: {m_play}");
@@ -117,11 +127,11 @@ namespace WPF.UI.ViewModels.GameWindowVM
 #if DEBUG
             Debug.WriteLine($"Draw Runs: {m_play}");
 #endif
-            GraphicsDevice.Clear(Color.White);
+            GraphicsDevice.Clear(Color.DarkBlue);
 
             _spriteBatch.Begin();
 
-            m_startScreen!.Draw(ref m_play);
+            m_currentScreen!.Draw(gameTime, ref m_play);
 
             _spriteBatch.End();
 
@@ -134,9 +144,9 @@ namespace WPF.UI.ViewModels.GameWindowVM
         /// </summary>
         public override void UnloadContent()
         {
-            if(m_startScreen!.Loaded)
-                m_startScreen!.UnLoad();
-            
+            foreach (var screen in m_screens)                            
+                screen!.UnLoad();
+                                   
             base.UnloadContent();
         }
         #endregion
@@ -154,8 +164,24 @@ namespace WPF.UI.ViewModels.GameWindowVM
                 m_play = true;
             }
             else if (msg is SetStartScreen start)
-            {                
+            {
                 m_startScreenUpdateArgs!.Args = start.Args;
+            }
+            else if (msg is SetLevel level)
+            {
+                m_play = false;
+
+                var name = level.Args;
+
+                var levelScreen = new LevelScreen(name, Content, GraphicsDevice, _spriteBatch);
+
+                levelScreen.Load();
+
+                m_screens.Add(levelScreen);
+
+                m_currentScreen = levelScreen;
+               
+                m_play = true;
             }
         }
 
@@ -168,13 +194,16 @@ namespace WPF.UI.ViewModels.GameWindowVM
             Unsubscribe();
 
             if (!GraphicsDevice.IsDisposed)
-                GraphicsDevice.Dispose();
+                GraphicsDevice?.Dispose();
 
             if (!_spriteBatch.IsDisposed)
                 _spriteBatch?.Dispose();
 
-            if(!m_startScreen!.Disposed)
-                m_startScreen?.Dispose();
+            foreach (var screen in m_screens)
+            { 
+                if(!screen!.Disposed)
+                    screen!.Dispose();
+            }
 
             base.Dispose();
         }

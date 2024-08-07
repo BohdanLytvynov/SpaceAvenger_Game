@@ -5,6 +5,9 @@ using WPF.UI.Services.Interfaces.MessageBus;
 using WPF.UI.Services.Interfaces.PageManager;
 using ViewModelBaseLibDotNetCore.Commands;
 using ViewModelBaseLibDotNetCore.VM;
+using WPF.UI.Services.Realizations.Message;
+using WPF.UI.Views.Pages;
+using WPF.UI.Services.Interfaces.Message;
 
 namespace WPF.UI.ViewModels.PagesVM
 {
@@ -84,7 +87,9 @@ namespace WPF.UI.ViewModels.PagesVM
 
         private void OnSurvivalModeButtonPressedExecute(object p)
         {
-            
+            m_PageManager!.SwitchPage(nameof(Empty_Page), FrameType.MainFrame);
+
+            m_messageBus!.Send<IGameMessage>(new SetLevel("SurvivalScreen"));
         }
 
         #endregion

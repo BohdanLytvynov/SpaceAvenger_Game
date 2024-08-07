@@ -62,9 +62,9 @@ namespace WPF.UI.MonoGameCore.Screens
             base.Load();
         }
 
-        public override void Draw(ref bool play)
+        public override void Draw(GameTime time, ref bool play)
         {
-            base.Draw(ref play);
+            base.Draw(time, ref play);
 
             switch (_type)
             {
@@ -89,20 +89,15 @@ namespace WPF.UI.MonoGameCore.Screens
         /// </summary>
         /// <param name="ptr"></param>
         /// <param name="play"></param>
-        public override void Update(IUpdateArgs args ,ref bool play)
+        public override void Update(IUpdateArgs args, GameTime time, ref bool play)
         {
-            base.Update(args ,ref play);
+            base.Update(args, time ,ref play);
 
             _type = (args as StartScreenUpdateArgs)!.Args;
         }
 
         public override void UnLoad()
-        {
-            foreach( var ass in Storage.GetPaths(a => true))
-            {
-                ContentManager.UnloadAsset(ass);
-            }
-
+        {            
             base.UnLoad();
         }        
     }

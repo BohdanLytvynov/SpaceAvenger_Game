@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extensions.AssetStorages.Interface;
 using MonoGame.Extensions.GameObject.Base;
@@ -22,8 +23,8 @@ namespace MonoGame.Extensions.GameComponents.Base
 
         void UnLoad();
 
-        void Update(IUpdateArgs args,ref bool play);
+        void Update(IUpdateArgs args, GameTime time, ref bool play);
 
-        void Draw(ref bool play);        
+        void Draw(GameTime time, ref bool play);        
     }
 }

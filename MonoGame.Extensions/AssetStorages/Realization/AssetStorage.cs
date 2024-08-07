@@ -44,6 +44,8 @@ namespace MonoGame.Extensions.AssetStorages.Realization
         public void Clear()
         {            
             m_storage.Clear();
+
+            m_pathStorage.Clear();
         }
 
         public object? GetAsset(Func<KeyValuePair<string, IDisposable>, bool> predicate)
