@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
 
-namespace WPFGameEngine.Utilities.Directories
+namespace Domain.Utilities.IO.Directories
 {
-    public static class DirectoryUtilities
+    public static class DirectoryUtility
     {
         public static bool DirectoryExists(string path)
-        { 
+        {
             return Directory.Exists(path);
         }
 
         public static void Create(string path)
-        { 
-            if(!DirectoryExists(path))
+        {
+            if (!DirectoryExists(path))
                 Directory.CreateDirectory(path);
         }
 
@@ -34,9 +33,9 @@ namespace WPFGameEngine.Utilities.Directories
             return count;
         }
 
-        public static IEnumerable<string> GetFilesNames(string path) 
+        public static IEnumerable<string> GetFilesNames(string path)
         {
-            if(DirectoryExists(path))
+            if (DirectoryExists(path))
                 return Directory.GetFiles(path);
             throw new DirectoryNotFoundException(nameof(path));
         }
@@ -44,12 +43,12 @@ namespace WPFGameEngine.Utilities.Directories
         public static IEnumerable<FileInfo> GetFilesInfo(string path)
         {
             if (DirectoryExists(path))
-            { 
+            {
                 DirectoryInfo d = new DirectoryInfo(path);
 
                 return d.GetFiles();
             }
-              
+
             throw new DirectoryNotFoundException(nameof(path));
         }
     }

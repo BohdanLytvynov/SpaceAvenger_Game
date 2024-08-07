@@ -1,0 +1,45 @@
+﻿<Window x:Class="WPF.UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mainVm="clr-namespace:WPF.UI.ViewModels.MainWindowVM"
+        xmlns:monoGameControl="clr-namespace:WPF.UI.MonoGameControls"        
+        mc:Ignorable="d"
+        WindowStyle="SingleBorderWindow" 
+        WindowState="Maximized"
+        Title="{Binding Tittle,
+    UpdateSourceTrigger=PropertyChanged}" Height="450" Width="800" 
+        d:DataContext="{d:DesignInstance mainVm:MainWindowViewModel, IsDesignTimeCreatable=True}" 
+        Background="{x:Null}">
+    <Grid>
+        <Grid x:Name="UserInfoGrid" Panel.ZIndex="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="{Binding Height, 
+                    UpdateSourceTrigger=PropertyChanged,
+                    Mode=OneWay}"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="69*"/>
+            </Grid.RowDefinitions>
+            <Button Grid.Row="1" 
+                    Content="{Binding OpenClosedButton_Content,
+                UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                    Width="80" Height="40"
+                    Style="{StaticResource Button}"
+                    Command="{Binding OnOpenInfoButtonPressed}"
+                    />
+            <Frame Grid.Row="0"
+                   NavigationUIVisibility="Hidden"
+                   Content="{Binding InfoFrame,
+                UpdateSourceTrigger=PropertyChanged,
+                Mode=OneWay}"/>
+        </Grid>
+        <Frame Content="{Binding MainFrame, 
+        UpdateSourceTrigger=PropertyChanged,
+        Mode=OneWay}" 
+       NavigationUIVisibility="Hidden"
+               Panel.ZIndex="1"/>
+        <monoGameControl:MonoGameContentControl x:Name="MonoGameControl"/> 
+    </Grid>
+
+</Window>

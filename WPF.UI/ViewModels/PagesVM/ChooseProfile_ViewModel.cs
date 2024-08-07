@@ -1,29 +1,23 @@
 ﻿using Data.DataBase;
 using Data.Repositories.Realizations.UserRep;
-using JsonDataProvider;
-using LiteDB;
 using Models.DAL.Entities.User;
-using SpaceAvenger.Attributes.PageManager;
-using SpaceAvenger.Enums.FrameTypes;
-using SpaceAvenger.Services.Interfaces.Message;
-using SpaceAvenger.Services.Interfaces.MessageBus;
-using SpaceAvenger.Services.Interfaces.PageManager;
-using SpaceAvenger.Services.Realizations;
-using SpaceAvenger.Services.Realizations.Message;
-using SpaceAvenger.ViewModels.UserProfile;
-using SpaceAvenger.Views.Pages;
+using WPF.UI.Attributes.PageManager;
+using WPF.UI.Enums.FrameTypes;
+using WPF.UI.Services.Interfaces.MessageBus;
+using WPF.UI.Services.Interfaces.PageManager;
+using WPF.UI.Services.Realizations.Message;
+using WPF.UI.ViewModels.UserProfile;
 using System;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.IO;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using ViewModelBaseLibDotNetCore.Commands;
 using ViewModelBaseLibDotNetCore.VM;
+using WPF.UI.Views.Pages;
+using WPF.UI.MonoGameCore.Screens;
 
-namespace SpaceAvenger.ViewModels.PagesVM
+namespace WPF.UI.ViewModels.PagesVM
 {
     [ViewModelType(ViewModelUsage.Page)]
     internal class ChooseProfile_ViewModel : ViewModelBase
@@ -36,9 +30,9 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
         private int m_SelectedUserIndex;
 
-        private IPageManagerService<FrameType> m_PageManager;
+        private IPageManagerService<FrameType>? m_PageManager;
 
-        private IMessageBus m_messageBus;
+        private IMessageBus? m_messageBus;
                                 
         #endregion
 
@@ -66,23 +60,13 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
         public ChooseProfile_ViewModel()
         {
-            
-        }
-
-        public ChooseProfile_ViewModel(IPageManagerService<FrameType> pageManager,
-            IMessageBus messageBus) : this()
-        {
-            m_messageBus = messageBus;
-
-            m_PageManager = pageManager;
-
             m_SelectedUserIndex = -1;
 
             m_userRepository = new UserRepository(
-                new SpaceAvengerDbContext(Environment.CurrentDirectory + 
-                Path.DirectorySeparatorChar + 
+                new SpaceAvengerDbContext(Environment.CurrentDirectory +
+                Path.DirectorySeparatorChar +
                 "Database" + Path.DirectorySeparatorChar + "Local.db"));
-                        
+
             m_profileList = new ObservableCollection<UserProfileVM>();
 
             var users = m_userRepository.GetAllAsync().Result;
@@ -94,7 +78,7 @@ namespace SpaceAvenger.ViewModels.PagesVM
                 upvm.OnUserProfileSelectedEvent += Up_OnUserProfileSelectedEvent;
                 m_profileList.Add(upvm);
             }
-            
+
             OnAddNewProfileButtonPressed = new Command(
                 OnAddNewProfileButtonPressedExecute,
                 CanOnAddNewProfileButtonPressedExecute
@@ -109,7 +93,15 @@ namespace SpaceAvenger.ViewModels.PagesVM
                 OnDeleteUserProfileButtonPressedExecute,
                 CanOnDeleteUserProfileButtonPressedExxecute
                 );
+        }
 
+        public ChooseProfile_ViewModel(IPageManagerService<FrameType> pageManager,
+            IMessageBus messageBus) : this()
+        {
+            m_messageBus = messageBus;
+
+            m_PageManager = pageManager;
+            
             #region Subscriptions
             
             #endregion
@@ -117,9 +109,11 @@ namespace SpaceAvenger.ViewModels.PagesVM
 
         private void Up_OnUserProfileSelectedEvent(User obj)
         {
-            m_PageManager.SwitchPage(nameof(Main_Page), FrameType.MainFrame);
+            m_PageManager!.SwitchPage(nameof(Main_Page), FrameType.MainFrame);
 
-            m_messageBus.Send<ChooseProfileMessage_User, User>(new ChooseProfileMessage_User(obj));
+            m_messageBus!.Send(new ChooseProfileMessage_User(obj));
+
+            m_messageBus!.Send(new SetStartScreen(StartScreenType.Main));            
         }
 
 

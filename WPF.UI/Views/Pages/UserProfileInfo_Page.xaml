@@ -1,0 +1,74 @@
+﻿<Page x:Class="WPF.UI.Views.Pages.UserProfileInfo_Page"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WPF.UI.Views.Pages"
+      xmlns:vm="clr-namespace:WPF.UI.ViewModels.PagesVM"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Width="800"
+      Height="450"
+      Title="UserProfileInfo_Page"
+      d:DataContext="{d:DesignInstance vm:UserProfileInfo_ViewModel, IsDesignTimeCreatable=True}"
+      >
+    <Grid>
+        <Grid>
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#B2244074" Offset="0"/>
+                    <GradientStop Color="#B2000205" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock FontSize="30" 
+                Text="Commander Profile Info:" 
+                Margin="20,0,20,0"
+               Style="{StaticResource textBlockHeaders}"/>
+            <Grid Grid.Row="1" x:Name="Info">
+                <DockPanel>
+                    <Border Width="200" Height="160" Margin="10,0,30,80" CornerRadius="10"
+                    BorderThickness="5" BorderBrush="{StaticResource linear_grad_brush_border_button}">
+                        <Image Stretch="Uniform" DockPanel.Dock="Left" Margin="5"
+                       Source="{Binding UserImage.Source, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                    </Border>
+
+                    <DockPanel Margin="10" DockPanel.Dock="Right">
+                        <StackPanel DockPanel.Dock="Left" Orientation="Vertical">
+                            <TextBlock Style="{StaticResource textBlockHeaders}"
+                           FontSize="20" Margin="20"
+                           Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=OneWay,
+                        StringFormat=Name: {0}}"/>
+                            <TextBlock Style="{StaticResource textBlockHeaders}"
+                           FontSize="20" Margin="20"
+                           Text="{Binding Rank, UpdateSourceTrigger=PropertyChanged, Mode=OneWay
+                        ,StringFormat=Rank: {0}}"/>
+                            <TextBlock Style="{StaticResource textBlockHeaders}"
+                            FontSize="20" Margin="20"
+                           Text="{Binding Enlisted, UpdateSourceTrigger=PropertyChanged, Mode=OneWay,
+                        StringFormat=Enlisted: {0:yyyy.MM.dd HH:MM},
+                        Converter={StaticResource DateTimeToStringConverter}}"/>
+                            <StackPanel Orientation="Vertical" Margin="0,15">
+                                <TextBlock Text="Points to next Rank:" 
+           Style="{StaticResource textBlockHeaders}" Margin="20,0"/>
+                                <ProgressBar Height="15"
+FontSize="20" Margin="20"
+Value="{Binding Points, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"             />
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel DockPanel.Dock="Right" Margin="40,0,0,0">
+                            <TextBlock Style="{StaticResource textBlockHeaders}"
+                        FontSize="20" Margin="20"
+                        Text="{Binding MissionsCount, UpdateSourceTrigger=PropertyChanged, Mode=OneWay,
+                        StringFormat=Missions: {0}}"/>
+                        </StackPanel>
+                    </DockPanel>
+                </DockPanel>
+            </Grid>
+
+        </Grid>
+    </Grid>
+</Page>

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ViewModelBaseLibDotNetCore.VM;
+using WPF.UI.MonoGameControls;
 
-namespace SpaceAvenger.ViewModels.Base
+namespace WPF.UI.ViewModels.Base
 {
-    internal class SubscriptableViewModel : ViewModelBase
+    internal class SubscriptableMonoGameViewModel : MonoGameViewModel
     {
         #region Fields
 
@@ -19,7 +19,7 @@ namespace SpaceAvenger.ViewModels.Base
 
         #region Ctor
 
-        public SubscriptableViewModel()
+        public SubscriptableMonoGameViewModel()
         {
             m_subscriptions = new List<IDisposable>();
         }
@@ -27,11 +27,13 @@ namespace SpaceAvenger.ViewModels.Base
         #endregion
 
         #region Methods
-        
+
         protected virtual void Unsubscribe()
-        { 
-            foreach (var subscription in m_subscriptions) 
+        {
+            foreach (var subscription in m_subscriptions)
                 subscription.Dispose();
+
+            Subscriptions.Clear();
         }
 
         #endregion

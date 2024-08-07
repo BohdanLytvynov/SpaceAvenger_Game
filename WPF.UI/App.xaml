@@ -1,0 +1,572 @@
+﻿<Application x:Class="WPF.UI.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:WPF.UI"
+             xmlns:userVM="clr-namespace:WPF.UI.ViewModels.UserProfile"
+             xmlns:converters="clr-namespace:WPF.UI.Converters"
+             xmlns:glob_commands="clr-namespace:WPF.UI.CommonCommands"
+             xmlns:font_awesome="http://schemas.fontawesome.com/icons/" 
+             xmlns:system="http://schemas.microsoft.com/winfx/2009/xaml"
+             >
+    <Application.Resources>
+
+        <!--#region Image Sources -->
+
+        <!--#region BackGrounds-GamePage -->
+
+        <ImageSource x:Key="Back1_GamePage">pack://siteoforigin:,,,/WPFResources/Images/Backgrounds/GamePage/Back1.jpg
+        </ImageSource>
+
+        <ImageSource x:Key="Back2_GamePage">pack://siteoforigin:,,,/WPFResources/Images/Backgrounds/GamePage/Back2.jpg            
+        </ImageSource>
+
+        <ImageSource x:Key="Back3_GamePage">pack://siteoforigin:,,,/WPFResources/Images/Backgrounds/GamePage/Back3.jpg
+        </ImageSource>
+
+        <!--#endregion-->
+
+        <!--#endregion-->
+
+        <!--#region Font Awesome -->
+        <font_awesome:ImageAwesome x:Key="window_close_icon"
+            Stretch="Uniform"
+            Icon="Regular_WindowClose"
+            Foreground="DarkRed"/>
+
+        <font_awesome:ImageAwesome x:Key="window_ok_icon"
+            Stretch="Uniform" 
+            Icon="Regular_CheckCircle" 
+            Foreground="DarkBlue"/>
+
+        <font_awesome:ImageAwesome x:Key="triangleDown"
+                                   Stretch="Uniform"
+                                   Icon="Regular_CaretSquareDown"
+                                   Foreground="White"
+                                   />
+
+        <font_awesome:ImageAwesome x:Key="triangleUp"
+                                   Stretch="Uniform"
+                                   Icon="Regular_CaretSquareUp"
+                                   Foreground="White"/>
+        <!--#endregion-->
+
+        <!--#region Global Commands -->
+
+        <glob_commands:ExitCommand x:Key="ExitCommand"/>
+
+        <!--#endregion-->
+
+        <!--#region Converters -->
+
+        <converters:BoolToMaleFemaleInvertedConverter x:Key="BoolToFemaleInvertConverter"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter"/>
+
+        <!--#endregion-->
+       
+        <!--#region Colors-->
+
+        <Color x:Key="btn_back">#FF253250
+        </Color>
+
+        <Color x:Key="But1ColorInit">#4D0B1D4D
+        </Color>
+
+        <Color x:Key="But2ColorInit">#3636BEFF
+        </Color>
+
+        <Color x:Key="brdButColor1">#FF0D0C37
+        </Color>
+
+        <Color x:Key="brdButColor2">#FF16BDBD
+        </Color>
+
+        <Color x:Key="But1ColorPress">#FF0B1D4D
+        </Color>
+
+        <Color x:Key="But2ColorPress">#FF36BEFF
+        </Color>
+
+        <Color x:Key="But1ColorDis">#C0331010
+        </Color>
+
+        <Color x:Key="But2ColorDis">#7BEE2A2A
+        </Color>
+               
+        <!--#endregion-->
+
+        <!--#region Brashes -->
+
+        <LinearGradientBrush x:Key="LVBack" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#4D0B1D4D" Offset="1"/>
+            <GradientStop Color="#3636BEFF" Offset="0"/>
+        </LinearGradientBrush>
+
+        <SolidColorBrush x:Key="btn_back_brush" Color="{StaticResource btn_back}"/>
+
+        <LinearGradientBrush x:Key="linear_grad_brush_border_button">
+            <LinearGradientBrush.RelativeTransform>
+                <RotateTransform Angle="0"/>
+            </LinearGradientBrush.RelativeTransform>
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Color="{StaticResource brdButColor1}" Offset="1"/>
+                <GradientStop Color="{StaticResource brdButColor2}" Offset="0"/>
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="linear_grad_brush_back_button" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop x:Name="gs1" Color="{StaticResource But1ColorInit}" Offset="1"/>
+            <GradientStop x:Name="gs2" Color="{StaticResource But2ColorInit}" Offset="0"/>
+        </LinearGradientBrush>
+
+
+        <!--#endregion-->
+
+        <!--#region Animations -->
+
+        <DoubleKeyFrameCollection x:Key="button_grad_rotate_keyframes">
+            <LinearDoubleKeyFrame KeyTime="0%" Value="0"/>
+            <LinearDoubleKeyFrame KeyTime="50%" Value="90"/>
+            <LinearDoubleKeyFrame KeyTime="100%" Value="180"/>
+        </DoubleKeyFrameCollection>
+
+        <!--#endregion-->
+
+        <!--#region Durations -->
+
+        <Duration x:Key="ButAnimDuration">0:0:0:0.02
+        </Duration>
+
+        <Duration x:Key="TextBoxAnimDuration">0:0:0:0.02
+        </Duration>
+
+        <!--#endregion-->
+
+        <!--#region Styles-->
+        
+        <Style x:Key="textBlockHeaders" TargetType="TextBlock">
+            <Style.Setters>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style.Setters>
+        </Style>
+
+        <!--#region Buttons-->
+
+        <Style x:Key="Button" TargetType="{x:Type Button}">
+            <Style.Setters>
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border CornerRadius="10" x:Name="brd" BorderThickness="2"
+                                    BorderBrush="{StaticResource linear_grad_brush_border_button}"
+                                    Background="{StaticResource linear_grad_brush_back_button }">
+                                <Label Content="{TemplateBinding Content}" 
+                                       HorizontalContentAlignment="Center" 
+                                       VerticalContentAlignment="Center" 
+                                       Foreground="{TemplateBinding Foreground}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       FontFamily="{TemplateBinding FontFamily}"
+                                       FontWeight="{TemplateBinding FontWeight}"/>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal">
+                                            <Storyboard>
+                                                <ThicknessAnimation
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="BorderThickness"
+                                            To="2"
+                                            Duration="{StaticResource ButAnimDuration}"/>
+
+                                                <ColorAnimation
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="(Border.Background).GradientStops[0].Color"
+                                            To="{StaticResource But1ColorInit}"
+                                            Duration="{StaticResource ButAnimDuration}"/>
+
+                                                <ColorAnimation
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="(Border.Background).GradientStops[1].Color"
+                                            To="{StaticResource But2ColorInit}"
+                                            Duration="{StaticResource ButAnimDuration}"/>
+                                            </Storyboard>
+                                        </VisualState>
+
+                                        <VisualState x:Name="MouseOver">
+                                            <Storyboard>
+                                                <ThicknessAnimation
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="BorderThickness"
+                                            To="3"
+                                            Duration="{StaticResource ButAnimDuration}"/>
+                                                <DoubleAnimationUsingKeyFrames
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="(Border.BorderBrush).(Brush.RelativeTransform).(RotateTransform.Angle)"                                                     
+                                            AutoReverse="True"
+                                            RepeatBehavior="Forever"
+                                            DecelerationRatio="1"
+                                            Duration="0:0:3" KeyFrames="{StaticResource button_grad_rotate_keyframes}"
+                                                    />
+                                            </Storyboard>
+                                        </VisualState>
+
+                                        <VisualState x:Name="Pressed">
+                                            <Storyboard>
+                                                <ThicknessAnimation
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="BorderThickness"
+                                            To="2"
+                                            Duration="{StaticResource ButAnimDuration}"/>
+                                                <ColorAnimation
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="(Border.Background).GradientStops[0].Color"
+                                            To="{StaticResource But1ColorPress}"
+                                            Duration="{StaticResource ButAnimDuration}"/>
+
+                                                <ColorAnimation
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="(Border.Background).GradientStops[1].Color"
+                                            To="{StaticResource But2ColorPress}"
+                                            Duration="{StaticResource ButAnimDuration}"/>
+                                            </Storyboard>
+                                        </VisualState>
+
+                                        <VisualState x:Name="Disabled">
+                                            <Storyboard>
+                                                <ThicknessAnimation
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="BorderThickness"
+                                            To="2"
+                                            Duration="{StaticResource ButAnimDuration}"/>
+                                                <ColorAnimation
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="(Border.Background).GradientStops[0].Color"
+                                            To="{StaticResource But1ColorDis}"
+                                            Duration="{StaticResource ButAnimDuration}"/>
+
+                                                <ColorAnimation
+                                            Storyboard.TargetName="brd"
+                                            Storyboard.TargetProperty="(Border.Background).GradientStops[1].Color"
+                                            To="{StaticResource But2ColorDis}"
+                                            Duration="{StaticResource ButAnimDuration}"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style.Setters>
+        </Style>
+
+        <Style x:Key="ToggleButton" TargetType="{x:Type ToggleButton}">
+            <Style.Setters>
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                            <Border CornerRadius="10" x:Name="brd" BorderThickness="2"
+                                    BorderBrush="{StaticResource linear_grad_brush_border_button}"
+                                    Background="{StaticResource linear_grad_brush_back_button}">
+                                
+                                <Label Content="{TemplateBinding Content}" 
+                                       HorizontalContentAlignment="Center" 
+                                       VerticalContentAlignment="Center" 
+                                       Foreground="{TemplateBinding Foreground}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       FontFamily="{TemplateBinding FontFamily}"
+                                       FontWeight="{TemplateBinding FontWeight}"/>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal">
+                                            <Storyboard>
+                                                <ThicknessAnimation
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="BorderThickness"
+                                    To="2"
+                                    Duration="{StaticResource ButAnimDuration}"/>
+
+                                                <ColorAnimation
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="(Border.Background).GradientStops[0].Color"
+                                    To="{StaticResource But1ColorInit}"
+                                    Duration="{StaticResource ButAnimDuration}"/>
+
+                                                <ColorAnimation
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="(Border.Background).GradientStops[1].Color"
+                                    To="{StaticResource But2ColorInit}"
+                                    Duration="{StaticResource ButAnimDuration}"/>
+                                            </Storyboard>
+                                        </VisualState>
+
+                                        <VisualState x:Name="MouseOver">
+                                            <Storyboard>
+                                                <ThicknessAnimation
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="BorderThickness"
+                                    To="3"
+                                    Duration="{StaticResource ButAnimDuration}"/>
+                                                <DoubleAnimationUsingKeyFrames
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="(Border.BorderBrush).(Brush.RelativeTransform).(RotateTransform.Angle)"                                                     
+                                    AutoReverse="True"
+                                    RepeatBehavior="Forever"
+                                    DecelerationRatio="1"
+                                    Duration="0:0:3"
+                                    KeyFrames="{StaticResource button_grad_rotate_keyframes}"
+                                                    />
+                                            </Storyboard>
+                                        </VisualState>
+
+                                        <VisualState x:Name="Checked">
+                                            <Storyboard>
+                                                <ThicknessAnimation
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="BorderThickness"
+                                    To="2"
+                                    Duration="{StaticResource ButAnimDuration}"/>
+                                                <ColorAnimation
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="(Border.Background).GradientStops[0].Color"
+                                    To="{StaticResource But1ColorPress}"
+                                    Duration="{StaticResource ButAnimDuration}"/>
+
+                                                <ColorAnimation
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="(Border.Background).GradientStops[1].Color"
+                                    To="{StaticResource But2ColorPress}"
+                                    Duration="{StaticResource ButAnimDuration}"/>
+                                            </Storyboard>
+                                        </VisualState>
+
+                                        <VisualState x:Name="Disabled">
+                                            <Storyboard>
+                                                <ThicknessAnimation
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="BorderThickness"
+                                    To="2"
+                                    Duration="{StaticResource ButAnimDuration}"/>
+                                                <ColorAnimation
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="(Border.BorderBrush).GradientStops[0].Color"
+                                    To="{StaticResource But1ColorDis}"
+                                    Duration="{StaticResource ButAnimDuration}"/>
+
+                                                <ColorAnimation
+                                    Storyboard.TargetName="brd"
+                                    Storyboard.TargetProperty="(Border.BorderBrush).GradientStops[1].Color"
+                                    To="{StaticResource But2ColorDis}"
+                                    Duration="{StaticResource ButAnimDuration}"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style.Setters>
+        </Style>
+
+        <Style x:Key="TextBox" TargetType="{x:Type TextBox}">
+            <Style.Setters>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="CaretBrush">
+                    <Setter.Value>
+                        <SolidColorBrush Color="White"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <Border CornerRadius="10" 
+                                    BorderThickness="1" 
+                                    BorderBrush="White"
+                                    x:Name="brd"
+                                    >
+                                <TextBox Text="{Binding RelativeSource={RelativeSource TemplatedParent}, 
+                                    Path=Text, UpdateSourceTrigger=PropertyChanged, 
+                                    Mode=TwoWay}" Margin="5" Background="{x:Null}" 
+                                         Foreground="{TemplateBinding Foreground}"
+                                         FontFamily="{TemplateBinding FontFamily}"
+                                         FontSize="{TemplateBinding FontSize}"
+                                         FontWeight="{TemplateBinding FontWeight}"
+                                         BorderBrush="{x:Null}"
+                                         BorderThickness="0"
+                                         CaretBrush="{TemplateBinding CaretBrush}"
+                                         >
+                                </TextBox>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal">
+                                            <Storyboard>
+                                                <ThicknessAnimation
+                                                    Storyboard.TargetName="brd"
+                                                    Storyboard.TargetProperty="BorderThickness"
+                                                    To="1"
+                                                    Duration="{DynamicResource TextBoxAnimDuration}"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="MouseOver">
+                                            <Storyboard>
+                                                <ThicknessAnimation
+                                                    Storyboard.TargetName="brd"
+                                                    Storyboard.TargetProperty="BorderThickness"
+                                                    To="2"
+                                                    Duration="{DynamicResource TextBoxAnimDuration}"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value> 
+                </Setter>
+            </Style.Setters>
+        </Style>
+
+        <!--#endregion-->
+
+        <!--#region Grid Splitter Style -->
+
+        <Style x:Key="grid_splitter_style_hor" TargetType="{x:Type GridSplitter}">
+            <Style.Setters>
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.Setters>
+                        <Setter Property="Background" Value="DarkGreen"/>
+                    </Trigger.Setters>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--#endregion-->
+
+        <!--#endregion-->
+
+        <!--#region UserProfileDataTemplate-->
+
+        <Style x:Key="UserProfText">
+            <Style.Setters>
+                <Setter Property="ItemsControl.FontSize" Value="20"/>
+                <Setter Property="ItemsControl.Foreground" Value="White"/>
+            </Style.Setters>
+        </Style>
+
+        <DataTemplate DataType="{x:Type userVM:UserProfileVM}">
+            <Border x:Name="brd" CornerRadius="10" Style="{DynamicResource UserProfText}" 
+                    BorderThickness="2" Margin="10">
+                <Border.BorderBrush>
+                    <LinearGradientBrush>
+                        <LinearGradientBrush.RelativeTransform>
+                            <RotateTransform x:Name="rtr" Angle="0"/>
+                        </LinearGradientBrush.RelativeTransform>
+
+                        <GradientStop x:Name="brd1gs" Color="{StaticResource brdButColor1}" Offset="1"/>
+                        <GradientStop x:Name="brd2gs" Color="{StaticResource brdButColor2}" Offset="0"/>
+                    </LinearGradientBrush>
+                </Border.BorderBrush>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Number, UpdateSourceTrigger=PropertyChanged, StringFormat=№{0})}"
+                               Margin="10, 40, 0,0" FontSize="30"/>
+                    <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+                        <Image x:Name="userVm_Image" Width="150" Height="150" Margin="40,0"/>
+                        <ToggleButton Style="{DynamicResource ToggleButton}"
+                                      Content="{Binding User.MaleFemale, UpdateSourceTrigger=PropertyChanged
+                            ,Converter={StaticResource BoolToFemaleInvertConverter}
+                            }" IsChecked="{Binding User.MaleFemale, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                            x:Name="chooseSex_btn"         
+                                      />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="30,0,0,0">
+                        <TextBlock Text="Commander Info:" FontSize="22" Margin="0,0,0,10"/>
+                        <TextBlock 
+                            Text="{Binding EnlistedDate, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=Enlisted: {0:yyyy.MM.dd HH:MM}, Converter={StaticResource DateTimeToStringConverter}, ConverterParameter='Not yet'}" 
+                            Margin="0,0,0,10"/>
+                        <TextBox Style="{DynamicResource TextBox}" 
+                                 Text="{Binding User.UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                 Margin="0,0,0,10" 
+                                 IsReadOnly="{Binding Confirmed, UpdateSourceTrigger=PropertyChanged}"
+                                 />
+                        <TextBlock Text="{Binding User.Rank, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat= Rank: {0}}" Margin="0,0,0,10"/>
+                        <TextBlock Text="{Binding User.MissionsCount, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=Missions_Completed: {0}}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical"
+                                x:Name="confirm_block" Margin="40,10,20,0">
+                        <TextBlock Text="Check your personal info Sir. And if all is correct, press Confirm Profile button bellow. "
+                                   TextWrapping="WrapWithOverflow" Width="300"
+                                   FontSize="20" Foreground="White" Margin="10"/>
+                        <Button Content="Confirm Profile" Style="{DynamicResource Button}"
+                                Command="{Binding OnConfirmButtonPressed}"
+                                />
+
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" x:Name="profile_confirmed_block"
+                                Margin="50,0,50,0">
+                        <Label Content="Profile Confirmed."                          
+                        Foreground="LightGreen"
+                        FontSize="25"
+                        Margin="{Binding ElementName=confirm_block, Path=Margin, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                        <Button Content="Select" Style="{DynamicResource Button}" Margin="0,20"
+                                Command="{Binding OnSelectButtonPressed}"/>
+                    </StackPanel>
+                   
+                </StackPanel>
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Confirmed, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                    <DataTrigger.Setters>
+                        <Setter Property="Visibility" TargetName="chooseSex_btn"
+                                Value="Collapsed"/>
+                        <Setter Property="Visibility" TargetName="confirm_block"
+                                Value="Collapsed"/>
+                        <Setter Property="Visibility" TargetName="profile_confirmed_block"
+                                Value="Visible"/>
+                    </DataTrigger.Setters>
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding Confirmed, UpdateSourceTrigger=PropertyChanged}" Value="False">
+                    <DataTrigger.Setters>
+                        <Setter Property="Visibility" TargetName="profile_confirmed_block"
+                                Value="Collapsed"/>
+                        <Setter Property="Visibility" TargetName="chooseSex_btn"
+                                Value="Visible"/>
+                        <Setter Property="Visibility" TargetName="confirm_block"
+                                Value="Visible"/>
+                    </DataTrigger.Setters>
+                </DataTrigger>
+                <!--Show male-->
+                <DataTrigger Binding="{Binding User.MaleFemale, 
+                    UpdateSourceTrigger=PropertyChanged}" Value="True">
+                    <DataTrigger.Setters>
+                        <Setter TargetName="userVm_Image" Property="Source" 
+                                Value="pack://siteoforigin:,,,/WPFResources/Images/Chars/Commanders/CommandersM.png"/>
+                    </DataTrigger.Setters>
+                </DataTrigger>
+                <!--Show female-->
+                <DataTrigger Binding="{Binding User.MaleFemale, 
+                    UpdateSourceTrigger=PropertyChanged}" Value="False">
+                    <DataTrigger.Setters>
+                        <Setter TargetName="userVm_Image" Property="Source" 
+                                Value="pack://siteoforigin:,,,/WPFResources/Images/Chars/Commanders/CommandersF.png"/>
+                    </DataTrigger.Setters>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <!--#endregion-->
+
+    </Application.Resources>
+</Application>

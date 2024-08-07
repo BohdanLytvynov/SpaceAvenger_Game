@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ViewModelBaseLibDotNetCore.VM;
 
-namespace SpaceAvenger.ViewModels.Base
+namespace WPF.UI.ViewModels.Base
 {
     internal class SubscriptableViewModel : ViewModelBase
     {
@@ -32,6 +32,8 @@ namespace SpaceAvenger.ViewModels.Base
         { 
             foreach (var subscription in m_subscriptions) 
                 subscription.Dispose();
+
+            Subscriptions.Clear();
         }
 
         #endregion
