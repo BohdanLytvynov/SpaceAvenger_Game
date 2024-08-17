@@ -49,7 +49,7 @@ namespace WPF.UI
                                                     
             return services;
         }
-
+        
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -57,7 +57,7 @@ namespace WPF.UI
             var mainWindow = Services.GetRequiredService<MainWindow>();
 
             var gameViewModel = Services.GetRequiredService<GameWindow_ViewModel>();
-
+           
             mainWindow.MonoGameControl.DataContext = gameViewModel;
 
             var mainWindowViewModel = Services.GetRequiredService<MainWindowViewModel>();
@@ -127,6 +127,6 @@ namespace WPF.UI
             pm.SwitchPage(nameof(UserProfileInfo_Page), FrameType.InfoFrame);                        
         }
 
-        
+       
     }
 }

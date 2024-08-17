@@ -86,9 +86,7 @@
                     <Button Grid.Row="11" Grid.Column="1"
                 Content="Exit" 
                        Foreground="White" FontSize="16" Style="{StaticResource Button}"
-                            Command="{StaticResource ExitCommand}">
-                    </Button>
-
+                            Command="{StaticResource ExitCommand}"/>
                 </Grid>
 
             </Border>

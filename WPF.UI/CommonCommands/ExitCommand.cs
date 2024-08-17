@@ -13,7 +13,7 @@ namespace WPF.UI.CommonCommands
 
         public override void Execute(object? parameter)
         {
-            Environment.Exit(0);
+            App.Current.MainWindow.Close();
         }
     }
 }

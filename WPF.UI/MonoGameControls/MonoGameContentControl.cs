@@ -50,8 +50,8 @@ public sealed class MonoGameContentControl : ContentControl, IDisposable
             return;
 
         _instanceCount++;
-        Loaded += OnLoaded;
-        Unloaded += OnUnloaded;
+        Loaded += OnLoaded;        
+        Dispatcher.ShutdownStarted += OnUnloaded;        
         DataContextChanged += (sender, args) =>
         {
             _viewModel = args.NewValue as IMonoGameViewModel;
@@ -59,7 +59,7 @@ public sealed class MonoGameContentControl : ContentControl, IDisposable
             if (_viewModel != null)
                 _viewModel.GraphicsDeviceService = _graphicsDeviceService;
         };
-    }
+    }    
 
     public GraphicsDevice GraphicsDevice => _graphicsDeviceService?.GraphicsDevice!;
     public Window? Window { get; set; } = App.Current.MainWindow;
@@ -181,7 +181,7 @@ public sealed class MonoGameContentControl : ContentControl, IDisposable
         Start();
     }
 
-    private void OnUnloaded(object sender, RoutedEventArgs e)
+    private void OnUnloaded(object? sender, EventArgs e)
     {
         _viewModel?.UnloadContent();
 
