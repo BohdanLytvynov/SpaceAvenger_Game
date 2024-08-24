@@ -14,7 +14,7 @@ namespace WPF.UI
         {            
             InitializeComponent();
 
-            MonoGameContentControl = this.MonoGameControl;
-        }
+            MonoGameContentControl = this.MonoGameControl;            
+        }       
     }
 }

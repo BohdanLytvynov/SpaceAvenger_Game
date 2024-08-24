@@ -16,6 +16,7 @@ using ViewModelBaseLibDotNetCore.VM;
 using WPF.UI.Attributes.PageManager;
 using Domain.Utilities;
 using WPF.UI.ViewModels.GameWindowVM;
+using System.ComponentModel;
 
 namespace WPF.UI
 {
@@ -49,7 +50,7 @@ namespace WPF.UI
                                                     
             return services;
         }
-        
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -57,10 +58,17 @@ namespace WPF.UI
             var mainWindow = Services.GetRequiredService<MainWindow>();
 
             var gameViewModel = Services.GetRequiredService<GameWindow_ViewModel>();
-           
+
             mainWindow.MonoGameControl.DataContext = gameViewModel;
 
             var mainWindowViewModel = Services.GetRequiredService<MainWindowViewModel>();
+
+            mainWindow.Closing += (object? sender, CancelEventArgs e) =>
+            {
+                mainWindowViewModel.Dispose();
+            };
+
+            mainWindow.KeyDown += gameViewModel.KeyDownHandler;
 
             mainWindow.DataContext = mainWindowViewModel;
             mainWindowViewModel.Dispatcher = mainWindow.Dispatcher;
@@ -127,6 +135,6 @@ namespace WPF.UI
             pm.SwitchPage(nameof(UserProfileInfo_Page), FrameType.InfoFrame);                        
         }
 
-       
+        
     }
 }

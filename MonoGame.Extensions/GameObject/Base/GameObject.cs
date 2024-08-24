@@ -9,7 +9,7 @@ using MonoGame.Extensions.GameObject.Base;
 using System;
 using System.Linq;
 
-namespace MonoGame.Extensions.ScreenView.Base
+namespace MonoGame.Extensions.GameObject.Base
 {
     public abstract class GameObject : IGameObject
     {
@@ -22,14 +22,12 @@ namespace MonoGame.Extensions.ScreenView.Base
 
         private readonly string m_name;
 
-        private readonly ContentManager m_contentManager;
-
-        private readonly GraphicsDevice m_graphicsDevice;
+        private readonly ContentManager m_contentManager;       
 
         private readonly SpriteBatch m_spriteBatch;
 
-        Vector2 m_ScreenDimensions;
-
+        private Vector2 m_position;
+                
         #endregion
 
         #region Properties
@@ -43,21 +41,18 @@ namespace MonoGame.Extensions.ScreenView.Base
         protected ContentManager ContentManager => m_contentManager;
 
         protected IAssetStorage Storage => m_storage;
-
-        protected GraphicsDevice GraphicsDevice => m_graphicsDevice;
-
-        protected SpriteBatch SpriteBatch => m_spriteBatch;
-
-        protected Vector2 ScreenDimensions { get=> m_ScreenDimensions; }
+        
+        protected SpriteBatch SpriteBatch => m_spriteBatch;        
 
         #endregion
 
         #region Ctor
 
         public GameObject(
-            string name, ContentManager contentmanager,
-            GraphicsDevice graphicsDevice, SpriteBatch spriteBatch,
-            IAssetStorage? assetStorage = null, Vector2 screenDimensions = default)
+            string name, 
+            ContentManager contentmanager,
+            SpriteBatch spriteBatch,             
+            IAssetStorage? assetStorage)
         {
             m_name = name;
 
@@ -68,15 +63,12 @@ namespace MonoGame.Extensions.ScreenView.Base
             if (assetStorage is null)
                 m_storage = new AssetStorage();
 
-            m_contentManager = contentmanager;
+            m_contentManager = contentmanager;            
 
-            m_graphicsDevice = graphicsDevice;
-
-            m_spriteBatch = spriteBatch;
-
-            m_ScreenDimensions = screenDimensions;
+            m_spriteBatch = spriteBatch;                          
         }
 
+        
         #endregion
 
         public virtual void Draw(GameTime time, ref bool play)
@@ -112,8 +104,7 @@ namespace MonoGame.Extensions.ScreenView.Base
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects)
-                    
+                    // TODO: dispose managed state (managed objects)                                                           
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer

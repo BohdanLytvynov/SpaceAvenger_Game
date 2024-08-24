@@ -3,14 +3,14 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extensions.AssetStorages.Interface;
 using MonoGame.Extensions.GameObject.Base;
-using MonoGame.Extensions.ScreenView.Base;
+using MonoGame.Extensions.Screens.Base;
 
 namespace WPF.UI.MonoGameCore.Screens
 {
     internal class StartScreenUpdateArgs : IUpdateArgs<StartScreenType>
     {
         public StartScreenType Args { get; set; }
-
+        
         public StartScreenUpdateArgs(StartScreenType startScreenType)
         {
             Args = startScreenType;
@@ -29,19 +29,22 @@ namespace WPF.UI.MonoGameCore.Screens
         Levels,
     }
 
-    internal class StartScreen : GameObject
-    {
+    internal class StartScreen : ScreenBase
+    {        
         private StartScreenType _type;
 
         public StartScreen(
             string name, 
-            ContentManager contentManager,
-            GraphicsDevice graphicsDevice,
+            ContentManager contentManager,            
             SpriteBatch spriteBatch,
+            Rectangle ScreenResolution,
             IAssetStorage? assetStorage = null) 
-            : base(name, contentManager, graphicsDevice, spriteBatch, assetStorage)
-        {            
-        }
+            : base(name, 
+                  contentManager, 
+                  spriteBatch, 
+                  ScreenResolution,
+                  assetStorage)
+        {}
 
         public override void Load()
         {
@@ -58,7 +61,7 @@ namespace WPF.UI.MonoGameCore.Screens
                 ("ui-back-main", "Backgrounds/UI/ChooseProfile", 
                 ContentManager.Load<Texture2D>("Backgrounds/UI/MainBack"))
                 );
-
+            
             base.Load();
         }
 
@@ -70,15 +73,15 @@ namespace WPF.UI.MonoGameCore.Screens
             {
                 case StartScreenType.Choose_profile:
                     SpriteBatch.Draw(Storage["ui-back-choose-profile"] as Texture2D, 
-                        Vector2.Zero, null, Color.White);
+                        Vector2.Zero, ScreenResolution, Color.White);
                     break;
                 case StartScreenType.Main:
                     SpriteBatch.Draw(Storage["ui-back-main"] as Texture2D,
-                        Vector2.Zero, null, Color.White);
+                        Vector2.Zero, ScreenResolution, Color.White);
                     break;
                 case StartScreenType.Levels:
                     SpriteBatch.Draw(Storage["ui-back-levels"] as Texture2D,
-                        Vector2.Zero, null, Color.White);
+                        Vector2.Zero, ScreenResolution, Color.White);
                     break;               
             }
 

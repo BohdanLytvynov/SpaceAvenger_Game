@@ -1,21 +1,18 @@
 ﻿using WPF.UI.ViewModels.Base;
 using WPF.UI.Services.Interfaces.MessageBus;
 using Microsoft.Xna.Framework;
-using System.Diagnostics;
 using Microsoft.Xna.Framework.Graphics;
 using WPF.UI.Services.Interfaces.Message;
 using WPF.UI.Services.Realizations.Message;
 using WPF.UI.Services.Interfaces.PageManager;
 using WPF.UI.Enums.FrameTypes;
-using Point = Microsoft.Xna.Framework.Point;
 using WPF.UI.MonoGameCore.Screens;
-using SharpDX.Win32;
-using System;
-using MonoGame.Extensions.ScreenView.Base;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-
+using MonoGame.Extensions.Screens.Base;
+using WPF.UI.MonoGameControls;
+using Microsoft.Xna.Framework.Input;
+using System.Windows.Input;
+using MonoGame.Extensions.Behaviors.MouseInteractable;
 
 namespace WPF.UI.ViewModels.GameWindowVM
 {
@@ -35,13 +32,13 @@ namespace WPF.UI.ViewModels.GameWindowVM
         
         private SpriteBatch _spriteBatch = default!;
        
-        private GameObject? m_currentScreen;
+        private ScreenBase? m_currentScreen;
 
-        private List<GameObject?> m_screens;
+        private List<ScreenBase?> m_screens;
 
         private StartScreenUpdateArgs? m_startScreenUpdateArgs;
         
-        Point m_screen_Dimensions;
+        Rectangle m_screen_Dimensions;
                         
         #endregion
 
@@ -54,7 +51,9 @@ namespace WPF.UI.ViewModels.GameWindowVM
 
             m_startScreenUpdateArgs = new();
 
-            m_screens = new List<GameObject?>();
+            m_screens = new List<ScreenBase?>();
+
+            OnContentUnloaded += () => { this.Dispose(); };
         }
 
         public GameWindow_ViewModel(IPageManagerService<FrameType> pm, IMessageBus bus) : this()
@@ -85,17 +84,19 @@ namespace WPF.UI.ViewModels.GameWindowVM
 
             // Init Screens
 
-            m_currentScreen = new StartScreen("StartScreen", Content, GraphicsDevice, _spriteBatch);
+            m_screen_Dimensions = new Rectangle(0,0,
+                (int)App.Current.MainWindow.ActualWidth,
+                (int)App.Current.MainWindow.ActualHeight);
+
+            m_currentScreen = new StartScreen("StartScreen", 
+                Content,
+                _spriteBatch,
+                m_screen_Dimensions);
            
             m_screens.Add(m_currentScreen);
 
             m_currentScreen!.Load();
-
-            m_screen_Dimensions = new Point(
-                (int)App.Current.MainWindow.ActualWidth,
-                (int)App.Current.MainWindow.ActualHeight
-                );
-                        
+                                    
             base.LoadContent();
         }
 
@@ -111,8 +112,8 @@ namespace WPF.UI.ViewModels.GameWindowVM
             m_currentScreen!.Update(m_startScreenUpdateArgs!, gameTime, ref m_play);
 
 #if DEBUG
-            Debug.WriteLine($"Update Runs: {m_play}");
-#endif
+            //Debug.WriteLine($"Update Runs: {m_play}");
+#endif            
 
             base.Update(gameTime);
         }
@@ -125,7 +126,7 @@ namespace WPF.UI.ViewModels.GameWindowVM
             if (!m_play)
                 return;
 #if DEBUG
-            Debug.WriteLine($"Draw Runs: {m_play}");
+            //Debug.WriteLine($"Draw Runs: {m_play}");
 #endif
             GraphicsDevice.Clear(Color.DarkBlue);
 
@@ -173,7 +174,7 @@ namespace WPF.UI.ViewModels.GameWindowVM
 
                 var name = level.Args;
 
-                var levelScreen = new LevelScreen(name, Content, GraphicsDevice, _spriteBatch);
+                var levelScreen = new LevelScreen(name, Content, _spriteBatch, m_screen_Dimensions);
 
                 levelScreen.Load();
 
@@ -206,6 +207,21 @@ namespace WPF.UI.ViewModels.GameWindowVM
             }
 
             base.Dispose();
+        }
+
+        #endregion
+
+        #region Mouse KeyBoard Input System
+
+        public override void OnMouseDown(MouseStateArgs mouseState)
+        {
+            // Say to the current screen about Mouse Pressed Event!
+            (m_currentScreen as IMouseInteractable)?.MouseAction(mouseState);
+        }
+
+        public override void KeyDownHandler(object sender, KeyEventArgs e)
+        {
+            (m_currentScreen as IKeyBoardInteractable)?.KeyBoardAction(e);
         }
 
         #endregion

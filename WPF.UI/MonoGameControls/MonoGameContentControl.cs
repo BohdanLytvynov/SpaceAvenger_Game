@@ -135,6 +135,11 @@ public sealed class MonoGameContentControl : ContentControl, IDisposable
         base.OnMouseWheel(e);
     }
 
+    protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
+    {
+        base.OnMouseDoubleClick(e);
+    }
+
     private void Start()
     {
         if(_isInitialized)
