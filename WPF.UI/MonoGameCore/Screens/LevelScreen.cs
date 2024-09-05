@@ -1,37 +1,44 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extensions.Animations.Interfaces.AnimationFrames;
-using MonoGame.Extensions.Animations.Realizations.AnimationFrames;
+using MonoGame.Extended;
 using MonoGame.Extensions.Animations.Realizations.Animations;
 using MonoGame.Extensions.Animations.Utilities;
 using MonoGame.Extensions.AssetStorages.Interface;
 using MonoGame.Extensions.Behaviors;
 using MonoGame.Extensions.Behaviors.MouseInteractable;
-using MonoGame.Extensions.GameObject.Base;
+using MonoGame.Extensions.GameObjects.Base;
+using MonoGame.Extensions.Physics.Realizations;
 using MonoGame.Extensions.Screens.Base;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Input;
 using WPF.UI.MonoGameControls;
+using WPF.UI.MonoGameCore.Engines.Interfaces;
+using WPF.UI.MonoGameCore.Engines.Realizations;
 using WPF.UI.MonoGameCore.Ships;
 
 namespace WPF.UI.MonoGameCore.Screens
 {
     internal class LevelScreen : ScreenBase, IMouseInteractable, IKeyBoardInteractable
     {
-        SpaceShip m_Player;         
+        private bool m_drawLine;
 
-        Random random;
+        private Vector2 m_SelectedPosition;
 
-        int random_back = 0;
+        private SpaceShip m_Player;
 
-        Animation? m_PulsatingStar;
+        private List<GameObject> m_gameObjects;//Scene interactable GameObjects
 
-        MouseStateArgs? m_MouseStateArgs;
+        private Random random;
 
-        KeyEventArgs? m_KeyEventArgs;
+        private int random_back = 0;
+
+        private Animation? m_PulsatingStar;
+
+        private MouseStateArgs? m_MouseStateArgs;
+
+        private KeyEventArgs? m_KeyEventArgs;
 
         public LevelScreen(string name, 
             ContentManager contentmanager, 
@@ -44,14 +51,26 @@ namespace WPF.UI.MonoGameCore.Screens
                   screenResolutions,
                   assetStorage)
         {
+            m_drawLine = false;
+
+            m_gameObjects = new List<GameObject>();
+
             random = new Random();
 
             random_back = random.Next(1, 4);
 
             m_Player = new SpaceShip("Player",
                 ContentManager,
-                SpriteBatch,                
-                new Transform(new(50f, 50f), 0, new (0.5f, 0.5f)));
+                SpriteBatch,  
+                mass: 40f, //megaTones
+                engines: new List<IEngine>()
+                { 
+                    new PlasmaEngine(1, 14f, 1, 3f), 
+                    new PlasmaEngine(2, 7f, 1, 1f), 
+                    new PlasmaEngine(3, 7f, 1, 1f) },
+                new CalculateMOIForTriangleShape_Z(40f, 51.2f, 51.2f),
+                new Transform(new (100f, 100f), 0f, new (0.4f, 0.4f))
+                );
         }
 
         public override void Load()
@@ -105,15 +124,47 @@ namespace WPF.UI.MonoGameCore.Screens
             m_PulsatingStar!.Update(time);
             m_Player!.Update(args, time, ref play);
 
+            foreach (var obj in m_gameObjects)
+            {
+                obj.Update(args, time, ref play);
+            }
+
             //Check if Either object is selected by Mouse
 
             if (m_MouseStateArgs is not null &&
-                m_MouseStateArgs!.LeftButton == 
+                m_MouseStateArgs!.LeftButton ==
                 Microsoft.Xna.Framework.Input.ButtonState.Pressed)
             {
                 var mouseCords = m_MouseStateArgs.Position;
 
+                if (mouseCords.X >= m_Player.Transform.UpperLeftCorner.X &&
+                    mouseCords.X <= m_Player.Transform.UpperLeftCorner.X +
+                    m_Player.Transform.ActualSize.Width &&
+                    mouseCords.Y >= m_Player.Transform.UpperLeftCorner.Y &&
+                    mouseCords.Y <= m_Player.Transform.UpperLeftCorner.Y +
+                    m_Player.Transform.ActualSize.Height)
+                {
+                    m_Player.Select();
 
+                    m_drawLine = true;
+                }
+                else
+                { 
+                    m_SelectedPosition = mouseCords;
+                   
+                    m_Player.Move(m_SelectedPosition);
+                }
+            }
+            else if (m_MouseStateArgs is not null &&
+                m_MouseStateArgs!.RightButton ==
+                Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+            {
+                if (m_Player.Selected)
+                {
+                    m_Player.Deselect();
+
+                    m_drawLine = false;
+                }
             }
         }
 
@@ -128,6 +179,15 @@ namespace WPF.UI.MonoGameCore.Screens
             m_PulsatingStar!.Draw(time, SpriteBatch, Vector2.Zero);
 
             m_Player!.Draw(time, ref play);
+
+            if (m_SelectedPosition != Vector2.Zero && m_drawLine)
+                SpriteBatch.DrawLine(m_Player.Transform.Position, 
+                    m_SelectedPosition, Color.Green);
+           
+            foreach (var obj in m_gameObjects)
+            {
+                obj.Draw(time, ref play);
+            }
         }
 
         public override void Dispose()

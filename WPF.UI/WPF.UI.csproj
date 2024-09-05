@@ -126,6 +126,7 @@
 
   <ItemGroup>
     <Folder Include="Content\Animations\SpaceShips\Faction10\" />
+    <Folder Include="MonoGameCore\UpdateArgs\" />
     <Folder Include="WPFResources\Images\SpaceShips\" />
   </ItemGroup>
 </Project>

@@ -13,6 +13,7 @@ using WPF.UI.MonoGameControls;
 using Microsoft.Xna.Framework.Input;
 using System.Windows.Input;
 using MonoGame.Extensions.Behaviors.MouseInteractable;
+using WPF.UI.MonoGameCore.LoadAssetsStrategies.StartScreen;
 
 namespace WPF.UI.ViewModels.GameWindowVM
 {
@@ -91,7 +92,8 @@ namespace WPF.UI.ViewModels.GameWindowVM
             m_currentScreen = new StartScreen("StartScreen", 
                 Content,
                 _spriteBatch,
-                m_screen_Dimensions);
+                m_screen_Dimensions,
+                new StartScreenLoadAssetsStratagy());
            
             m_screens.Add(m_currentScreen);
 
