@@ -10,6 +10,6 @@ namespace WPF.UI.Views.Pages
         public Main_Page()
         {
             InitializeComponent();
-        }
+        }       
     }
 }

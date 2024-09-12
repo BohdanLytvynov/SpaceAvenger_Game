@@ -21,6 +21,10 @@ namespace MonoGame.Extensions.AssetStorages.Realization
             m_pathStorage = new SortedDictionary<string, string>();
         }
 
+        #endregion
+
+        #region Methods
+
         public IDisposable this[string key] => m_storage[key];
 
         public void AddAsset(string key, string path, IDisposable asset)
@@ -30,7 +34,7 @@ namespace MonoGame.Extensions.AssetStorages.Realization
                 m_storage.Add(key, asset);
 
                 m_pathStorage.Add(key, path);
-            }                                
+            }
         }
 
         public void AddAssets(params (string key, string path, IDisposable obj)[] assets)
@@ -42,7 +46,7 @@ namespace MonoGame.Extensions.AssetStorages.Realization
         }
 
         public void Clear()
-        {            
+        {
             m_storage.Clear();
 
             m_pathStorage.Clear();

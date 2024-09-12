@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,8 +9,12 @@ using ViewModelBaseLibDotNetCore.VM;
 
 namespace WPF.UI.MonoGameControls;
 
+
+
 public interface IMonoGameViewModel : IDisposable
 {
+    public bool IsDebugging { get; set; }
+
     IGraphicsDeviceService GraphicsDeviceService { get; set; }
 
     void Initialize();
@@ -28,12 +33,18 @@ public interface IMonoGameViewModel : IDisposable
 
     void OnDrop(DragStateArgs dragState);
     void OnMouseWheel(MouseStateArgs args, int delta);
-
+   
     void SizeChanged(object sender, SizeChangedEventArgs args);
+
+    void KeyDownHandler(object sender, KeyEventArgs e);
+
+    void EnableDebugging();
 }
 
 public class MonoGameViewModel : ViewModelBase, IMonoGameViewModel //Here Must be ViewModel
 {
+    public static Action? OnContentUnloaded;
+
     public MonoGameViewModel()
     {
     }
@@ -49,6 +60,8 @@ public class MonoGameViewModel : ViewModelBase, IMonoGameViewModel //Here Must b
     protected ContentManager Content { get; set; } = default!;
     protected List<IGameComponent> Components { get; } = new();
 
+    public bool IsDebugging { get; set; }
+
     public virtual void Initialize()
     {
         Services = new MonoGameServiceProvider();
@@ -63,7 +76,10 @@ public class MonoGameViewModel : ViewModelBase, IMonoGameViewModel //Here Must b
     }
 
     public virtual void LoadContent() { }
-    public virtual void UnloadContent() { }
+    public virtual void UnloadContent() 
+    {
+        OnContentUnloaded?.Invoke();
+    }
     public virtual void Update(GameTime gameTime)
     {
         foreach (var component in Components)
@@ -97,4 +113,14 @@ public class MonoGameViewModel : ViewModelBase, IMonoGameViewModel //Here Must b
     public virtual void OnMouseWheel(MouseStateArgs args, int delta) { }
     public virtual void OnDrop(DragStateArgs dragState) { }
     public virtual void SizeChanged(object sender, SizeChangedEventArgs args) { }
+
+    public virtual void KeyDownHandler(object sender, KeyEventArgs e) 
+    {
+    
+    }
+
+    public void EnableDebugging()
+    {
+        IsDebugging = true;
+    }
 }

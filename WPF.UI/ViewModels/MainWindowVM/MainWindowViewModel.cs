@@ -208,7 +208,7 @@ namespace WPF.UI.ViewModels.MainWindowVM
             });
         }
 
-        public void Dispose()
+        public void Dispose()//Need to find a way for proper disposing of the window
         {
             Unsubscribe();            
         }

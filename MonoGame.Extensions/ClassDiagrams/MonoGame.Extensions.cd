@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MonoGame.Extensions.GameObjects.Base.GameObject" Collapsed="true">
+    <Position X="1" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAQAgAiAACEQAgBAAAAAAAQAAAAAAABAQAAAAwACggA=</HashCode>
+      <FileName>GameObjects\Base\GameObject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MonoGame.Extensions.Screens.Base.ScreenBase" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAACAAAAAAAAQAAA=</HashCode>
+      <FileName>Screens\Base\ScreenBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MonoGame.Extensions.Sprites.Realization.Sprite" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAgAAAABAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Sprites\Realization\Sprite.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MonoGame.Extensions.Sprites.Realization.RigidBodySprite" Collapsed="true">
+    <Position X="2.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJAAAAAAAAAEAAAAAAABAAAAAAEAAAAAAAAEACQAAA=</HashCode>
+      <FileName>Sprites\Realization\RigidBodySprite.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.1" />
+  </Class>
+  <Interface Name="MonoGame.Extensions.Sprites.Interfaces.IRigidBodySprite" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAEAAAAAAAAAAAAAAEAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Sprites\Interfaces\IRigidBodySprite.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MonoGame.Extensions.Physics.Interfaces.IRigidBodyObject" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Physics\Interfaces\IRigidBodyObject.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MonoGame.Extensions.Sprites.Interfaces.ISprite" Collapsed="true">
+    <Position X="5.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Sprites\Interfaces\ISprite.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="10" />
+</ClassDiagram>
