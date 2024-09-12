@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WPF.UI.MonoGameCore.Modules.Module" Collapsed="true">
+    <Position X="1" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAQAAAACAAAA=</HashCode>
+      <FileName>MonoGameCore\Modules\Module.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MonoGame.Extensions.Sprites.Realization.Sprite" Collapsed="true">
+    <Position X="3" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MonoGame.Extensions.GameObjects.Base.GameObject" Collapsed="true">
+    <Position X="1.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WPF.UI.MonoGameCore.Engines.Realizations.EngineBase" Collapsed="true">
+    <Position X="1" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQQgACAACAAAgAAAAAAAAAAAAAABAAQIAAIAAQAQAA=</HashCode>
+      <FileName>MonoGameCore\Engines\Realizations\EngineBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WPF.UI.MonoGameCore.Engines.PlasmaEngines.IntegratedPlasmaEngine" Collapsed="true">
+    <Position X="0.5" Y="5.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MonoGameCore\Engines\PlasmaEngines\IntegratedPlasmaEngine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPF.UI.MonoGameCore.Engines.PlasmaEngines.PlasmaEngine" Collapsed="true">
+    <Position X="3.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MonoGameCore\Engines\PlasmaEngines\PlasmaEngine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPF.UI.MonoGameCore.Ships.SpaceShip" Collapsed="true">
+    <Position X="6" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQQAgACAAKAAEgAIAQAAAABAAAAAAAAAEBAAQAAAAAI=</HashCode>
+      <FileName>MonoGameCore\Ships\SpaceShip.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MonoGame.Extensions.Sprites.Realization.RigidBodySprite" Collapsed="true">
+    <Position X="4" Y="3.25" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="WPF.UI.MonoGameCore.Modules.IModule" Collapsed="true">
+    <Position X="8.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>MonoGameCore\Modules\IModule.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MonoGame.Extensions.Physics.Interfaces.IRigidBodyObject" Collapsed="true">
+    <Position X="8.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="MonoGame.Extensions.Sprites.Interfaces.ISprite" Collapsed="true">
+    <Position X="7.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="MonoGame.Extensions.Debugging.Interfaces.IDebug" Collapsed="true">
+    <Position X="9.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="10" />
+</ClassDiagram>

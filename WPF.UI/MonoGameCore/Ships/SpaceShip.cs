@@ -5,14 +5,13 @@ using MonoGame.Extended;
 using MonoGame.Extensions.AssetStorages.Interface;
 using MonoGame.Extensions.Behaviors.Selectables;
 using MonoGame.Extensions.Behaviors.Transformables;
-using MonoGame.Extensions.Extensions;
 using MonoGame.Extensions.GameObjects.Base;
+using MonoGame.Extensions.GameObjects.LoadAssetsStrategy;
 using MonoGame.Extensions.Physics.Interfaces;
 using MonoGame.Extensions.Sprites.Realization;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
+using WPF.UI.Enums.ModuleTypes;
 using WPF.UI.MonoGameCore.Engines.Interfaces;
 using WPF.UI.MonoGameCore.Modules;
 
@@ -25,9 +24,7 @@ namespace WPF.UI.MonoGameCore.Ships
         private Vector2 m_destination;
 
         private bool m_moving;
-
-        private List<IModule> m_Modules;
-
+        
         private List<IRigidBodyObject> m_modules;
 
         private bool m_selected;
@@ -36,15 +33,23 @@ namespace WPF.UI.MonoGameCore.Ships
 
         public override Vector2 CenterOfMass =>
             RigidBodyPhysics.GetCenterOfMass(m_modules);
+
+        #region Engines References
         
-        public SpaceShip(string name, 
-            ContentManager contentManager, 
-            SpriteBatch spriteBatch, 
+        private Dictionary<string, IEngine> m_engines;
+
+        #endregion
+
+        public SpaceShip(string name,
+            ContentManager contentManager,
+            SpriteBatch spriteBatch,
+            bool debug,
             float mass,
-            List<IEngine> engines, 
+            List<IRigidBodyObject> modules,
             IMOICalculator calculator,
+            ILoadAssetStrategy loadAssetStrategy,            
             ITransformable? transform = default,
-            IRigidBodyPhysics? rigidBodyPhysics = default,
+            IRigidBodyPhysics? rigidBodyPhysics = default,            
             IAssetStorage? assetStorage = default,
             float GlobScale = 1f) 
             : base(name, 
@@ -54,20 +59,32 @@ namespace WPF.UI.MonoGameCore.Ships
                   transform,
                   rigidBodyPhysics,
                   calculator,
-                  assetStorage
-                  )
+                  assetStorage,
+                  loadAssetStrategy,
+                  debug)
         {    
             m_GlobalScale = GlobScale;
 
-            m_Modules = engines;
-
-            m_modules = new List<IRigidBodyObject>();
+            m_modules = modules;           
 
             m_modules.Add(this);
 
-            foreach (var engine in m_Modules)
+            m_engines = new Dictionary<string, IEngine>();
+
+            //Add Engines to the List
+            foreach (var item in m_modules)
             {
-                Mass += engine.Mass;
+                if((item is IModule m) && m.Type == ModuleType.Engine)
+                {
+                    var e = (IEngine)item;
+
+                    m_engines.Add((item as IGameObject)!.Name, e);
+                }
+            }
+
+            foreach (var m in m_modules)
+            {
+                Mass += m.Mass;
             }
 
             m_selected = false;  
@@ -77,13 +94,7 @@ namespace WPF.UI.MonoGameCore.Ships
         
         public override void Load()
         {
-            base.Load();
-
-            var t = ContentManager.Load<Texture2D>("Assets/SpaceShips/Faction10/destroyer256");
-
-            Transform.TextureSize = new SizeF() { Width = t.Width, Height = t.Height };
-
-            Storage.AddAsset("destroyer", "Assets/SpaceShips/Faction10/destroyer256", t);            
+            base.Load();                       
         }
 
         public override void UnLoad()
@@ -95,78 +106,63 @@ namespace WPF.UI.MonoGameCore.Ships
         {            
             base.Update(args, time, ref play);
 
-            var main_engine = m_Modules.First(x => x.Id == 1);
-            var acc2 = m_Modules.First(x => x.Id == 2);
-            var acc3 = m_Modules.First(x => x.Id == 3);
-
-            if (Transform.Position != m_destination && m_destination != Vector2.Zero)
-            {                                
-                //Activate Main engine:
-                main_engine.Start();
-
-                main_engine.Increase(time);
-
-                //1 Get Direction Vector
-                var dir = m_destination - Transform.Position; 
-                var norm_dir = dir.NormalizedCopy();
-
-                //Calculate angle between norm_dir and i local basis Vector
-
-                var angle = MathF.Atan2(norm_dir.Y, norm_dir.X);
-
-                var angleDegree = angle * (180 / MathF.PI);
-
-                var main_engine_thrust = Transform.LocalBasis[0] * main_engine.CurrentThrust;
-               
-                var acc2_thrust = Transform.LocalBasis[1] * -1 * acc2.CurrentThrust;
-
-                var acc3_thrust = Transform.LocalBasis[1] * acc3.CurrentThrust;
-
-                var forces_sum = main_engine_thrust + acc2_thrust + acc3_thrust;
-
-                //Regulate Additional Accelerators
-
-                float current_Sum_force_Angle = MathF.Atan2(forces_sum.Y, forces_sum.X);
-
-                //Calculate the moment of Intertia of the ship according to it's Center of Mass
-
-
-
-                if (current_Sum_force_Angle > angle)
-                {
-                    //Use Accelerator2
-                    acc2.Start();
-                    acc3.Stop();
-                    acc2.Increase(time);
-                }
-                else if (current_Sum_force_Angle < angle)
-                {
-                    //Use Accelarator3
-                    acc2.Stop();
-                    acc3.Start();
-                    acc3.Increase(time);
-                }
-                else
-                {
-                    acc2.Stop();
-                    acc3.Stop();
-                }
-
-                Vector2 displacement = (RigidBodyPhysics.GetDisplacement(
-                    forces_sum,
-                    Mass,
-                    time) * m_GlobalScale);
-
-                Transform.Position += displacement;
-            }
-
-            if (Transform.Position == m_destination)//Stop all engines
-            { 
-                main_engine.Stop();
-                acc2.Stop();
-                acc3.Stop();            
-            }
+            //Use another Way to find engines module
             
+            //if (Transform.Position != m_destination && m_destination != Vector2.Zero)
+            //{                                
+            //    //Activate Main engine:
+            //    //main_engine.Start();
+                
+            //    //1 Get Direction Vector
+            //    var dir = m_destination - Transform.Position; 
+            //    var norm_dir = dir.NormalizedCopy();
+
+            //    //Calculate angle between norm_dir and i local basis Vector
+
+            //    var angle = MathF.Atan2(norm_dir.Y, norm_dir.X);
+
+            //    var angleDegree = angle * (180 / MathF.PI);
+
+            //    //var main_engine_thrust = Transform.LocalBasis[0] * main_engine.CurrentThrust;
+
+            //    //var acc2_thrust = Transform.LocalBasis[1] * -1 * acc2.CurrentThrust;
+
+            //    //var acc3_thrust = Transform.LocalBasis[1] * acc3.CurrentThrust;
+
+            //    Vector2 forces_sum = Vector2.Zero; //main_engine_thrust + acc2_thrust + acc3_thrust;
+
+            //    //Regulate Additional Accelerators
+
+            //    float current_Sum_force_Angle = MathF.Atan2(forces_sum.Y, forces_sum.X);
+
+            //    //Calculate the moment of Intertia of the ship according to it's Center of Mass
+
+            //    if (current_Sum_force_Angle > angle)
+            //    {
+            //        //Use Accelerator2
+            //        //acc2.Start();
+            //        //acc3.Stop();                   
+            //    }
+            //    else if (current_Sum_force_Angle < angle)
+            //    {
+            //        //Use Accelarator3
+            //        //acc2.Stop();
+            //        //acc3.Start();                    
+            //    }
+            //    else
+            //    {
+            //        //acc2.Stop();
+            //        //acc3.Stop();
+            //    }
+
+            //    Vector2 displacement = (RigidBodyPhysics.GetDisplacement(
+            //        forces_sum,
+            //        Mass,
+            //        time) * m_GlobalScale);
+
+            //    Transform.Position += displacement;
+            //}
+                        
         }
 
         public override void Draw(GameTime time, ref bool play)
@@ -179,7 +175,12 @@ namespace WPF.UI.MonoGameCore.Ships
                 Transform.Rotation*(MathF.PI/180),
                 origin: CenterOfMass, 
                 Transform.Scale, SpriteEffects.None, 0f );
-            
+
+            foreach (var m in m_modules)
+            {
+                
+            }
+
             //Draw The Selection
             if (m_selected)
             {

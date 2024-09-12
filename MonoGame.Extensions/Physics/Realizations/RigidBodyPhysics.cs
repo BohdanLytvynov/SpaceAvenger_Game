@@ -41,6 +41,8 @@ namespace MonoGame.Extensions.Physics.Realizations
 
         public Vector2 GetCenterOfMass(IEnumerable<IRigidBodyObject> rigidBodyObjects)
         {
+            return rigidBodyObjects.Last().Transform.Origin;
+
             if (rigidBodyObjects.Count() == 1)
                 return rigidBodyObjects.First().Transform.Origin;
             

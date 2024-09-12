@@ -16,13 +16,9 @@ namespace WPF.UI.MonoGameCore.Engines.Interfaces
         public float MaxThrust { get; }
                        
         public bool Working { get; }
-
-        public float Increment { get; }
-
+        
         void Start();
 
-        void Stop();
-
-        void Increase(GameTime gameTime);
+        void Stop();        
     }
 }

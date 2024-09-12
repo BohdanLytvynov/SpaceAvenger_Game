@@ -8,14 +8,19 @@ using MonoGame.Extensions.AssetStorages.Interface;
 using MonoGame.Extensions.Behaviors;
 using MonoGame.Extensions.Behaviors.MouseInteractable;
 using MonoGame.Extensions.GameObjects.Base;
+using MonoGame.Extensions.GameObjects.LoadAssetsStrategy;
+using MonoGame.Extensions.Physics.Interfaces;
 using MonoGame.Extensions.Physics.Realizations;
 using MonoGame.Extensions.Screens.Base;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using System.Windows.Navigation;
 using WPF.UI.MonoGameControls;
-using WPF.UI.MonoGameCore.Engines.Interfaces;
+using WPF.UI.MonoGameCore.Engines.PlasmaEngines;
 using WPF.UI.MonoGameCore.Engines.Realizations;
+using WPF.UI.MonoGameCore.LoadAssetsStrategies.Faction10.Engines.PlasmaEngines;
+using WPF.UI.MonoGameCore.LoadAssetsStrategies.Faction10.SpaceShips.Destroyers;
 using WPF.UI.MonoGameCore.Ships;
 
 namespace WPF.UI.MonoGameCore.Screens
@@ -40,15 +45,19 @@ namespace WPF.UI.MonoGameCore.Screens
 
         private KeyEventArgs? m_KeyEventArgs;
 
-        public LevelScreen(string name, 
+        Func<GameTime, float> m_thrustCalcFunction;
+
+        public LevelScreen(bool debug, string name, 
             ContentManager contentmanager, 
             SpriteBatch spriteBatch, 
             Rectangle screenResolutions,
+            ILoadAssetStrategy loadAssetStrategy,
             IAssetStorage? assetStorage = default) 
-            : base(name, 
+            : base(debug, name, 
                   contentmanager, 
                   spriteBatch, 
                   screenResolutions,
+                  loadAssetStrategy,
                   assetStorage)
         {
             m_drawLine = false;
@@ -59,40 +68,42 @@ namespace WPF.UI.MonoGameCore.Screens
 
             random_back = random.Next(1, 4);
 
+            m_thrustCalcFunction = new Func<GameTime, float>(
+                (time) => 1f * (float)time.ElapsedGameTime.TotalSeconds);
+
             m_Player = new SpaceShip("Player",
                 ContentManager,
-                SpriteBatch,  
+                SpriteBatch,
+                Debugging,
                 mass: 40f, //megaTones
-                engines: new List<IEngine>()
-                { 
-                    new PlasmaEngine(1, 14f, 1, 3f), 
-                    new PlasmaEngine(2, 7f, 1, 1f), 
-                    new PlasmaEngine(3, 7f, 1, 1f) },
+                modules: new List<IRigidBodyObject>()
+                {
+                    new IntegratedPlasmaEngine(Debugging, "MainEngine1", 
+                    contentmanager, spriteBatch, 14f, 3f,
+                    new Transform(),
+                    new PlasmaEngineLoadStrategy(),
+                    m_thrustCalcFunction),
+
+                    new IntegratedPlasmaEngine(Debugging, "MainEngine2",
+                    contentmanager, spriteBatch, 14f, 3f,
+                    new Transform(),
+                    new PlasmaEngineLoadStrategy(),
+                    m_thrustCalcFunction),
+                    /*new PlasmaEngine(2, 7f, 1, 1f), 
+                    new PlasmaEngine(3, 7f, 1, 1f)*/ 
+                },
                 new CalculateMOIForTriangleShape_Z(40f, 51.2f, 51.2f),
-                new Transform(new (100f, 100f), 0f, new (0.4f, 0.4f))
+                new Faction10DestroyerLoadStrategy(),
+                new Transform(new(100f, 100f), 0f, new(0.4f, 0.4f))
                 );
         }
 
         public override void Load()
         {
-            Storage.AddAssets
-                (
-                    ("back-1", "Backgrounds/Levels/Back1", 
-                    ContentManager.Load<Texture2D>("Backgrounds/Levels/Back1")),
-                    ("back-2", "Backgrounds/Levels/Back2",
-                    ContentManager.Load<Texture2D>("Backgrounds/Levels/Back2")),
-                    ("back-3", "Backgrounds/Levels/Back3",
-                    ContentManager.Load<Texture2D>("Backgrounds/Levels/Back3"))
-                );
-
-            //Add Animations
-            Storage.AddAssets(
-                ("puls-star1", "Animations/Environment/PulsatingStar",
-                ContentManager.Load<Texture2D>("Animations/Environment/PulsatingStar"))
-                );
+            //Load Sprites and animations
+            base.Load();
 
             //Configure Animations
-
             var puls_star_animatinFrames = AnimationUtilities.BuildAnimationFrames(6, 1);
 
             m_PulsatingStar = new Animation((Texture2D)Storage["puls-star1"], 1, 6, true, 2,
@@ -100,9 +111,7 @@ namespace WPF.UI.MonoGameCore.Screens
 
             //Load Space - Ships
             
-            m_Player.Load();
-
-            base.Load();
+            m_Player.Load();            
         }
 
         public override void UnLoad()

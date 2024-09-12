@@ -35,7 +35,8 @@ namespace MonoGame.Extensions.Sprites.Realization
 
         #region Ctor
 
-        public RigidBodySprite(string name, 
+        public RigidBodySprite(             
+            string name, 
             ContentManager contentManager, 
             SpriteBatch spriteBatch, 
             float mass, 
@@ -43,13 +44,15 @@ namespace MonoGame.Extensions.Sprites.Realization
             IRigidBodyPhysics? rigidBodyPhysics,
             IMOICalculator MOICalculator,
             IAssetStorage? assetStorage,
-            ILoadAssetStrategy loadAssetStrategy) : 
+            ILoadAssetStrategy loadAssetStrategy,
+            bool debug) : 
             base(name, 
                 contentManager, 
                 spriteBatch, 
                 transform, 
                 assetStorage,
-                loadAssetStrategy)
+                loadAssetStrategy, 
+                debug)
         {
             if(mass <= 0)
                 throw new ArgumentOutOfRangeException("Mass should be greater then 0!");

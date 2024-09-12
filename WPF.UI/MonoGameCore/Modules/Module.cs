@@ -3,13 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extensions.AssetStorages.Interface;
 using MonoGame.Extensions.Behaviors.Transformables;
 using MonoGame.Extensions.GameObjects.LoadAssetsStrategy;
-using MonoGame.Extensions.Physics.Interfaces;
 using MonoGame.Extensions.Sprites.Realization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WPF.UI.Enums.ModuleTypes;
 
 namespace WPF.UI.MonoGameCore.Modules
@@ -18,8 +12,7 @@ namespace WPF.UI.MonoGameCore.Modules
     {
         protected ModuleType m_moduleType;
 
-        public Module(
-            string name, 
+        public Module(bool debug, string name, 
             ContentManager 
             contentManager, 
             SpriteBatch spriteBatch, 
@@ -27,7 +20,13 @@ namespace WPF.UI.MonoGameCore.Modules
             ITransformable? transform, 
             IAssetStorage? assetStorage,
             ILoadAssetStrategy loadAssetStrategy) : 
-            base(name, contentManager, spriteBatch, transform, assetStorage, loadAssetStrategy)
+            base(name, 
+                contentManager,
+                spriteBatch,
+                transform,
+                assetStorage, 
+                loadAssetStrategy,
+                debug)
         {
             Mass = mass;            
         }

@@ -5,6 +5,6 @@ namespace MonoGame.Extensions.Sprites.Interfaces
 {
     public interface ISprite
     {
-        public ITransformable Transform { get; set; }                  
+        public ITransformable Transform { get; set; }        
     }
 }

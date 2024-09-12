@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extensions.AssetStorages.Interface;
+using MonoGame.Extensions.GameObjects.Base;
 using MonoGame.Extensions.GameObjects.LoadAssetsStrategy;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,9 @@ namespace WPF.UI.MonoGameCore.LoadAssetsStrategies.StartScreen
 {
     internal class StartScreenLoadAssetsStratagy : ILoadAssetStrategy
     {
-        public void LoadAsset(IAssetStorage assetStorage, ContentManager contentManager)
+        public void LoadAsset(IAssetStorage assetStorage,
+            ContentManager contentManager,
+            GameObject current)
         {
             assetStorage.AddAssets(
                 ("ui-back-choose-profile", "Backgrounds/UI/ChooseProfile",

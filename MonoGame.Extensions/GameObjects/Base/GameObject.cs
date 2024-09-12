@@ -40,19 +40,19 @@ namespace MonoGame.Extensions.GameObjects.Base
 
         protected IAssetStorage Storage => m_storage;
         
-        protected SpriteBatch SpriteBatch => m_spriteBatch;        
-
+        protected SpriteBatch SpriteBatch => m_spriteBatch;
+       
         #endregion
 
         #region Ctor
 
-        public GameObject(
+        public GameObject(            
             string name, 
             ContentManager contentmanager,
             SpriteBatch spriteBatch,             
             IAssetStorage? assetStorage,
             ILoadAssetStrategy loadAssetStrategy)
-        {
+        {            
             m_name = name;
 
             disposedValue = false;
@@ -82,7 +82,7 @@ namespace MonoGame.Extensions.GameObjects.Base
             if (Loaded)
                 return;
 
-            m_loadStrategy?.LoadAsset(m_storage, m_contentManager);
+            m_loadStrategy?.LoadAsset(m_storage, m_contentManager, this);
 
             m_loaded = true;
         }

@@ -34,7 +34,7 @@ namespace WPF.UI.MonoGameCore.Screens
     {        
         private StartScreenType _type;
 
-        public StartScreen(
+        public StartScreen( bool debug,
             string name, 
             ContentManager contentManager,            
             SpriteBatch spriteBatch,
@@ -42,7 +42,7 @@ namespace WPF.UI.MonoGameCore.Screens
             ILoadAssetStrategy loadAssetStrategy,
             IAssetStorage? assetStorage = default
             ) 
-            : base(name, 
+            : base(debug, name, 
                   contentManager, 
                   spriteBatch, 
                   ScreenResolution,

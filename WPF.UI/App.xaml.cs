@@ -59,6 +59,8 @@ namespace WPF.UI
 
             var gameViewModel = Services.GetRequiredService<GameWindow_ViewModel>();
 
+            gameViewModel.EnableDebugging();//Activate or deactivate debugging
+
             mainWindow.MonoGameControl.DataContext = gameViewModel;
 
             var mainWindowViewModel = Services.GetRequiredService<MainWindowViewModel>();

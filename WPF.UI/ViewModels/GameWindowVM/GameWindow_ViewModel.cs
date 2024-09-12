@@ -40,16 +40,14 @@ namespace WPF.UI.ViewModels.GameWindowVM
         private StartScreenUpdateArgs? m_startScreenUpdateArgs;
         
         Rectangle m_screen_Dimensions;
-                        
+                                
         #endregion
 
         #region Ctors
         //Will be called first
 
         public GameWindow_ViewModel()
-        {            
-            m_play = true;
-
+        {                                    
             m_startScreenUpdateArgs = new();
 
             m_screens = new List<ScreenBase?>();
@@ -89,7 +87,7 @@ namespace WPF.UI.ViewModels.GameWindowVM
                 (int)App.Current.MainWindow.ActualWidth,
                 (int)App.Current.MainWindow.ActualHeight);
 
-            m_currentScreen = new StartScreen("StartScreen", 
+            m_currentScreen = new StartScreen(IsDebugging, "StartScreen", 
                 Content,
                 _spriteBatch,
                 m_screen_Dimensions,
@@ -132,7 +130,7 @@ namespace WPF.UI.ViewModels.GameWindowVM
 #endif
             GraphicsDevice.Clear(Color.DarkBlue);
 
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(SpriteSortMode.FrontToBack);
 
             m_currentScreen!.Draw(gameTime, ref m_play);
 
@@ -176,7 +174,11 @@ namespace WPF.UI.ViewModels.GameWindowVM
 
                 var name = level.Args;
 
-                var levelScreen = new LevelScreen(name, Content, _spriteBatch, m_screen_Dimensions);
+                var levelScreen = new LevelScreen(IsDebugging, name, 
+                    Content, 
+                    _spriteBatch,                     
+                    m_screen_Dimensions,
+                    new LevelScreenLoadAssetStrategy());
 
                 levelScreen.Load();
 

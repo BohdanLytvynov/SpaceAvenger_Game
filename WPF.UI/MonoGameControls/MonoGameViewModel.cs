@@ -12,7 +12,9 @@ namespace WPF.UI.MonoGameControls;
 
 
 public interface IMonoGameViewModel : IDisposable
-{    
+{
+    public bool IsDebugging { get; set; }
+
     IGraphicsDeviceService GraphicsDeviceService { get; set; }
 
     void Initialize();
@@ -35,6 +37,8 @@ public interface IMonoGameViewModel : IDisposable
     void SizeChanged(object sender, SizeChangedEventArgs args);
 
     void KeyDownHandler(object sender, KeyEventArgs e);
+
+    void EnableDebugging();
 }
 
 public class MonoGameViewModel : ViewModelBase, IMonoGameViewModel //Here Must be ViewModel
@@ -55,6 +59,8 @@ public class MonoGameViewModel : ViewModelBase, IMonoGameViewModel //Here Must b
     protected MonoGameServiceProvider Services { get; private set; } = default!;
     protected ContentManager Content { get; set; } = default!;
     protected List<IGameComponent> Components { get; } = new();
+
+    public bool IsDebugging { get; set; }
 
     public virtual void Initialize()
     {
@@ -111,5 +117,10 @@ public class MonoGameViewModel : ViewModelBase, IMonoGameViewModel //Here Must b
     public virtual void KeyDownHandler(object sender, KeyEventArgs e) 
     {
     
-    }   
+    }
+
+    public void EnableDebugging()
+    {
+        IsDebugging = true;
+    }
 }

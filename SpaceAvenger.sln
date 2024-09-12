@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataBaseUtility", "DataBase
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPF.UI", "WPF.UI\WPF.UI.csproj", "{C57684AA-0243-4047-B6E7-D436944AAE47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Extensions", "MonoGame.Extensions\MonoGame.Extensions.csproj", "{CC9381D3-4BE0-4C4A-A1B9-1C6E15D3A52C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonoGame.Extensions", "MonoGame.Extensions\MonoGame.Extensions.csproj", "{CC9381D3-4BE0-4C4A-A1B9-1C6E15D3A52C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

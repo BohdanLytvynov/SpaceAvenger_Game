@@ -9,8 +9,8 @@ namespace MonoGame.Extensions.GameObjects.Base
 
         public bool Loaded { get; }
 
-        public bool Disposed { get; }
-        
+        public bool Disposed { get; }        
+
         void Load();
 
         void UnLoad();
