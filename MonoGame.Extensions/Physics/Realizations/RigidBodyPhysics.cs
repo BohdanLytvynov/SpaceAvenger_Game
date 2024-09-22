@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoGame.Extensions.Behaviors;
 using MonoGame.Extensions.Physics.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -24,8 +23,8 @@ namespace MonoGame.Extensions.Physics.Realizations
         public Vector2 GetCenterOfMass(params IRigidBodyObject[] rigidBodyObjects)
         {
             if (rigidBodyObjects.Length == 1)
-                return rigidBodyObjects.First().Transform.Position;
-            
+                return rigidBodyObjects.First().Transform.Origin;
+
             float total_mass = 0f;
             Vector2 r = Vector2.Zero;
 
@@ -35,17 +34,15 @@ namespace MonoGame.Extensions.Physics.Realizations
 
                 r += obj.Transform.Position * obj.Mass;
             }
-           
-            return r / total_mass; 
+
+            return r / total_mass;
         }
 
         public Vector2 GetCenterOfMass(IEnumerable<IRigidBodyObject> rigidBodyObjects)
         {
-            return rigidBodyObjects.Last().Transform.Origin;
-
             if (rigidBodyObjects.Count() == 1)
                 return rigidBodyObjects.First().Transform.Origin;
-            
+
             float total_mass = 0f;
             Vector2 r = Vector2.Zero;
 
@@ -55,7 +52,7 @@ namespace MonoGame.Extensions.Physics.Realizations
 
                 r += obj.Transform.Position * obj.Mass;
             }
-            
+
             return r / total_mass;
         }
 

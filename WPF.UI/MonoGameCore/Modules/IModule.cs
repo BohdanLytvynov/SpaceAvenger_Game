@@ -10,6 +10,6 @@ namespace WPF.UI.MonoGameCore.Modules
 {
     internal interface IModule : IRigidBodyObject
     {
-        public ModuleType Type { get; }
+        public ModuleType Type { get; }        
     }
 }

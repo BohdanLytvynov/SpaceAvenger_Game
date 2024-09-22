@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonoGame.Extensions.AssetStorages.Interface
 {
@@ -10,16 +7,18 @@ namespace MonoGame.Extensions.AssetStorages.Interface
     {
         public IDisposable this [string key] { get; }
 
-        void AddAsset(string key, string path, IDisposable asset);
+        void LoadAsset<T>(string key, string path)
+        where T : IDisposable;
 
-        void AddAssets(params (string key, string path, IDisposable obj) [] assets);
+        void LoadAssets<T>(params (string key, string path) [] assets)
+            where T : IDisposable;
 
-        void RemoveAsset(string key);
+        void UnloadAsset(string key);
 
         object? GetAsset(Func<KeyValuePair<string, IDisposable>, bool> predicate);
         
-        void RemoveAssets(params string[] keys);
-
+        void UnloadAssets(params string[] keys);
+        
         IEnumerable<IDisposable> GetAssets(Func<KeyValuePair<string, IDisposable>, bool> predicate);
 
         IEnumerable<string> GetPaths(Func<KeyValuePair<string, string>, bool> predicate);

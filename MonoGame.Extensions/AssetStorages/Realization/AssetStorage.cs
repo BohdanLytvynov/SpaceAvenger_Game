@@ -1,4 +1,5 @@
-﻿using MonoGame.Extensions.AssetStorages.Interface;
+﻿using Microsoft.Xna.Framework.Content;
+using MonoGame.Extensions.AssetStorages.Interface;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,14 +9,18 @@ namespace MonoGame.Extensions.AssetStorages.Realization
 {
     public class AssetStorage : IAssetStorage
     {
+        private readonly ContentManager m_contentManager;
+
         private readonly SortedDictionary<string, string> m_pathStorage;
 
         private readonly SortedDictionary<string, IDisposable> m_storage;
 
         #region Ctor
 
-        public AssetStorage()
+        public AssetStorage(ContentManager contentManager)
         {
+            m_contentManager = contentManager;
+
             m_storage = new SortedDictionary<string, IDisposable>();  
             
             m_pathStorage = new SortedDictionary<string, string>();
@@ -27,26 +32,36 @@ namespace MonoGame.Extensions.AssetStorages.Realization
 
         public IDisposable this[string key] => m_storage[key];
 
-        public void AddAsset(string key, string path, IDisposable asset)
+        public void LoadAsset<T>(string key, string path)
+            where T : IDisposable
         {
             if (!m_storage.ContainsKey(key))
             {
+                var asset = m_contentManager.Load<T>(path);
+
                 m_storage.Add(key, asset);
 
                 m_pathStorage.Add(key, path);
             }
         }
 
-        public void AddAssets(params (string key, string path, IDisposable obj)[] assets)
+        public void LoadAssets<T>(params (string key, string path)[] assets)
+            where T : IDisposable
         {
             foreach (var item in assets)
             {
-                AddAsset(item.key, item.path, item.obj);
+                LoadAsset<T>(item.key, item.path);
             }
         }
 
         public void Clear()
         {
+            //Unload all Assets
+            foreach (var v in m_pathStorage.Values)
+            {
+                m_contentManager.UnloadAsset(v);
+            }
+
             m_storage.Clear();
 
             m_pathStorage.Clear();
@@ -72,20 +87,21 @@ namespace MonoGame.Extensions.AssetStorages.Realization
             return m_pathStorage.Where(predicate).Select(s => s.Value);
         }
 
-        public void RemoveAsset(string key)
+        public void UnloadAsset(string key)
         {
+            m_contentManager.UnloadAsset(m_pathStorage[key]);
             m_storage.Remove(key);
             m_pathStorage.Remove(key);
         }
 
-        public void RemoveAssets(params string[] keys)
+        public void UnloadAssets(params string[] keys)
         {
             foreach (var item in keys)
             {
-                RemoveAsset(item);
+                UnloadAsset(item);
             }
         }
-
+                
         #endregion
 
 

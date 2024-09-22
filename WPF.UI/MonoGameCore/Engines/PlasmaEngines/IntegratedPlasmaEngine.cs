@@ -5,10 +5,6 @@ using MonoGame.Extensions.AssetStorages.Interface;
 using MonoGame.Extensions.Behaviors.Transformables;
 using MonoGame.Extensions.GameObjects.LoadAssetsStrategy;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WPF.UI.MonoGameCore.Engines.Realizations;
 
 namespace WPF.UI.MonoGameCore.Engines.PlasmaEngines
@@ -37,6 +33,24 @@ namespace WPF.UI.MonoGameCore.Engines.PlasmaEngines
                   IncreaseCalcFunction, 
                   assetStorage)
         {
+            
+        }
+
+        public override void Draw(GameTime time, ref bool play)
+        {
+            base.Draw(time, ref play);
+
+            //Position in the only Positive coordinate system 
+            var position_onlypos = Transform.Position;
+
+            //Convert to the Non-Only Positive Coord System
+
+            var position_2 = new Vector2(
+                position_onlypos.X - Transform.ActualSize.Width/2,
+                position_onlypos.Y - Transform.ActualSize.Height/2
+                );
+
+            //SpriteBatch.Draw();
         }
     }
 }

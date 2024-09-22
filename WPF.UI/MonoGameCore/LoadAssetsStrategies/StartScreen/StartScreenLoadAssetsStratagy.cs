@@ -17,13 +17,10 @@ namespace WPF.UI.MonoGameCore.LoadAssetsStrategies.StartScreen
             ContentManager contentManager,
             GameObject current)
         {
-            assetStorage.AddAssets(
-                ("ui-back-choose-profile", "Backgrounds/UI/ChooseProfile",
-                contentManager.Load<Texture2D>("Backgrounds/UI/ChooseProfile")),
-                ("ui-back-levels", "Backgrounds/UI/ChooseProfile",
-                contentManager.Load<Texture2D>("Backgrounds/UI/Levels")),
-                ("ui-back-main", "Backgrounds/UI/ChooseProfile",
-                contentManager.Load<Texture2D>("Backgrounds/UI/MainBack"))
+            assetStorage.LoadAssets<Texture2D>(
+                ("ui-back-choose-profile", "Backgrounds/UI/ChooseProfile"),
+                ("ui-back-levels", "Backgrounds/UI/ChooseProfile"),
+                ("ui-back-main", "Backgrounds/UI/ChooseProfile")
                 );
         }
     }

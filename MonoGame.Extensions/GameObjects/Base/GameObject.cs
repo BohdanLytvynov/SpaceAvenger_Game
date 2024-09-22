@@ -59,13 +59,13 @@ namespace MonoGame.Extensions.GameObjects.Base
 
             m_loaded = false;
 
+            m_contentManager = contentmanager;
+
             if (assetStorage is null)
-                m_storage = new AssetStorage();
+                m_storage = new AssetStorage(m_contentManager);
 
             m_loadStrategy = loadAssetStrategy;
-
-            m_contentManager = contentmanager;            
-
+                       
             m_spriteBatch = spriteBatch;                          
         }
 
@@ -90,9 +90,7 @@ namespace MonoGame.Extensions.GameObjects.Base
         public virtual void UnLoad()
         {
             if (m_loaded)
-            {
-                ContentManager.UnloadAssets(Storage!.GetPaths(p => true).ToList());
-                
+            {                                
                 m_storage.Clear();
 
                 m_loaded = false;
