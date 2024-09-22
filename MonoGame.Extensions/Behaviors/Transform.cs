@@ -20,13 +20,16 @@ namespace MonoGame.Extensions.Behaviors
 
         private Vector2 m_geomCenterOffset;
 
+        private SizeF m_DistanceCoeficients;
+       
         #endregion
 
         #region Properties
 
         public Vector2 Position
         {
-            get => m_position;
+            get => m_position;           
+
             set => m_position = value;
         }
         public float Rotation
@@ -78,6 +81,8 @@ namespace MonoGame.Extensions.Behaviors
 
         public List<Vector2> GlobalBasis { get; }
 
+        public SizeF DistanceCoeficients => m_DistanceCoeficients;
+
         #endregion
 
         #region ctor
@@ -100,17 +105,19 @@ namespace MonoGame.Extensions.Behaviors
             foreach (var basis in GlobalBasis)
             {
                 LocalBasis.Add(new Vector2(basis.X, basis.Y));
-            }
+            }            
         }
 
         public Transform() 
-            : this(Vector2.Zero, 0f, new Vector2(1,1), new Vector2(0.5f,0.5f), null)
+            : this(Vector2.Zero, 0f, new Vector2(1,1), new Vector2(0.5f,0.5f), null
+                  )
         {
             
         }
 
         public Transform(Vector2 position, float rotation, Vector2 scale)
-            : this(position, rotation, scale, new Vector2(0.5f,0.5f), null)
+            : this(position, rotation, scale, new Vector2(0.5f,0.5f), null
+                  )
         {
             
         }
@@ -118,16 +125,16 @@ namespace MonoGame.Extensions.Behaviors
         #endregion
 
         #region Functions
-        
-        public void Move()
+               
+        public void Rotate(float radians)
         {
-            
-        }
+            Rotation = radians;
 
-        public void Rotate()
-        {
-            
-        }
+            for (int i = 0; i < LocalBasis.Count; i++)
+            {
+                LocalBasis[i] = LocalBasis[i].Rotate(radians);
+            }            
+        }        
 
         #endregion
 

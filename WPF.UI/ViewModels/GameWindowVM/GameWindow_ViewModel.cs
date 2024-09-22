@@ -17,7 +17,7 @@ using WPF.UI.MonoGameCore.LoadAssetsStrategies.StartScreen;
 
 namespace WPF.UI.ViewModels.GameWindowVM
 {
-    internal unsafe class GameWindow_ViewModel : SubscriptableMonoGameViewModel
+    internal class GameWindow_ViewModel : SubscriptableMonoGameViewModel
     {
         #region Fields
         private IMessageBus? m_msgBus;

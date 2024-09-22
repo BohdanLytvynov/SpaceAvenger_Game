@@ -16,21 +16,16 @@ namespace WPF.UI.MonoGameCore.LoadAssetsStrategies.StartScreen
         public void LoadAsset(IAssetStorage assetStorage, ContentManager contentManager
             , GameObject current)
         {
-            assetStorage.AddAssets
+            assetStorage.LoadAssets<Texture2D>
                 (
-                    ("back-1", "Backgrounds/Levels/Back1",
-                    contentManager.Load<Texture2D>("Backgrounds/Levels/Back1")),
-                    ("back-2", "Backgrounds/Levels/Back2",
-                    contentManager.Load<Texture2D>("Backgrounds/Levels/Back2")),
-                    ("back-3", "Backgrounds/Levels/Back3",
-                    contentManager.Load<Texture2D>("Backgrounds/Levels/Back3"))
+                    ("back-1", "Backgrounds/Levels/Back1"),
+                    ("back-2", "Backgrounds/Levels/Back2"),
+                    ("back-3", "Backgrounds/Levels/Back3")
                 );
 
             //Add Animations
-            assetStorage.AddAssets(
-                ("puls-star1", "Animations/Environment/PulsatingStar",
-                contentManager.Load<Texture2D>("Animations/Environment/PulsatingStar"))
-                );
+            assetStorage.LoadAsset<Texture2D>
+                ("puls-star1", "Animations/Environment/PulsatingStar");
         }
     }
 }

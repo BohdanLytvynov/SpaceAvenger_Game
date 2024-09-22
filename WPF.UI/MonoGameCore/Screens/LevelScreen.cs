@@ -80,14 +80,14 @@ namespace WPF.UI.MonoGameCore.Screens
                 {
                     new IntegratedPlasmaEngine(Debugging, "MainEngine1", 
                     contentmanager, spriteBatch, 14f, 3f,
-                    new Transform(),
-                    new PlasmaEngineLoadStrategy(),
+                    new Transform(new Vector2(0f, 80f), 0f, new Vector2(1f,1f)),
+                    new IntegratedPlasmaEngineLoadStrategy(),
                     m_thrustCalcFunction),
 
                     new IntegratedPlasmaEngine(Debugging, "MainEngine2",
                     contentmanager, spriteBatch, 14f, 3f,
                     new Transform(),
-                    new PlasmaEngineLoadStrategy(),
+                    new IntegratedPlasmaEngineLoadStrategy(),
                     m_thrustCalcFunction),
                     /*new PlasmaEngine(2, 7f, 1, 1f), 
                     new PlasmaEngine(3, 7f, 1, 1f)*/ 

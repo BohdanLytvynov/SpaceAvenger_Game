@@ -9,6 +9,6 @@ namespace MonoGame.Extensions.Physics.Interfaces
 {
     public interface IRigidBodyObject : ISprite
     {
-        public float Mass { get; set; }
+        public float Mass { get; set; }        
     }
 }

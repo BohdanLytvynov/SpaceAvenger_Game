@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using MonoGame.Extended;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,11 @@ namespace MonoGame.Extensions.Extensions
             var dot = Vector2.Dot(v1, v2);
 
             return MathF.Acos(dot / (v1.Length() * v2.Length()));
+        }
+
+        public static Vector2 MultiplyBySizeF(this Vector2 v, SizeF s)
+        {
+            return new Vector2(v.X * s.Width, v.Y * s.Height);
         }
     }
 }

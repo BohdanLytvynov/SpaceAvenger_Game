@@ -32,7 +32,7 @@ namespace WPF.UI.MonoGameCore.Ships
         public bool Selected => m_selected;
 
         public override Vector2 CenterOfMass =>
-            RigidBodyPhysics.GetCenterOfMass(m_modules);
+            Transform.Origin;
 
         #region Engines References
         
@@ -176,9 +176,12 @@ namespace WPF.UI.MonoGameCore.Ships
                 origin: CenterOfMass, 
                 Transform.Scale, SpriteEffects.None, 0f );
 
+            //Draw Modules
             foreach (var m in m_modules)
             {
-                
+                var go = (IGameObject)m;
+
+                go.Draw(time, ref play);
             }
 
             //Draw The Selection

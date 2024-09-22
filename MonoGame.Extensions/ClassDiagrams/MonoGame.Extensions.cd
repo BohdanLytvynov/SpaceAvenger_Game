@@ -32,8 +32,16 @@
     </TypeIdentifier>
     <Lollipop Position="0.1" />
   </Class>
+  <Class Name="MonoGame.Extensions.Behaviors.Transform" Collapsed="true">
+    <Position X="5" Y="3.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAoAAAAAACAAIKAgAAIAAQAQmAAAAAAAAAAQAAkAAAA=</HashCode>
+      <FileName>Behaviors\Transform.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
   <Interface Name="MonoGame.Extensions.Sprites.Interfaces.IRigidBodySprite" Collapsed="true">
-    <Position X="4" Y="0.5" Width="1.5" />
+    <Position X="3.5" Y="0.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAIAAAAAAAAAEAAAAAAAAAAAAAAEAAAAAAAAEAAAAAA=</HashCode>
       <FileName>Sprites\Interfaces\IRigidBodySprite.cs</FileName>
@@ -51,6 +59,13 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Sprites\Interfaces\ISprite.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MonoGame.Extensions.Behaviors.Transformables.ITransformable" Collapsed="true">
+    <Position X="7.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAgAAIAAQAAiAAAAAAAAAAQAAgAAAA=</HashCode>
+      <FileName>Behaviors\Transformables\ITransformable.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="10" />

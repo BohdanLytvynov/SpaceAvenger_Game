@@ -13,11 +13,11 @@ namespace WPF.UI.MonoGameCore.LoadAssetsStrategies.Faction10.SpaceShips.Destroye
         public void LoadAsset(IAssetStorage assetStorage, 
             ContentManager contentManager, 
             GameObject current)
-        {
-            var t = contentManager.Load<Texture2D>("Assets/SpaceShips/Faction10/destroyer256");
-            
-            assetStorage.AddAsset("destroyer", "Assets/SpaceShips/Faction10/destroyer256", t);
-            
+        {                        
+            assetStorage.LoadAsset<Texture2D>("destroyer", "Assets/SpaceShips/Faction10/destroyer256");
+
+            var t = (Texture2D)assetStorage["destroyer"];
+
             (current as Sprite)!.Transform.TextureSize = new SizeF() { Width = t.Width, Height = t.Height }; ;
         }
     }
