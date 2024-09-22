@@ -92,12 +92,7 @@ namespace WPF.UI.MonoGameCore.Engines.Realizations
                 m_currentThrust += m_IncreaseCalc(time);
             }
         }
-
-        public override void Draw(GameTime time, ref bool play)
-        {
-            base.Draw(time, ref play);
-        }
-
+        
         #endregion
     }
 }
