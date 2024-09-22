@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using ViewModelBaseLibDotNetCore.Commands;
 using System.Windows.Input;
 using System.Windows.Controls;
-using Models.DAL.Entities.User;
 using System.Windows;
 using WPF.UI.Enums.FrameTypes;
 using WPF.UI.Services.Interfaces.PageManager;
