@@ -100,22 +100,17 @@ namespace WPF.UI.ViewModels.PagesVM
         {
             m_messageBus = messageBus;
 
-            m_PageManager = pageManager;
-            
-            #region Subscriptions
-            
-            #endregion
+            m_PageManager = pageManager;                       
         }
 
         private void Up_OnUserProfileSelectedEvent(User obj)
         {
             m_PageManager!.SwitchPage(nameof(Main_Page), FrameType.MainFrame);
 
-            m_messageBus!.Send(new ChooseProfileMessage_User(obj));
+            m_messageBus!.Send(new SetStartScreen(StartScreenType.Main));
 
-            m_messageBus!.Send(new SetStartScreen(StartScreenType.Main));            
+            m_messageBus!.Send(new ChooseProfileMessage_User(obj));                        
         }
-
 
         #endregion
 

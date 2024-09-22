@@ -10,7 +10,6 @@ using WPF.UI.MonoGameCore.Screens;
 using System.Collections.Generic;
 using MonoGame.Extensions.Screens.Base;
 using WPF.UI.MonoGameControls;
-using Microsoft.Xna.Framework.Input;
 using System.Windows.Input;
 using MonoGame.Extensions.Behaviors.MouseInteractable;
 using WPF.UI.MonoGameCore.LoadAssetsStrategies.StartScreen;
@@ -53,6 +52,8 @@ namespace WPF.UI.ViewModels.GameWindowVM
             m_screens = new List<ScreenBase?>();
 
             OnContentUnloaded += () => { this.Dispose(); };
+
+            m_play = true;
         }
 
         public GameWindow_ViewModel(IPageManagerService<FrameType> pm, IMessageBus bus) : this()
@@ -62,6 +63,8 @@ namespace WPF.UI.ViewModels.GameWindowVM
             m_msgBus = bus;
             
             Subscriptions.Add(m_msgBus.RegisterHandler<IGameMessage>(OnMessageRecieved));
+
+            Subscriptions.Add(m_msgBus.RegisterHandler<SetStartScreen>(OnMessageRecieved));
         }
 
         #endregion
@@ -98,6 +101,8 @@ namespace WPF.UI.ViewModels.GameWindowVM
             m_currentScreen!.Load();
                                     
             base.LoadContent();
+
+            //m_play = true;
         }
 
         /// <summary>
@@ -163,18 +168,15 @@ namespace WPF.UI.ViewModels.GameWindowVM
             else if (msg is ResumeGame && !m_play)
             {
                 m_play = true;
-            }
-            else if (msg is SetStartScreen start)
-            {
-                m_startScreenUpdateArgs!.Args = start.Args;
-            }
+            }            
             else if (msg is SetLevel level)
             {
                 m_play = false;
 
                 var name = level.Args;
 
-                var levelScreen = new LevelScreen(IsDebugging, name, 
+                var levelScreen = new LevelScreen(IsDebugging, 
+                    name, 
                     Content, 
                     _spriteBatch,                     
                     m_screen_Dimensions,
@@ -188,6 +190,11 @@ namespace WPF.UI.ViewModels.GameWindowVM
                
                 m_play = true;
             }
+        }
+
+        private void OnMessageRecieved(SetStartScreen message)
+        {
+            m_startScreenUpdateArgs!.Args = message.Args;
         }
 
         #endregion

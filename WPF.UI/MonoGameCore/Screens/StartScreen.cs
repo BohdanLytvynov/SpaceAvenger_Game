@@ -31,7 +31,7 @@ namespace WPF.UI.MonoGameCore.Screens
     }
 
     internal class StartScreen : ScreenBase
-    {        
+    {
         private StartScreenType _type;
 
         public StartScreen( bool debug,
@@ -48,13 +48,10 @@ namespace WPF.UI.MonoGameCore.Screens
                   ScreenResolution,
                   loadAssetStrategy,
                   assetStorage)
-        {}
-
-        public override void Load()
-        {                        
-            base.Load();
+        {
+            _type = StartScreenType.Choose_profile;
         }
-
+       
         public override void Draw(GameTime time, ref bool play)
         {
             base.Draw(time, ref play);
@@ -88,10 +85,6 @@ namespace WPF.UI.MonoGameCore.Screens
 
             _type = (args as StartScreenUpdateArgs)!.Args;
         }
-
-        public override void UnLoad()
-        {            
-            base.UnLoad();
-        }        
+              
     }
 }
