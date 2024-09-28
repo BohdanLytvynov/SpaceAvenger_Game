@@ -177,13 +177,13 @@ namespace WPF.UI.MonoGameCore.Ships
                 Transform.Scale, SpriteEffects.None, 0f );
 
             //Draw Modules
-            
+
             foreach (var m in m_modules)
             {
                 var go = (IGameObject)m;
 
-                if(!Object.ReferenceEquals(go, this))
-                    go.Draw(time, ref play);                
+                if (!Object.ReferenceEquals(go, this))
+                    go.Draw(time, ref play);
             }
 
             //Draw The Selection

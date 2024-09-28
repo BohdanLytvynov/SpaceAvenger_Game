@@ -37,7 +37,7 @@
 /processorParam:TextureFormat=Color
 /build:Animations/Jets/Jet-1/Jet-1_128.png
 
-#begin Assets/SpaceShips/Faction10/destroyer256.png
+#begin Assets/Factions/Faction10/Engines/ManuverEngine_F10.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -47,7 +47,19 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Assets/SpaceShips/Faction10/destroyer256.png
+/build:Assets/Factions/Faction10/Engines/ManuverEngine_F10.png
+
+#begin Assets/Factions/Faction10/SpaceShips/destroyer256.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/Factions/Faction10/SpaceShips/destroyer256.png
 
 #begin Backgrounds/Levels/Back1.jpg
 /importer:TextureImporter

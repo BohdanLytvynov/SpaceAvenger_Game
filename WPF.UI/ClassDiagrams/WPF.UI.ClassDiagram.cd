@@ -14,7 +14,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="MonoGame.Extensions.GameObjects.Base.GameObject" Collapsed="true">
-    <Position X="1.5" Y="0.5" Width="1.5" />
+    <Position X="1.25" Y="0.5" Width="1.5" />
     <TypeIdentifier />
     <Lollipop Position="0.2" />
   </Class>
@@ -102,7 +102,7 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="WPF.UI.Services.Interfaces.Message.IGameMessage&lt;T&gt;" Collapsed="true">
-    <Position X="7.75" Y="4.25" Width="4.25" />
+    <Position X="10.25" Y="4.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
       <FileName>Services\Interfaces\Message\IGameMessage.cs</FileName>
