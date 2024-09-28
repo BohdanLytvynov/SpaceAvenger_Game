@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extensions.AssetStorages.Interface;
 using MonoGame.Extensions.GameObjects.Base;
 using MonoGame.Extensions.GameObjects.LoadAssetsStrategy;
@@ -11,7 +12,7 @@ namespace WPF.UI.MonoGameCore.LoadAssetsStrategies.Faction10.Engines.PlasmaEngin
         public void LoadAsset(IAssetStorage assetStorage, ContentManager contentManager, 
             GameObject current)
         {
-            throw new NotImplementedException();
+            assetStorage.LoadAsset<Texture2D>("Faction10-acceler", "Assets/Factions/Faction10/Engines/ManuverEngine_F10");
         }
     }
 }
