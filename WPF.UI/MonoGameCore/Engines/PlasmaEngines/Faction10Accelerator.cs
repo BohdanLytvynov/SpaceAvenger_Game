@@ -53,10 +53,18 @@ namespace WPF.UI.MonoGameCore.Engines.PlasmaEngines
             base.Update(args, time, ref play);
 
             var relTransform = (this.Transform as IRelativeTransform)!;
-            
+
             var RelPosition = relTransform.RelativePosition;
+
+            Vector2 relPos_Scaled = new Vector2()
+            {
+                X = RelPosition.X * Transform.Scale.X,
+                Y = RelPosition.Y * Transform.Scale.Y
+            };
             
-            this.Transform.Position = RelPosition + relTransform.ParentPosition;
+
+
+            this.Transform.Position = relPos_Scaled + relTransform.ParentPosition;
         }
 
         public override void Draw(GameTime time, ref bool play)
