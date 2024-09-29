@@ -21,8 +21,6 @@ namespace MonoGame.Extensions.Behaviors.Transformables
 
         public Vector2 UpperLeftCorner { get; }
 
-        public SizeF DistanceCoeficients { get; }
-
         #region Basis
 
         public List<Vector2> LocalBasis { get; }

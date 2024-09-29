@@ -10,6 +10,8 @@ namespace MonoGame.Extensions.AssetStorages.Interface
         void LoadAsset<T>(string key, string path)
         where T : IDisposable;
 
+        T? LoadAssetAndGet<T> (string key, string path) where T : IDisposable;
+
         void LoadAssets<T>(params (string key, string path) [] assets)
             where T : IDisposable;
 

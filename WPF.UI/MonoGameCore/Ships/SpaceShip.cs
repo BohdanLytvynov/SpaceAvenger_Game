@@ -5,15 +5,18 @@ using MonoGame.Extended;
 using MonoGame.Extensions.AssetStorages.Interface;
 using MonoGame.Extensions.Behaviors.Selectables;
 using MonoGame.Extensions.Behaviors.Transformables;
+using MonoGame.Extensions.Behaviors.Transformables.RelativeTransform;
 using MonoGame.Extensions.GameObjects.Base;
 using MonoGame.Extensions.GameObjects.LoadAssetsStrategy;
 using MonoGame.Extensions.Physics.Interfaces;
+using MonoGame.Extensions.Sprites.Interfaces;
 using MonoGame.Extensions.Sprites.Realization;
 using System;
 using System.Collections.Generic;
 using WPF.UI.Enums.ModuleTypes;
 using WPF.UI.MonoGameCore.Engines.Interfaces;
 using WPF.UI.MonoGameCore.Modules;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace WPF.UI.MonoGameCore.Ships
 {
@@ -47,7 +50,7 @@ namespace WPF.UI.MonoGameCore.Ships
             float mass,
             List<IRigidBodyObject> modules,
             IMOICalculator calculator,
-            ILoadAssetStrategy loadAssetStrategy,            
+            ILoadAssetStrategy? loadAssetStrategy = default,            
             ITransformable? transform = default,
             IRigidBodyPhysics? rigidBodyPhysics = default,            
             IAssetStorage? assetStorage = default,
@@ -94,7 +97,15 @@ namespace WPF.UI.MonoGameCore.Ships
         
         public override void Load()
         {
-            base.Load();                       
+            base.Load();
+
+            foreach (var m in m_modules)
+            {
+                var go = (IGameObject)m;
+
+                if (!Object.ReferenceEquals(go, this))
+                    go.Load();
+            }
         }
 
         public override void UnLoad()
@@ -105,6 +116,19 @@ namespace WPF.UI.MonoGameCore.Ships
         public override void Update(IUpdateArgs args, GameTime time, ref bool play)
         {            
             base.Update(args, time, ref play);
+
+            foreach (var m in m_modules)
+            {
+                var sprite = (ISprite)m;
+
+                if (!Object.ReferenceEquals(sprite, this))
+                {
+                    (sprite.Transform as IRelativeTransform)!.UpdateParentData(Transform);
+
+                    (sprite as IGameObject)!.Update(args, time, ref play);
+                }
+
+            }
 
             //Use another Way to find engines module
             
@@ -172,7 +196,7 @@ namespace WPF.UI.MonoGameCore.Ships
             var t = (Texture2D)Storage["destroyer"];
 
             SpriteBatch.Draw(t, Transform.Position, null, Color.White, 
-                Transform.Rotation*(MathF.PI/180),
+                Transform.Rotation,
                 origin: CenterOfMass, 
                 Transform.Scale, SpriteEffects.None, 0f );
 

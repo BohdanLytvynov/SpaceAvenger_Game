@@ -25,7 +25,7 @@ namespace MonoGame.Extensions.Screens.Base
             ContentManager contentmanager,
             SpriteBatch spriteBatch,
             Rectangle screenDimensions,
-            ILoadAssetStrategy loadAssetStrategy,
+            ILoadAssetStrategy? loadAssetStrategy,
             IAssetStorage? assetStorage = default) :
             base(name, contentmanager, spriteBatch,  assetStorage, loadAssetStrategy)
         {

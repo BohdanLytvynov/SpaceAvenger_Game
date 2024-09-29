@@ -21,7 +21,7 @@ namespace WPF.UI.MonoGameCore.Modules
             float mass,
             ITransformable? transform, 
             IAssetStorage? assetStorage,
-            ILoadAssetStrategy loadAssetStrategy) : 
+            ILoadAssetStrategy? loadAssetStrategy) : 
             base(name, 
                 contentManager,
                 spriteBatch,

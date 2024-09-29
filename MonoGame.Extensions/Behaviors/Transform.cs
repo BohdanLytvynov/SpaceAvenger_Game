@@ -18,9 +18,7 @@ namespace MonoGame.Extensions.Behaviors
 
         private SizeF m_TextureSize;
 
-        private Vector2 m_geomCenterOffset;
-
-        private SizeF m_DistanceCoeficients;
+        private Vector2 m_geomCenterOffset;       
        
         #endregion
 
@@ -80,19 +78,17 @@ namespace MonoGame.Extensions.Behaviors
         public List<Vector2> LocalBasis { get; }
 
         public List<Vector2> GlobalBasis { get; }
-
-        public SizeF DistanceCoeficients => m_DistanceCoeficients;
-
+       
         #endregion
 
         #region ctor
 
-        public Transform(Vector2 position, float rotation, Vector2 scale, 
+        public Transform(Vector2 position, float rotation_Rad, Vector2 scale, 
             Vector2 geomCenterOffset, List<Vector2> globalBasis)
         {
             m_scale = scale;
             m_position = position;
-            m_rotation = rotation;
+            m_rotation = rotation_Rad;
             GeometryCenterOffset = geomCenterOffset;
 
             if(globalBasis is not null)
@@ -105,7 +101,9 @@ namespace MonoGame.Extensions.Behaviors
             foreach (var basis in GlobalBasis)
             {
                 LocalBasis.Add(new Vector2(basis.X, basis.Y));
-            }            
+            }
+
+            Rotate(m_rotation);
         }
 
         public Transform() 

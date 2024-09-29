@@ -101,7 +101,23 @@ namespace MonoGame.Extensions.AssetStorages.Realization
                 UnloadAsset(item);
             }
         }
-                
+
+        public T? LoadAssetAndGet<T>(string key, string path) where T : IDisposable
+        {
+            T? asset = default;
+
+            if (!m_storage.ContainsKey(key))
+            {
+                asset = m_contentManager.Load<T>(path);
+
+                m_storage.Add(key, asset);
+
+                m_pathStorage.Add(key, path);
+            }
+
+            return asset;
+        }
+
         #endregion
 
 
