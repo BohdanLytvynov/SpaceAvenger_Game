@@ -99,19 +99,19 @@ namespace WPF.UI.MonoGameCore.Screens
                     
                     new Faction10Accelerator(
                         Debugging, "Accelerator1", contentmanager, spriteBatch, 2f, 1f, 
-                        new RelativeTransform(new Vector2(-140f, 80f), 0f * MathF.PI/180, 
-                        new Vector2(0.4f, 0.4f), new Vector2(0.5f, 0.5f), 
+                        new RelativeTransform(new Vector2(-140f, 80f), (20f) * MathF.PI/180, 
+                        new Vector2(1f, 1f), new Vector2(0.5f, 0.5f), 
                         m_GlobalBasis)),
 
                     new Faction10Accelerator(
                         Debugging, "Accelerator2", contentmanager, spriteBatch, 2f, 1f,
-                        new RelativeTransform(new Vector2(-140f, -80f), 0f * MathF.PI/180,
-                        new Vector2(0.4f, 0.4f), new Vector2(0.5f, 0.5f),
+                        new RelativeTransform(new Vector2(-140f, -80f), (-20f) * MathF.PI/180,
+                        new Vector2(1f, 1f), new Vector2(0.5f, 0.5f),
                         m_GlobalBasis))
                 },
                 new CalculateMOIForTriangleShape_Z(40f, 51.2f, 51.2f),
                 new Faction10DestroyerLoadStrategy(),
-                new Transform(new(300f, 300f), 0f* MathF.PI/180, new(0.4f, 0.4f))
+                new Transform(new(300f, 300f), 0f * MathF.PI/180, new(1f, 1f))
                 );
         }
 
@@ -146,8 +146,11 @@ namespace WPF.UI.MonoGameCore.Screens
             base.Update(args, time, ref play);
 
             //Animations
+
             m_PulsatingStar!.Start(time);
             m_PulsatingStar!.Update(time);
+
+            //Interactable Objects
             m_Player!.Update(args, time, ref play);
 
             foreach (var obj in m_gameObjects)

@@ -88,6 +88,9 @@ namespace WPF.UI.MonoGameCore.Ships
             foreach (var m in m_modules)
             {
                 Mass += m.Mass;
+               
+                if(m.Transform is IRelativeTransform rt)
+                    rt.ParentTransform = this.Transform;
             }
 
             m_selected = false;  
@@ -117,6 +120,8 @@ namespace WPF.UI.MonoGameCore.Ships
         {            
             base.Update(args, time, ref play);
 
+            //Orientation of the modules properly  
+
             foreach (var m in m_modules)
             {
                 var sprite = (ISprite)m;
@@ -127,7 +132,6 @@ namespace WPF.UI.MonoGameCore.Ships
 
                     (sprite as IGameObject)!.Update(args, time, ref play);
                 }
-
             }
 
             //Use another Way to find engines module

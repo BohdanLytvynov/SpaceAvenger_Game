@@ -7,14 +7,12 @@ namespace MonoGame.Extensions.Behaviors.Transformables.RelativeTransform
     {
         Vector2 RelativePosition { get; set; }
 
-        Vector2 ParentPosition { get; }
+        float RelativeRotation { get; set; }    
 
-        SizeF ParentTextureSize { get; }
-
-        SizeF ParentActualSize { get; }
-
-        float[,] BuildTransformMatrix();
-
+        ITransformable ParentTransform { get; set; }
+       
         void UpdateParentData(ITransformable parentTransform);
+
+        void CalculateAbsoluteTransform();        
     }
 }

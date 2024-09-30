@@ -54,17 +54,7 @@ namespace WPF.UI.MonoGameCore.Engines.PlasmaEngines
 
             var relTransform = (this.Transform as IRelativeTransform)!;
 
-            var RelPosition = relTransform.RelativePosition;
-
-            Vector2 relPos_Scaled = new Vector2()
-            {
-                X = RelPosition.X * Transform.Scale.X,
-                Y = RelPosition.Y * Transform.Scale.Y
-            };
-            
-
-
-            this.Transform.Position = relPos_Scaled + relTransform.ParentPosition;
+            relTransform.CalculateAbsoluteTransform();                        
         }
 
         public override void Draw(GameTime time, ref bool play)
@@ -72,7 +62,7 @@ namespace WPF.UI.MonoGameCore.Engines.PlasmaEngines
             var t = (Texture2D)Storage["Faction10-Accelerator"];
 
             SpriteBatch.Draw(t, Transform.Position, null, Color.White,
-                Transform.Rotation * (MathF.PI / 180),
+                Transform.Rotation,
                 origin: Transform.Origin,
                 Transform.Scale, SpriteEffects.None, 0.9f);
 

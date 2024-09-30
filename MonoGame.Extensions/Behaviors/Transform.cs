@@ -3,6 +3,7 @@ using MonoGame.Extended;
 using MonoGame.Extensions.Behaviors.Transformables;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace MonoGame.Extensions.Behaviors
 {
@@ -12,7 +13,7 @@ namespace MonoGame.Extensions.Behaviors
 
         private Vector2 m_position;
 
-        private float m_rotation;
+        private float m_rotation;//must be in radians
 
         private Vector2 m_scale;
 
@@ -23,18 +24,20 @@ namespace MonoGame.Extensions.Behaviors
         #endregion
 
         #region Properties
-
+        //Used by all the Draw Functions
         public Vector2 Position
         {
             get => m_position;           
 
             set => m_position = value;
         }
+        //Used by all the Draw Functions
         public float Rotation
         {
             get => m_rotation;
             set => m_rotation = value;
         }
+        //Used by all the Draw Functions
         public Vector2 Scale
         {
             get => m_scale;
@@ -82,13 +85,20 @@ namespace MonoGame.Extensions.Behaviors
         #endregion
 
         #region ctor
-
+        /// <summary>
+        /// Main Ctor
+        /// </summary>
+        /// <param name="position">Absolute position</param>
+        /// <param name="rotation_Rad">Absolute Rotation in Radians</param>
+        /// <param name="scale">Scale</param>
+        /// <param name="geomCenterOffset">Position of the Origin of the Sprite(range from 0 to 1)</param>
+        /// <param name="globalBasis">Global Basis of the Screen</param>
         public Transform(Vector2 position, float rotation_Rad, Vector2 scale, 
             Vector2 geomCenterOffset, List<Vector2> globalBasis)
         {
             m_scale = scale;
             m_position = position;
-            m_rotation = rotation_Rad;
+            
             GeometryCenterOffset = geomCenterOffset;
 
             if(globalBasis is not null)
@@ -103,18 +113,25 @@ namespace MonoGame.Extensions.Behaviors
                 LocalBasis.Add(new Vector2(basis.X, basis.Y));
             }
 
-            Rotate(m_rotation);
+            Rotate(rotation_Rad);
         }
-
+        /// <summary>
+        /// Default Ctor
+        /// </summary>
         public Transform() 
             : this(Vector2.Zero, 0f, new Vector2(1,1), new Vector2(0.5f,0.5f), null
                   )
         {
             
         }
-
-        public Transform(Vector2 position, float rotation, Vector2 scale)
-            : this(position, rotation, scale, new Vector2(0.5f,0.5f), null
+        /// <summary>
+        /// Ctor for Position, Rotation, Scale
+        /// </summary>
+        /// <param name="position">Absolute position</param>
+        /// <param name="rotation_Rad">Absolute Rotation in Radians</param>
+        /// <param name="scale">Scale</param>
+        public Transform(Vector2 position, float rotation_Rad, Vector2 scale)
+            : this(position, rotation_Rad, scale, new Vector2(0.5f,0.5f), null
                   )
         {
             
@@ -125,15 +142,15 @@ namespace MonoGame.Extensions.Behaviors
         #region Functions
                
         public void Rotate(float radians)
-        {
-            Rotation = radians;
-
+        {            
+            m_rotation = radians;
+           
             for (int i = 0; i < LocalBasis.Count; i++)
             {
                 LocalBasis[i] = LocalBasis[i].Rotate(radians);
             }            
-        }        
-
+        }
+       
         #endregion
 
     }
