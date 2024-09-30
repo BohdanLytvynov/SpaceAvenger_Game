@@ -28,9 +28,9 @@ namespace WPF.UI.MonoGameCore.Engines.PlasmaEngines
                   spriteBatch, 
                   maxThrust, 
                   mass, 
-                  transform, 
-                  loadAssetStrategy,
-                  IncreaseCalcFunction, 
+                  transform,
+                  IncreaseCalcFunction,
+                  loadAssetStrategy,                  
                   assetStorage)
         {
             

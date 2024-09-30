@@ -13,14 +13,14 @@ using WPF.UI.MonoGameCore.Modules;
 
 namespace WPF.UI.MonoGameCore.Engines.Realizations
 {
-    internal class EngineBase : Module, IEngine
+    internal abstract class EngineBase : Module, IEngine
     {
         #region Fields
         private float m_currentThrust;
 
         private bool m_Working;
 
-        private Func<GameTime, float> m_IncreaseCalc;
+        private Func<GameTime, float>? m_IncreaseCalc;
         #endregion
 
         #region Properties
@@ -43,8 +43,8 @@ namespace WPF.UI.MonoGameCore.Engines.Realizations
             float maxThrust,             
             float mass,
             ITransformable transform,
-            ILoadAssetStrategy loadAssetStrategy,
-            Func<GameTime, float> IncreaseCalcFunction,
+            Func<GameTime, float>? IncreaseCalcFunction,
+            ILoadAssetStrategy? loadAssetStrategy,            
             IAssetStorage? assetStorage = default) :
             base(debug, name, contentManager, spriteBatch, mass, transform, assetStorage, 
                 loadAssetStrategy)
@@ -72,24 +72,15 @@ namespace WPF.UI.MonoGameCore.Engines.Realizations
             m_currentThrust = 0f;
             m_Working = false;
         }
-       
-        public override void Load()
-        {
-            base.Load();
-        }
-
-        public override void UnLoad()
-        {
-            base.UnLoad();
-        }
-
+                       
         public override void Update(IUpdateArgs args, GameTime time, ref bool play)
         {
             base.Update(args, time, ref play);
 
-            if (m_Working && m_currentThrust < MaxThrust)
+            if (m_Working && m_currentThrust < MaxThrust )
             {
-                m_currentThrust += m_IncreaseCalc(time);
+                if(m_IncreaseCalc is not null)
+                    m_currentThrust += m_IncreaseCalc(time);
             }
         }
         

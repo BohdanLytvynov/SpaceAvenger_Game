@@ -40,7 +40,7 @@ namespace MonoGame.Extensions.Sprites.Realization
             SpriteBatch spriteBatch,
             ITransformable? transform,
             IAssetStorage? assetStorage,
-            ILoadAssetStrategy loadAssetStrategy,
+            ILoadAssetStrategy? loadAssetStrategy,
             bool debug) 
             : base(name, 
                   contentManager, 
@@ -59,7 +59,7 @@ namespace MonoGame.Extensions.Sprites.Realization
         #endregion
 
         #region Functions
-
+       
         public override void Draw(GameTime time, ref bool play)
         {
             base.Draw(time, ref play);
@@ -68,7 +68,10 @@ namespace MonoGame.Extensions.Sprites.Realization
             {
                 //Draw Central origin Point of the Sprite
                 SpriteBatch.DrawPoint(Transform.Position, Color.Blue, 5, 1f);
-                
+
+                //Draw Central origin Point of the Sprite
+                SpriteBatch.DrawPoint(Transform.UpperLeftCorner, Color.Orange, 5, 1f);
+
                 //Draw Local X
                 SpriteBatch.DrawLine(Transform.Position, Transform.Position +
                     Transform.LocalBasis[0] * Transform.ActualSize/2, Color.Red, 2, 1f);

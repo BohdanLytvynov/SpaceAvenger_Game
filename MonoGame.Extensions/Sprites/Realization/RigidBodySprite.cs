@@ -44,7 +44,7 @@ namespace MonoGame.Extensions.Sprites.Realization
             IRigidBodyPhysics? rigidBodyPhysics,
             IMOICalculator MOICalculator,
             IAssetStorage? assetStorage,
-            ILoadAssetStrategy loadAssetStrategy,
+            ILoadAssetStrategy? loadAssetStrategy,
             bool debug) : 
             base(name, 
                 contentManager, 

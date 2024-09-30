@@ -51,7 +51,7 @@ namespace MonoGame.Extensions.GameObjects.Base
             ContentManager contentmanager,
             SpriteBatch spriteBatch,             
             IAssetStorage? assetStorage,
-            ILoadAssetStrategy loadAssetStrategy)
+            ILoadAssetStrategy? loadAssetStrategy)
         {            
             m_name = name;
 

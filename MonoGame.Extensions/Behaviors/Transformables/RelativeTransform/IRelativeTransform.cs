@@ -1,16 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MonoGame.Extended;
 
 namespace MonoGame.Extensions.Behaviors.Transformables.RelativeTransform
 {
     public interface IRelativeTransform
     {
-        Vector2 ParentPosition { get; set; }
+        Vector2 RelativePosition { get; set; }
 
-        float[,] BuildTransformMatrix();
+        float RelativeRotation { get; set; }    
+
+        ITransformable ParentTransform { get; set; }
+       
+        void UpdateParentData(ITransformable parentTransform);
+
+        void CalculateAbsoluteTransform();        
     }
 }
