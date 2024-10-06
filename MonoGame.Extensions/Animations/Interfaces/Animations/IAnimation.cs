@@ -1,10 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MonoGame.Extensions.Behaviors.Transformables;
 
 namespace MonoGame.Extensions.Animations.Interfaces.Animations
 {
@@ -26,7 +22,7 @@ namespace MonoGame.Extensions.Animations.Interfaces.Animations
 
         public int FrameWidth { get; }
 
-        public float AnimationSpeed { get; set; }
+        public double AnimationSpeed { get; set; }
 
         public bool IsLooping { get; set; }
 
@@ -36,7 +32,7 @@ namespace MonoGame.Extensions.Animations.Interfaces.Animations
 
         #region Functions
 
-        void Start(GameTime gameTime);
+        void Start();
 
         void Stop();
 
@@ -44,7 +40,8 @@ namespace MonoGame.Extensions.Animations.Interfaces.Animations
 
         void Update(GameTime gameTime);
 
-        void Draw(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position);
+        void Draw(GameTime gameTime, SpriteBatch spriteBatch, ITransformable transform, 
+            float layerDepth = 0f);
 
         #endregion        
     }

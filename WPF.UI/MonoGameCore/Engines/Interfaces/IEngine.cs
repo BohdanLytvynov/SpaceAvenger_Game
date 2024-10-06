@@ -1,11 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoGame.Extensions.Physics.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WPF.UI.MonoGameCore.Modules;
+using WPF.UI.MonoGameCore.Engines.Realizations;
 
 namespace WPF.UI.MonoGameCore.Engines.Interfaces
 {
@@ -15,9 +9,9 @@ namespace WPF.UI.MonoGameCore.Engines.Interfaces
 
         public float MaxThrust { get; }
                        
-        public bool Working { get; }
+        public EngineState Mode { get; }
         
-        void Start();
+        void Start(GameTime time);
 
         void Stop();        
     }

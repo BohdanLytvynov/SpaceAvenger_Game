@@ -10,12 +10,12 @@ namespace MonoGame.Extensions.Animations.Realizations.AnimationFrames
 {
     public class AnimationFrame : IAnimationFrame
     {
-        private float m_lifespan;
+        private double m_lifespan;
 
         //Current frame lifespan
-        public float Lifespan { get => m_lifespan; }
+        public double Lifespan { get => m_lifespan; }
 
-        public AnimationFrame(float lifespan)
+        public AnimationFrame(double lifespan)
         {
             m_lifespan = lifespan;
         }

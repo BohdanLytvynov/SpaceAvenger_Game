@@ -2,12 +2,12 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
+using MonoGame.Extensions.Animations.Interfaces.Animations;
 using MonoGame.Extensions.Animations.Realizations.Animations;
 using MonoGame.Extensions.Animations.Utilities;
 using MonoGame.Extensions.AssetStorages.Interface;
 using MonoGame.Extensions.Behaviors;
 using MonoGame.Extensions.Behaviors.MouseInteractable;
-using MonoGame.Extensions.Behaviors.Transformables.RelativeTransform;
 using MonoGame.Extensions.GameObjects.Base;
 using MonoGame.Extensions.GameObjects.LoadAssetsStrategy;
 using MonoGame.Extensions.Physics.Interfaces;
@@ -17,8 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using WPF.UI.MonoGameControls;
-using WPF.UI.MonoGameCore.Engines.PlasmaEngines;
-using WPF.UI.MonoGameCore.LoadAssetsStrategies.Faction10.Engines.PlasmaEngines;
 using WPF.UI.MonoGameCore.LoadAssetsStrategies.Faction10.SpaceShips.Destroyers;
 using WPF.UI.MonoGameCore.Ships;
 
@@ -39,8 +37,8 @@ namespace WPF.UI.MonoGameCore.Screens
         private Random random;
 
         private int random_back = 0;
-
-        private Animation? m_PulsatingStar;
+       
+        private IAnimation? m_PulsatingStar;
 
         private MouseStateArgs? m_MouseStateArgs;
 
@@ -60,7 +58,7 @@ namespace WPF.UI.MonoGameCore.Screens
                   screenResolutions,
                   loadAssetStrategy,
                   assetStorage)
-        {
+        {            
             m_GlobalBasis = new List<Vector2>() 
             {
                 new Vector2(1f,0f),
@@ -85,11 +83,10 @@ namespace WPF.UI.MonoGameCore.Screens
                 mass: 40f, //megaTones
                 modules: new List<IRigidBodyObject>()
                 {
-                    //new IntegratedPlasmaEngine(Debugging, "MainEngine1", 
+                    //new IntegratedPlasmaEngine(Debugging, "MainEngine1",
                     //contentmanager, spriteBatch, 14f, 3f,
-                    //new Transform(new Vector2(0f, 80f), 0f, new Vector2(1f,1f)),
-                    //new IntegratedPlasmaEngineLoadStrategy(),
-                    //m_thrustCalcFunction),
+                    //new RelativeTransform(new Vector2(0f, 80f), 0f, new Vector2(1f,1f), 
+                    //new Vector2(0.5f, 0.5f), m_GlobalBasis)),
 
                     //new IntegratedPlasmaEngine(Debugging, "MainEngine2",
                     //contentmanager, spriteBatch, 14f, 3f,
@@ -97,17 +94,17 @@ namespace WPF.UI.MonoGameCore.Screens
                     //new IntegratedPlasmaEngineLoadStrategy(),
                     //m_thrustCalcFunction),
                     
-                    new Faction10Accelerator(
-                        Debugging, "Accelerator1", contentmanager, spriteBatch, 2f, 1f, 
-                        new RelativeTransform(new Vector2(-140f, 80f), (20f) * MathF.PI/180, 
-                        new Vector2(1f, 1f), new Vector2(0.5f, 0.5f), 
-                        m_GlobalBasis)),
+                    //new Faction10Accelerator(
+                    //    Debugging, "Accelerator1", contentmanager, spriteBatch, 2f, 1f, 
+                    //    new RelativeTransform(new Vector2(-140f, 80f), (20f) * MathF.PI/180, 
+                    //    new Vector2(1f, 1f), new Vector2(0.5f, 0.5f), 
+                    //    m_GlobalBasis)),
 
-                    new Faction10Accelerator(
-                        Debugging, "Accelerator2", contentmanager, spriteBatch, 2f, 1f,
-                        new RelativeTransform(new Vector2(-140f, -80f), (-20f) * MathF.PI/180,
-                        new Vector2(1f, 1f), new Vector2(0.5f, 0.5f),
-                        m_GlobalBasis))
+                    //new Faction10Accelerator(
+                    //    Debugging, "Accelerator2", contentmanager, spriteBatch, 2f, 1f,
+                    //    new RelativeTransform(new Vector2(-140f, -80f), (-20f) * MathF.PI/180,
+                    //    new Vector2(1f, 1f), new Vector2(0.5f, 0.5f),
+                    //    m_GlobalBasis))
                 },
                 new CalculateMOIForTriangleShape_Z(40f, 51.2f, 51.2f),
                 new Faction10DestroyerLoadStrategy(),
@@ -121,13 +118,21 @@ namespace WPF.UI.MonoGameCore.Screens
             base.Load();
 
             //Configure Animations
-            var puls_star_animatinFrames = AnimationUtilities.BuildAnimationFrames(6, 1);
+            var puls_star_animatinFrames = AnimationUtilities.BuildAnimationFrames_Seconds(
+                anim_frames_count: 6, 
+                lifeSpan_Seconds: 0.16666666666f);
 
-            m_PulsatingStar = new Animation((Texture2D)Storage["puls-star1"], 1, 6, true, 2,
-                puls_star_animatinFrames, Color.White);
+            m_PulsatingStar = new Animation(
+                texture: (Texture2D)Storage["puls-star1"],
+                rows_on_texture: 1, 
+                columns_on_texture: 6, 
+                isLooping: true, 
+                animationSpeed: 5f,
+            puls_star_animatinFrames, 
+            blendColor: Color.White);
 
-            //Load Space - Ships
-            
+            m_PulsatingStar.Start();
+
             m_Player.Load();            
         }
 
@@ -145,11 +150,9 @@ namespace WPF.UI.MonoGameCore.Screens
         {
             base.Update(args, time, ref play);
 
-            //Animations
-
-            m_PulsatingStar!.Start(time);
+            //Animations            
             m_PulsatingStar!.Update(time);
-
+                       
             //Interactable Objects
             m_Player!.Update(args, time, ref play);
 
@@ -205,8 +208,9 @@ namespace WPF.UI.MonoGameCore.Screens
                 Vector2.Zero, null, Color.White);
 
             //Animations
-            m_PulsatingStar!.Draw(time, SpriteBatch, Vector2.Zero);
-
+            m_PulsatingStar!.Draw(time, SpriteBatch, new Transform(new Vector2(40f, 40f), 0f, 
+            new Vector2(1f, 1f), Vector2.Zero));
+            
             m_Player!.Draw(time, ref play);
 
             if (m_SelectedPosition != Vector2.Zero && m_drawLine)

@@ -6,28 +6,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonoGame.Extensions.Behaviors.Transformables;
 
 namespace MonoGame.Extensions.Animations.Interfaces.AnimationManagers
 {
     public interface IAnimationManager
     {
-        public void AddAnimation(string name, IAnimation animation);
+        public string Current_Animation_Name { get; }
 
-        public void RemoveAnimation(string name);
+        public IAnimation Current { get; }
 
-        public IAnimation? GetAnimation(string name);
+        void AddAnimation(string name, IAnimation animation);
 
-        public void SetAnimationForPlay(string animationName);
+        void RemoveAnimation(string name);
 
-        public void Start(GameTime gameTime);
+        IAnimation? GetAnimation(string name);
+        
+        void SetAnimationForPlay(string animationName);
+        
+        void SetAnimationForPlay(string animationName, bool resetPrevAnim);
 
-        public void Stop();
+        void Start();
 
-        public void Reset();
+        void Stop();
 
-        public void Update(GameTime gameTime);
+        void Reset();
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position);        
+        void Update(GameTime gameTime);
+
+        void Draw(GameTime gameTime, SpriteBatch spriteBatch, ITransformable transform,
+            float layerDepth);        
 
         public IAnimation? this[string key]
         {

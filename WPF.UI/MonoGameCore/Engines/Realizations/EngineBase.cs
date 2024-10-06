@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Timers;
+using MonoGame.Extensions.Animations.Interfaces.AnimationManagers;
+using MonoGame.Extensions.Animations.Realizations.AnimationManagers;
 using MonoGame.Extensions.AssetStorages.Interface;
 using MonoGame.Extensions.Behaviors.Transformables;
 using MonoGame.Extensions.GameObjects.Base;
@@ -13,12 +15,21 @@ using WPF.UI.MonoGameCore.Modules;
 
 namespace WPF.UI.MonoGameCore.Engines.Realizations
 {
+    internal enum EngineState
+    { 
+        idle = 1,
+        move,
+        stop
+    }
+
     internal abstract class EngineBase : Module, IEngine
     {
         #region Fields
+        protected IAnimationManager m_animationManager;
+
         private float m_currentThrust;
 
-        private bool m_Working;
+        private EngineState m_Mode;
 
         private Func<GameTime, float>? m_IncreaseCalc;
         #endregion
@@ -29,7 +40,7 @@ namespace WPF.UI.MonoGameCore.Engines.Realizations
 
         public float MaxThrust { get; }                
 
-        public bool Working => m_Working;        
+        public EngineState Mode => m_Mode;        
 
         #endregion
 
@@ -44,7 +55,7 @@ namespace WPF.UI.MonoGameCore.Engines.Realizations
             float mass,
             ITransformable transform,
             Func<GameTime, float>? IncreaseCalcFunction,
-            ILoadAssetStrategy? loadAssetStrategy,            
+            ILoadAssetStrategy? loadAssetStrategy = default,            
             IAssetStorage? assetStorage = default) :
             base(debug, name, contentManager, spriteBatch, mass, transform, assetStorage, 
                 loadAssetStrategy)
@@ -57,31 +68,70 @@ namespace WPF.UI.MonoGameCore.Engines.Realizations
 
             m_currentThrust = 0f;
 
-            m_Working = false;   
+            m_Mode = EngineState.idle;   
             
             m_IncreaseCalc = IncreaseCalcFunction;
+
+            m_animationManager = new AnimationManager();           
         }
 
-        public virtual void Start()
-        {            
-            m_Working = true;
+        public virtual void Start(GameTime time)
+        {           
+            m_Mode = EngineState.move;
         }
 
         public virtual void Stop()
         {
             m_currentThrust = 0f;
-            m_Working = false;
+            m_Mode = EngineState.stop;
         }
                        
         public override void Update(IUpdateArgs args, GameTime time, ref bool play)
         {
             base.Update(args, time, ref play);
 
-            if (m_Working && m_currentThrust < MaxThrust )
+            m_animationManager.Start();
+
+            switch (Mode)
             {
-                if(m_IncreaseCalc is not null)
-                    m_currentThrust += m_IncreaseCalc(time);
+                case EngineState.idle:
+
+                    if (!m_animationManager.Current_Animation_Name.Equals(EngineState.idle.ToString()))
+                    {
+                        m_animationManager.SetAnimationForPlay(EngineState.idle.ToString(), true);
+                    }
+
+                    break;
+                case EngineState.move:
+
+                    if (!m_animationManager.Current_Animation_Name.Equals(EngineState.move.ToString()))
+                    {
+                        m_animationManager.SetAnimationForPlay(EngineState.move.ToString(), true);
+                    }
+
+                    if (m_currentThrust < MaxThrust)
+                    {
+                        if (m_IncreaseCalc is not null)
+                        {
+                            m_currentThrust += m_IncreaseCalc(time);
+                        }
+                        else
+                        {
+                            m_currentThrust = MaxThrust;
+                        }                        
+                    }
+
+                    break;
+                case EngineState.stop:
+
+                    if (!m_animationManager.Current_Animation_Name.Equals(EngineState.stop.ToString()))
+                    {
+                        m_animationManager.SetAnimationForPlay(EngineState.stop.ToString(), true);
+                    }
+
+                    break;               
             }
+
         }
         
         #endregion

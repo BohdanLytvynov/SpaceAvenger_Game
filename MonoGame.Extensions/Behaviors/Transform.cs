@@ -124,6 +124,14 @@ namespace MonoGame.Extensions.Behaviors
         {
             
         }
+
+        public Transform(Vector2 position, float rotation_Rad, Vector2 scale,
+            Vector2 geomCenterOffset)
+            :this(position, rotation_Rad, scale, geomCenterOffset, null)
+        {
+            
+        }
+
         /// <summary>
         /// Ctor for Position, Rotation, Scale
         /// </summary>

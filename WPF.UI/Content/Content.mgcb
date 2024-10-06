@@ -37,6 +37,30 @@
 /processorParam:TextureFormat=Color
 /build:Animations/Jets/Jet-1/Jet-1_128.png
 
+#begin Animations/Jets/Jet-1/Jet1-Idle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Animations/Jets/Jet-1/Jet1-Idle.png
+
+#begin Animations/Jets/Jet-1/Jet1-Move.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Animations/Jets/Jet-1/Jet1-Move.png
+
 #begin Assets/Factions/Faction10/Engines/ManuverEngine_F10.png
 /importer:TextureImporter
 /processor:TextureProcessor

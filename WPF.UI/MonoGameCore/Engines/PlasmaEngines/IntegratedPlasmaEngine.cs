@@ -1,16 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extensions.Animations.Interfaces.Animations;
+using MonoGame.Extensions.Animations.Realizations.Animations;
+using MonoGame.Extensions.Animations.Utilities;
 using MonoGame.Extensions.AssetStorages.Interface;
 using MonoGame.Extensions.Behaviors.Transformables;
-using MonoGame.Extensions.GameObjects.LoadAssetsStrategy;
+using MonoGame.Extensions.GameObjects.Base;
 using System;
 using WPF.UI.MonoGameCore.Engines.Realizations;
 
 namespace WPF.UI.MonoGameCore.Engines.PlasmaEngines
 {
     internal class IntegratedPlasmaEngine : EngineBase
-    {
+    {        
         public IntegratedPlasmaEngine(
             bool debug,
             string name, 
@@ -18,10 +21,9 @@ namespace WPF.UI.MonoGameCore.Engines.PlasmaEngines
             SpriteBatch spriteBatch, 
             float maxThrust, 
             float mass, 
-            ITransformable transform, 
-            ILoadAssetStrategy loadAssetStrategy, 
-            Func<GameTime, float> IncreaseCalcFunction, 
-            IAssetStorage? assetStorage = null) 
+            ITransformable transform,              
+            Func<GameTime, float>? IncreaseCalcFunction = default, 
+            IAssetStorage? assetStorage = default) 
             : base(debug, 
                   name, 
                   contentManager, 
@@ -29,28 +31,57 @@ namespace WPF.UI.MonoGameCore.Engines.PlasmaEngines
                   maxThrust, 
                   mass, 
                   transform,
-                  IncreaseCalcFunction,
-                  loadAssetStrategy,                  
-                  assetStorage)
+                  IncreaseCalcFunction                                    
+                  )
         {
             
         }
 
-        public override void Draw(GameTime time, ref bool play)
+        public override void Load()
         {
-            base.Draw(time, ref play);
+            base.Load();
 
-            //Position in the only Positive coordinate system 
-            var position_onlypos = Transform.Position;
+            Storage.LoadAssets<Texture2D>(
+                ("idle", "Animations/Jets/Jet-1/Jet1-Idle"),
+                ("move", "Animations/Jets/Jet-1/Jet1-Move"));
 
-            //Convert to the Non-Only Positive Coord System
-
-            var position_2 = new Vector2(
-                position_onlypos.X - Transform.ActualSize.Width/2,
-                position_onlypos.Y - Transform.ActualSize.Height/2
+            IAnimation jet1_idle = new Animation(
+                (Texture2D)Storage["idle"],
+                6, 4, true, 1f, AnimationUtilities.BuildAnimationFrames(24, 2f),
+                Color.White
                 );
 
-            //SpriteBatch.Draw();
+            IAnimation jet1_move = new Animation(
+                (Texture2D)Storage["move"],
+                6, 4, false, 0.001f, AnimationUtilities.BuildAnimationFrames(24, 1f),
+                Color.White
+                );
+
+            IAnimation jet1_stop = new Animation(
+                (Texture2D)Storage["move"],
+                6, 4, false, 1f, AnimationUtilities.BuildAnimationFrames(24, 2f),
+                Color.White, true
+                );
+
+            m_animationManager.AddAnimation(EngineState.idle.ToString(), jet1_idle);
+            m_animationManager.AddAnimation(EngineState.move.ToString(), jet1_move);
+            m_animationManager.AddAnimation(EngineState.stop.ToString(), jet1_stop);
+
+            m_animationManager.SetAnimationForPlay(EngineState.move.ToString());
+        }
+
+        public override void Update(IUpdateArgs args, GameTime time, ref bool play)
+        {
+            base.Update(args, time, ref play);
+
+            m_animationManager.Update(time);
+        }
+
+        public override void Draw(GameTime time, ref bool play)
+        {
+            m_animationManager.Draw(time, SpriteBatch, Transform, 0.9f);
+
+            base.Draw(time, ref play);            
         }
     }
 }

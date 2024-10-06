@@ -2,23 +2,20 @@
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extensions.Animations.Interfaces.AnimationFrames;
 using MonoGame.Extensions.Animations.Interfaces.Animations;
-using MonoGame.Extensions.Animations.Realizations.AnimationFrames;
+using MonoGame.Extensions.Behaviors.Transformables;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonoGame.Extensions.Animations.Realizations.Animations
 {
     public class Animation : IAnimation
-    {
+    {       
         #region Fields
-        
-        private int m_start_global_time;
-        private float m_current_local_time;
-        private float m_acum;
+
+        private double m_start_global_time;
+        private double m_current_local_time;
+        private double m_acum;
         
         private int m_Rows;
         private int m_Columns;
@@ -26,7 +23,11 @@ namespace MonoGame.Extensions.Animations.Realizations.Animations
         private int m_current_row;
         private int m_current_column;
 
+        private int m_curr_frame_index;
+
         private bool m_start;
+
+        private bool m_glob_start_time_set;
 
         private bool m_reverse;
 
@@ -34,7 +35,7 @@ namespace MonoGame.Extensions.Animations.Realizations.Animations
 
         private List<IAnimationFrame> m_frames;
 
-        private float m_animSpeed;
+        private double m_animSpeed;
 
         private bool m_IsLooping;
 
@@ -61,7 +62,7 @@ namespace MonoGame.Extensions.Animations.Realizations.Animations
         //Amount of columns in the Sprite Sheet
         public int Columns { get => m_Columns;
             set
-            {
+            { 
                 if (value <= 0)
                     throw new ArgumentException("The amount of Columns can't be negative or Zero!");
                 else
@@ -80,7 +81,7 @@ namespace MonoGame.Extensions.Animations.Realizations.Animations
         }
 
         //Animation Speed (R) 
-        public float AnimationSpeed { get => m_animSpeed; set => m_animSpeed = value; }
+        public double AnimationSpeed { get => m_animSpeed; set => m_animSpeed = value; }
 
         //Width of the frame
         public int FrameWidth { get => Texture.Width / Columns; } 
@@ -96,19 +97,19 @@ namespace MonoGame.Extensions.Animations.Realizations.Animations
 
         public Animation(
             Texture2D texture,
-            int rows,
-            int columns,
+            int rows_on_texture,
+            int columns_on_texture,
             bool isLooping,
-            float animationSpeed,
+            double animationSpeed,
             List<IAnimationFrame> frames,
             Color blendColor,
             bool reverse = false)
         {
             m_Texture = texture;
 
-            Rows = rows;
+            Rows = rows_on_texture;
 
-            Columns = columns;
+            Columns = columns_on_texture;
 
             IsLooping = isLooping;
 
@@ -123,21 +124,18 @@ namespace MonoGame.Extensions.Animations.Realizations.Animations
             Reset(reverse);
 
             Stop();
-
         }
 
         #endregion
 
         #region Functions
 
-        public void Start(GameTime gameTime)
+        public void Start()
         {
             if (m_start)
                 return;
 
-            m_start = true;
-
-            m_start_global_time = gameTime.TotalGameTime.Seconds;            
+            m_start = true;                       
         }
 
         public void Stop()
@@ -150,7 +148,13 @@ namespace MonoGame.Extensions.Animations.Realizations.Animations
 
         public void Reset(bool reverse)
         {
+            m_glob_start_time_set = false;
+
+            m_start_global_time = 0;
+
             m_current_local_time = 0f;
+
+            m_curr_frame_index = 0;
 
             m_acum = 0f;
 
@@ -169,13 +173,22 @@ namespace MonoGame.Extensions.Animations.Realizations.Animations
         }
 
         public void Update(GameTime gameTime)
-        {
+        {           
             if (!m_start)
                 return;
 
-            //1 Calculate local time
-            m_current_local_time = (((float)gameTime.TotalGameTime.Seconds) - m_start_global_time) * AnimationSpeed;
+            if (!m_glob_start_time_set)
+            {
+                m_start_global_time = gameTime.TotalGameTime.TotalMilliseconds;
+                m_glob_start_time_set = true;
+            }
 
+            //1 Calculate local time
+            m_current_local_time = (gameTime.TotalGameTime.TotalMilliseconds - m_start_global_time)
+                * AnimationSpeed;
+
+            //Debug.WriteLine($"CL: {m_current_local_time}");
+            
             if (!Reverse)
                 Direct(gameTime);
             else
@@ -185,23 +198,34 @@ namespace MonoGame.Extensions.Animations.Realizations.Animations
 
         private void Direct(GameTime gameTime)
         {
-            if (IsLooping && m_current_row >= Rows - 1 && m_current_column >= Columns - 1)
+            if (IsLooping && m_curr_frame_index >= m_frames.Count - 1)
             {
                 Stop();
 
                 Reset(Reverse);
 
-                Start(gameTime);
+                Start();                                
             }
-
-            if (m_current_local_time >= m_frames[m_current_column].Lifespan + m_acum)
+            else if (m_curr_frame_index >= m_frames.Count - 1)
             {
-                m_acum = m_frames[m_current_column].Lifespan;
-                m_current_column++;
+                Stop();                
+            }
+            
+            if (m_current_local_time >= m_frames[m_curr_frame_index].Lifespan + m_acum)
+            {
+                m_acum += m_frames[m_curr_frame_index].Lifespan;
+                ++m_current_column;
+                ++m_curr_frame_index;
             }
 
-            if (m_current_column >= Columns - 1)//The last column -> need to switch to the next row
-                m_current_row++;
+            if (m_current_column >= Columns)//The last column -> need to switch to the next row
+            {
+                ++m_current_row;
+                m_current_column = 0;
+            }
+
+            //Debug.WriteLine($"r: {m_current_row} c: {m_current_column}" +
+            //    $"  Current LT: {m_current_local_time} Acum: {m_acum} CurrFrame: {m_curr_frame_index}");
         }
         //Need modification
         private void Inverse(GameTime gameTime)
@@ -212,12 +236,12 @@ namespace MonoGame.Extensions.Animations.Realizations.Animations
 
                 Reset(Reverse);
 
-                Start(gameTime);
+                Start();
             }
 
             if (m_current_local_time >= m_frames[m_current_column].Lifespan + m_acum)
             {
-                m_acum = m_frames[m_current_column].Lifespan;
+                m_acum += m_frames[m_current_column].Lifespan;
                 m_current_column--;
             }
 
@@ -229,19 +253,21 @@ namespace MonoGame.Extensions.Animations.Realizations.Animations
 
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position)
-        {
-            if (!m_start)
-                return;
-
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, ITransformable transform,
+            float layerDepth = 0f)
+        {           
             spriteBatch.Draw(
                 m_Texture,
-                position,
+                transform.Position,
                 new Rectangle(
                     m_current_column * FrameWidth,
-                    m_current_row,
+                    m_current_row * FrameHeight,
                     FrameWidth, FrameHeight),
-                BlendColor);
+                BlendColor, 
+                transform.Rotation, 
+                transform.Origin, 
+                transform.Scale,
+                SpriteEffects.None, layerDepth);
         }
 
         #endregion

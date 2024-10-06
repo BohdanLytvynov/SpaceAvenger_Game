@@ -8,6 +8,6 @@ namespace MonoGame.Extensions.Animations.Interfaces.AnimationFrames
 {
     public interface IAnimationFrame
     {
-        public float Lifespan { get; }
+        public double Lifespan { get; }
     }
 }
