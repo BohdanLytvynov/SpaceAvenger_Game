@@ -26,4 +26,8 @@
     <EmbeddedResource Include="Icon.ico" />
     <EmbeddedResource Include="Icon.bmp" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ViewModelBaseLibDotNetCore\ViewModelBaseLibDotNetCore.csproj" />
+  </ItemGroup>
 </Project>

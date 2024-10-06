@@ -4,6 +4,8 @@ using System.Windows;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using ViewModelBaseLibDotNetCore.VM;
+using ViewModelBaseLibDotNetCore.Commands;
 
 namespace MonoGameEditor.MonoGameControls;
 
@@ -31,7 +33,7 @@ public interface IMonoGameViewModel : IDisposable
     void SizeChanged(object sender, SizeChangedEventArgs args);
 }
 
-public class MonoGameViewModel : ViewModel, IMonoGameViewModel
+public class MonoGameViewModel : ViewModelBase , IMonoGameViewModel
 {
     public MonoGameViewModel()
     {
