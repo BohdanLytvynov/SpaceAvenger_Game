@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPF.UI", "WPF.UI\WPF.UI.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonoGame.Extensions", "MonoGame.Extensions\MonoGame.Extensions.csproj", "{CC9381D3-4BE0-4C4A-A1B9-1C6E15D3A52C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGameEditor", "MonoGameEditor\MonoGameEditor.csproj", "{E33057C8-24E2-47C2-B7DA-0F9FFE3C6260}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{CC9381D3-4BE0-4C4A-A1B9-1C6E15D3A52C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC9381D3-4BE0-4C4A-A1B9-1C6E15D3A52C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC9381D3-4BE0-4C4A-A1B9-1C6E15D3A52C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E33057C8-24E2-47C2-B7DA-0F9FFE3C6260}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E33057C8-24E2-47C2-B7DA-0F9FFE3C6260}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E33057C8-24E2-47C2-B7DA-0F9FFE3C6260}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E33057C8-24E2-47C2-B7DA-0F9FFE3C6260}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
