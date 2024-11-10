@@ -8,6 +8,7 @@ using MonoGame.Extensions.Animations.Utilities;
 using MonoGame.Extensions.AssetStorages.Interface;
 using MonoGame.Extensions.Behaviors;
 using MonoGame.Extensions.Behaviors.MouseInteractable;
+using MonoGame.Extensions.Behaviors.Transformables.RelativeTransform;
 using MonoGame.Extensions.GameObjects.Base;
 using MonoGame.Extensions.GameObjects.LoadAssetsStrategy;
 using MonoGame.Extensions.Physics.Interfaces;
@@ -17,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using WPF.UI.MonoGameControls;
+using WPF.UI.MonoGameCore.Engines.PlasmaEngines;
 using WPF.UI.MonoGameCore.LoadAssetsStrategies.Faction10.SpaceShips.Destroyers;
 using WPF.UI.MonoGameCore.Ships;
 
@@ -83,28 +85,27 @@ namespace WPF.UI.MonoGameCore.Screens
                 mass: 40f, //megaTones
                 modules: new List<IRigidBodyObject>()
                 {
-                    //new IntegratedPlasmaEngine(Debugging, "MainEngine1",
-                    //contentmanager, spriteBatch, 14f, 3f,
-                    //new RelativeTransform(new Vector2(0f, 80f), 0f, new Vector2(1f,1f), 
-                    //new Vector2(0.5f, 0.5f), m_GlobalBasis)),
+                    new IntegratedPlasmaEngine(Debugging, "MainEngine1",
+                    contentmanager, spriteBatch, 14f, 3f,
+                    new RelativeTransform(new Vector2(0f, 80f), 0f, new Vector2(1f,1f),
+                    new Vector2(0.5f, 0.5f), m_GlobalBasis)),
 
-                    //new IntegratedPlasmaEngine(Debugging, "MainEngine2",
-                    //contentmanager, spriteBatch, 14f, 3f,
-                    //new Transform(),
-                    //new IntegratedPlasmaEngineLoadStrategy(),
-                    //m_thrustCalcFunction),
-                    
-                    //new Faction10Accelerator(
-                    //    Debugging, "Accelerator1", contentmanager, spriteBatch, 2f, 1f, 
-                    //    new RelativeTransform(new Vector2(-140f, 80f), (20f) * MathF.PI/180, 
-                    //    new Vector2(1f, 1f), new Vector2(0.5f, 0.5f), 
-                    //    m_GlobalBasis)),
+                    new IntegratedPlasmaEngine(Debugging, "MainEngine2",
+                    contentmanager, spriteBatch, 14f, 3f,                    
+                    new RelativeTransform(new Vector2(0f, 80f), 0f, new Vector2(1f,1f),
+                    new Vector2(0.5f, 0.5f), m_GlobalBasis)),
 
-                    //new Faction10Accelerator(
-                    //    Debugging, "Accelerator2", contentmanager, spriteBatch, 2f, 1f,
-                    //    new RelativeTransform(new Vector2(-140f, -80f), (-20f) * MathF.PI/180,
-                    //    new Vector2(1f, 1f), new Vector2(0.5f, 0.5f),
-                    //    m_GlobalBasis))
+                    new Faction10Accelerator(
+                        Debugging, "Accelerator1", contentmanager, spriteBatch, 2f, 1f,
+                        new RelativeTransform(new Vector2(-140f, 80f), (20f) * MathF.PI/180,
+                        new Vector2(1f, 1f), new Vector2(0.5f, 0.5f),
+                        m_GlobalBasis)),
+
+                    new Faction10Accelerator(
+                        Debugging, "Accelerator2", contentmanager, spriteBatch, 2f, 1f,
+                        new RelativeTransform(new Vector2(-140f, -80f), (-20f) * MathF.PI/180,
+                        new Vector2(1f, 1f), new Vector2(0.5f, 0.5f),
+                        m_GlobalBasis))
                 },
                 new CalculateMOIForTriangleShape_Z(40f, 51.2f, 51.2f),
                 new Faction10DestroyerLoadStrategy(),

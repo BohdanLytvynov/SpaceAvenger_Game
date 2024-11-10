@@ -7,18 +7,18 @@ namespace MonoGameEditor.ViewModels.Windows;
 public class MainWindowViewModel : MonoGameViewModel
 {
     #region Fields
-
+    private string m_Title;
     #endregion
 
     #region Properties
-
+    public string Title { get => m_Title; set => Set(ref m_Title, value); }
     #endregion
 
     #region Ctor
 
     public MainWindowViewModel()
     {
-
+        m_Title = "MonoGame Editor";
     }
 
     #endregion

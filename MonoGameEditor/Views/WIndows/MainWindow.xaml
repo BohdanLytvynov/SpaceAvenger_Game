@@ -8,12 +8,39 @@
     xmlns:local="clr-namespace:MonoGameEditor"
     xmlns:main_vm ="clr-namespace:MonoGameEditor.ViewModels.Windows"
     mc:Ignorable="d"
-    Title="MonoGameEditor"
+    Title="{Binding Title, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
     WindowState="Maximized" Width="800" Height="600"
     d:DataContext="{d:DesignInstance main_vm:MainWindowViewModel, 
-    IsDesignTimeCreatable=True}"
-    >
-    <monoGameControls:MonoGameContentControl 
-        x:Name="mg_control"
-        Grid.Column="1"/>
+    IsDesignTimeCreatable=True}">
+
+    <Grid x:Name="main_grid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="7"/>
+            <RowDefinition Height="383*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="141*"/>
+        </Grid.RowDefinitions>
+        <WrapPanel Grid.Row="0">
+            <ComboBox IsEditable="True" 
+                    Width="120" 
+                    Height="40" 
+                    Margin="10,0"/>
+        </WrapPanel>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="515*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="150*"/>
+            </Grid.ColumnDefinitions>
+            <GridSplitter Grid.Column="1" Style="{StaticResource GridSplitter_Vertical}"/>
+            <GridSplitter Grid.Column="3" Style="{StaticResource GridSplitter_Vertical}"/>
+            <monoGameControls:MonoGameContentControl Grid.Column="2"            
+            x:Name="mg_control"
+            />
+        </Grid>
+        <GridSplitter Grid.Row="3" Style="{StaticResource GridSplitter_Horizontal}"/>
+    </Grid>
 </Window>

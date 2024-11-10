@@ -4,5 +4,108 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     >
     <Application.Resources>
+
+        <Duration x:Key="animDuration">0:0:0:0.2
+        </Duration>
+
+        <Color x:Key="gridSplitter_Color">black
+        </Color>
+
+        <Color x:Key="gridSplitterOver_Color">green
+        </Color>
+
+        <SolidColorBrush x:Key="gridSplitter" Color="{StaticResource gridSplitter_Color}"/>
+
+        <SolidColorBrush x:Key="gridSplitterOver" Color="{StaticResource gridSplitterOver_Color}"/>
+
+        <Style x:Key="GridSplitter_Horizontal" TargetType="GridSplitter">
+            <Style.Setters>
+                <Setter Property="Background" Value="{StaticResource gridSplitter}"/>
+                <Setter Property="Height" Value="7"/>
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="VerticalAlignment" Value="Stretch"/>
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation Duration="{StaticResource animDuration}"
+                                                To="{StaticResource gridSplitterOver_Color}"
+                                                Storyboard.TargetProperty="Background.Color"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation Duration="{StaticResource animDuration}"
+                                                To="{StaticResource gridSplitter_Color}"
+                                                Storyboard.TargetProperty="Background.Color"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="GridSplitter_Vertical" TargetType="GridSplitter">
+            <Style.Setters>
+                <Setter Property="Background" Value="{StaticResource gridSplitter}"/>
+                <Setter Property="Width" Value="7"/>
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="VerticalAlignment" Value="Stretch"/>
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation Duration="{StaticResource animDuration}"
+                                        To="{StaticResource gridSplitterOver_Color}"
+                                        Storyboard.TargetProperty="Background.Color"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation Duration="{StaticResource animDuration}"
+                                        To="{StaticResource gridSplitter_Color}"
+                                        Storyboard.TargetProperty="Background.Color"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="Button" TargetType="Button">
+            <Style.Setters>
+                <Setter Property="ItemsControl.Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border x:Name="brd">
+                                
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style.Setters>
+        </Style>
+
+        <Style x:Key="TabItemStyle" TargetType="TabItem">
+            <Style.Setters>
+                <Setter Property="ItemsControl.Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TabItem}">
+                            <Grid>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style.Setters>
+        </Style>
+
     </Application.Resources>
 </Application>

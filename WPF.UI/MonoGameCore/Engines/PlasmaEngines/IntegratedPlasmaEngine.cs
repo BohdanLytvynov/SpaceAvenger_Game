@@ -68,20 +68,6 @@ namespace WPF.UI.MonoGameCore.Engines.PlasmaEngines
             m_animationManager.AddAnimation(EngineState.stop.ToString(), jet1_stop);
 
             m_animationManager.SetAnimationForPlay(EngineState.move.ToString());
-        }
-
-        public override void Update(IUpdateArgs args, GameTime time, ref bool play)
-        {
-            base.Update(args, time, ref play);
-
-            m_animationManager.Update(time);
-        }
-
-        public override void Draw(GameTime time, ref bool play)
-        {
-            m_animationManager.Draw(time, SpriteBatch, Transform, 0.9f);
-
-            base.Draw(time, ref play);            
-        }
+        }        
     }
 }

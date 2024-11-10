@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended.Timers;
 using MonoGame.Extensions.Animations.Interfaces.AnimationManagers;
 using MonoGame.Extensions.Animations.Realizations.AnimationManagers;
 using MonoGame.Extensions.AssetStorages.Interface;
@@ -75,6 +74,8 @@ namespace WPF.UI.MonoGameCore.Engines.Realizations
             m_animationManager = new AnimationManager();           
         }
 
+        #endregion
+
         public virtual void Start(GameTime time)
         {           
             m_Mode = EngineState.move;
@@ -91,7 +92,7 @@ namespace WPF.UI.MonoGameCore.Engines.Realizations
             base.Update(args, time, ref play);
 
             m_animationManager.Start();
-
+          
             switch (Mode)
             {
                 case EngineState.idle:
@@ -132,8 +133,14 @@ namespace WPF.UI.MonoGameCore.Engines.Realizations
                     break;               
             }
 
+            m_animationManager.Update(time);
         }
-        
-        #endregion
+
+        public override void Draw(GameTime time, ref bool play)
+        {
+            m_animationManager.Draw(time, SpriteBatch, Transform, 0.9f);
+
+            base.Draw(time, ref play);
+        }
     }
 }
